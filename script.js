@@ -406,23 +406,37 @@ function initNavbar() {
 function initTyped() {
   const el = document.getElementById('typed-text');
   if (!el) return;
-  const roles = [
-    'Data Science Consultant Intern',
-    'MSc Data Analytics Scholar',
-    'ML Pipeline Specialist',
-    'Predictive Analytics Expert'
+  const words = [
+    "Captain of Data Science & ML",
+    "MSc Scholar @ CHRIST University",
+    "Conqueror of Big Data & SQL",
+    "Machine Learning Navigator",
+    "AWS Cloud Infrastructure Captain"
   ];
-  let ri = 0, ci = 0, deleting = false;
-  function tick() {
-    const r = roles[ri];
-    el.textContent = deleting ? r.slice(0, ci-1) : r.slice(0, ci+1);
-    deleting ? ci-- : ci++;
-    let delay = deleting ? 38 : 78;
-    if (!deleting && ci === r.length)    { delay = 2000; deleting = true; }
-    else if (deleting && ci === 0)       { deleting = false; ri = (ri+1) % roles.length; delay = 380; }
-    setTimeout(tick, delay);
+  let wordIdx = 0, charIdx = 0, isDeleting = false;
+
+  function type() {
+    const current = words[wordIdx];
+    if (isDeleting) {
+      el.textContent = current.substring(0, charIdx - 1);
+      charIdx--;
+    } else {
+      el.textContent = current.substring(0, charIdx + 1);
+      charIdx++;
+    }
+
+    let delay = isDeleting ? 40 : 80;
+    if (!isDeleting && charIdx === current.length) {
+      delay = 2000;
+      isDeleting = true;
+    } else if (isDeleting && charIdx === 0) {
+      isDeleting = false;
+      wordIdx = (wordIdx + 1) % words.length;
+      delay = 400;
+    }
+    setTimeout(type, delay);
   }
-  tick();
+  type();
 }
 
 /* ---- COUNTERS ---- */
@@ -821,12 +835,33 @@ function handleCLI(e) {
   const responses = {
     help: `
       <span style="color:var(--accent)">Available commands:</span><br>
+      &nbsp;• <b>wanted</b> — view One Piece bounty poster details<br>
+      &nbsp;• <b>onepiece</b> — the secret of data analytics<br>
+      &nbsp;• <b>yonko</b> — four emperors of big data<br>
       &nbsp;• <b>skills</b> — list technical proficiencies<br>
       &nbsp;• <b>projects</b> — list featured projects<br>
       &nbsp;• <b>whoami</b> — candidate profile<br>
       &nbsp;• <b>contact</b> — contact details<br>
       &nbsp;• <b>matrix</b> — toggle matrix rain overlay<br>
       &nbsp;• <b>clear</b> — clear terminal
+    `,
+    wanted: `
+      <span style="color:#ffd700;font-weight:700">🏴‍☠️ WORLD GOVERNMENT WANTED POSTER 🏴‍☠️</span><br>
+      NAME: KURUGODU SAI NARENDRA<br>
+      TITLE: Captain of Data Analytics & Machine Learning<br>
+      BOUNTY: ฿5,564,800,000 (Pirate King Level)<br>
+      SPECIALTY: Conqueror's Haki SQL Queries & Neural Networks
+    `,
+    onepiece: `
+      <span style="color:#ff0033;font-weight:700">"THE ONE PIECE IS REAL!" — Whitebeard</span><br>
+      The One Piece of Data Analytics is precision insight hidden inside raw datasets.
+    `,
+    yonko: `
+      <span style="color:#c084fc">The Four Emperors of Big Data:</span><br>
+      1. Python & Machine Learning<br>
+      2. MySQL & Distributed SQL<br>
+      3. Power BI & Executive Telemetry<br>
+      4. AWS Cloud Infrastructure
     `,
     skills: `
       Python (Scikit-Learn, Pandas)  ████████████ 92%<br>
@@ -970,20 +1005,20 @@ function playLevelUpSound() {
 }
 
 const CYBER_QUESTS = [
-  { id: 'quest_boot', name: 'Neural Core Boot', desc: 'Explore down past the Hero command center', xp: 50, icon: 'fa-power-off' },
-  { id: 'quest_bento', name: 'Project Inspector', desc: 'Inspect any high-impact ML project details', xp: 75, icon: 'fa-microchip' },
-  { id: 'quest_sql', name: 'SQL Query Master', desc: 'Run a live data query in the Analytics Lab', xp: 100, icon: 'fa-database' },
-  { id: 'quest_matrix', name: 'Hyperparameter Tuner', desc: 'Adjust the Confusion Matrix threshold slider', xp: 75, icon: 'fa-sliders-h' },
-  { id: 'quest_cli', name: 'Terminal Hacker', desc: 'Open CLI Command Center (Ctrl+K) and run a command', xp: 100, icon: 'fa-terminal' },
-  { id: 'quest_anomaly', name: 'Data Anomaly Hunter', desc: 'Zap and capture 3 floating data anomalies', xp: 150, icon: 'fa-bolt' }
+  { id: 'quest_boot', name: 'Set Sail for the Grand Line', desc: 'Explore down past the Hero Command Ship', xp: 50, icon: 'fa-ship' },
+  { id: 'quest_bento', name: 'Examine Poneglyph Archives', desc: 'Inspect any high-impact ML project details', xp: 75, icon: 'fa-scroll' },
+  { id: 'quest_sql', name: 'Conquer Marine SQL Base', desc: 'Run a live data query in the Analytics Lab', xp: 100, icon: 'fa-database' },
+  { id: 'quest_matrix', name: 'Master Observation Haki', desc: 'Adjust the Confusion Matrix threshold slider', xp: 75, icon: 'fa-eye' },
+  { id: 'quest_cli', name: 'Hack Den Den Mushi Terminal', desc: 'Open CLI (Ctrl+K) and type "wanted" or "help"', xp: 100, icon: 'fa-terminal' },
+  { id: 'quest_anomaly', name: 'Hunt Sea Kings & Devil Fruits', desc: 'Zap and capture 3 floating Devil Fruits', xp: 150, icon: 'fa-apple-alt' }
 ];
 
 const PLAYER_RANKS = [
-  { minLvl: 1, title: 'DATA NOVICE', reqXp: 100 },
-  { minLvl: 2, title: 'FEATURE ENGINEER', reqXp: 250 },
-  { minLvl: 3, title: 'NEURAL ARCHITECT', reqXp: 500 },
-  { minLvl: 4, title: 'MODEL OVERLORD', reqXp: 800 },
-  { minLvl: 5, title: 'DATA ARCHMAGE', reqXp: 1200 }
+  { minLvl: 1, title: 'CABIN BOY', reqXp: 100 },
+  { minLvl: 2, title: 'EAST BLUE PIRATE', reqXp: 250 },
+  { minLvl: 3, title: 'GRAND LINE NAVIGATOR', reqXp: 500 },
+  { minLvl: 4, title: 'NEW WORLD COMMANDER', reqXp: 800 },
+  { minLvl: 5, title: 'PIRATE KING OF DATA SCIENCE', reqXp: 1200 }
 ];
 
 let RPG_STATE = {
@@ -1042,18 +1077,18 @@ function addXP(amount, reason = '') {
   if (leveledUp) {
     playLevelUpSound();
     const rankObj = PLAYER_RANKS[currentRankIdx];
-    showXPToast(0, `🎉 LEVEL UP! You are now a ${rankObj.title}!`);
+    showXPToast(0, `🎉 BOUNTY INCREASED! You are now a ${rankObj.title}!`);
     unlockSecretThemes(newLevel);
   }
 }
 
 function unlockSecretThemes(lvl) {
   if (lvl >= 3) {
-    const btn = document.getElementById('theme-red-btn');
+    const btn = document.getElementById('theme-darkmatter-btn');
     if (btn) btn.style.display = 'inline-block';
   }
   if (lvl >= 4) {
-    const btn = document.getElementById('theme-gold-btn');
+    const btn = document.getElementById('theme-pk-btn');
     if (btn) btn.style.display = 'inline-block';
   }
 }
@@ -1065,7 +1100,7 @@ function completeQuest(questId) {
 
   RPG_STATE.completedQuests.push(questId);
   playQuestSound();
-  addXP(q.xp, `Quest Completed: ${q.name}!`);
+  addXP(q.xp, `Quest Cleared: ${q.name}!`);
   renderQuestsList();
 }
 
@@ -1092,10 +1127,10 @@ function updateHUDUI() {
   if (lvlEl) lvlEl.textContent = `LVL 0${RPG_STATE.level}`;
   if (titleEl) titleEl.textContent = currentRank.title;
   if (barFill) barFill.style.width = `${pct}%`;
-  if (xpText) xpText.textContent = `${RPG_STATE.score} / ${nextReq} XP`;
+  if (xpText) xpText.textContent = `฿${RPG_STATE.score}M / ฿${nextReq}M`;
   if (questCount) questCount.textContent = `${RPG_STATE.completedQuests.length}/${CYBER_QUESTS.length}`;
 
-  if (qStatScore) qStatScore.textContent = RPG_STATE.score;
+  if (qStatScore) qStatScore.textContent = `฿${RPG_STATE.score}M`;
   if (qStatLvl) qStatLvl.textContent = RPG_STATE.level;
   if (qStatCompleted) qStatCompleted.textContent = `${RPG_STATE.completedQuests.length} / ${CYBER_QUESTS.length}`;
 

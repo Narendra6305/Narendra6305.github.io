@@ -43,7 +43,7 @@
   <!-- NAVBAR -->
   <nav id="navbar">
     <a href="#hero" class="nav-brand">
-      <span class="brand-dot"></span>KN<span class="brand-accent">.analytics</span>
+      <span class="brand-dot"></span>☠️ KN<span class="brand-accent">.grandline</span>
     </a>
     <ul class="nav-links" id="nav-links">
       <li><a href="#hero" class="nav-link active" data-section="hero">Home</a></li>
@@ -56,12 +56,12 @@
     </ul>
     <div class="nav-actions">
       <div class="theme-switcher">
-        <button class="theme-btn t-cyan active" onclick="setTheme('cyan')" title="Cyan"></button>
-        <button class="theme-btn t-violet" onclick="setTheme('violet')" title="Violet"></button>
-        <button class="theme-btn t-emerald" onclick="setTheme('emerald')" title="Emerald"></button>
-        <button class="theme-btn t-pink" onclick="setTheme('pink')" title="Synthwave"></button>
-        <button class="theme-btn t-red secret-theme" id="theme-red-btn" onclick="setTheme('red')" title="Unlocked at LVL 3: Cyberpunk Red" style="display:none;background:#ff2a5f;"></button>
-        <button class="theme-btn t-gold secret-theme" id="theme-gold-btn" onclick="setTheme('gold')" title="Unlocked at LVL 4: Golden God" style="display:none;background:#ffd700;"></button>
+        <button class="theme-btn t-cyan active" onclick="setTheme('cyan')" title="All Blue (East Blue)"></button>
+        <button class="theme-btn t-haki" onclick="setTheme('haki')" title="Conqueror's Haki (Crimson Red)" style="background:#ff0033;"></button>
+        <button class="theme-btn t-nika" onclick="setTheme('nika')" title="Gear 5 Sun God Nika (Radiant Gold)" style="background:#ffd700;"></button>
+        <button class="theme-btn t-pink" onclick="setTheme('pink')" title="Wano Cherry Blossom"></button>
+        <button class="theme-btn t-darkmatter secret-theme" id="theme-darkmatter-btn" onclick="setTheme('darkmatter')" title="Unlocked at LVL 3: Blackbeard Void" style="display:none;background:#7b2cbf;"></button>
+        <button class="theme-btn t-pirateking secret-theme" id="theme-pk-btn" onclick="setTheme('pirateking')" title="Unlocked at LVL 4: Pirate King Gol D. Roger" style="display:none;background:linear-gradient(135deg,#ffd700,#ff0033);"></button>
       </div>
       <a href="https://linkedin.com/in/kurugodusainarendra" target="_blank" class="btn-connect">
         <i class="fab fa-linkedin"></i> Connect
@@ -70,23 +70,23 @@
     </div>
   </nav>
 
-  <!-- CYBER COMMAND CENTER HUD -->
+  <!-- CYBER COMMAND CENTER HUD (ONE PIECE PIRATE THEME) -->
   <div id="cyber-hud">
     <div class="hud-left">
       <div class="player-rank">
         <span class="rank-badge" id="player-lvl">LVL 01</span>
-        <span class="rank-title" id="player-title">DATA NOVICE</span>
+        <span class="rank-title" id="player-title">CABIN BOY</span>
       </div>
-      <div class="xp-bar-container" onclick="openQuestsModal()" title="Click to view Cyber Quests & Achievements">
+      <div class="xp-bar-container" onclick="openQuestsModal()" title="Click to view Grand Line Quests & Bounty Log">
         <div class="xp-bar-fill" id="xp-bar-fill" style="width: 0%;"></div>
-        <span class="xp-text" id="xp-text">0 / 100 XP</span>
+        <span class="xp-text" id="xp-text">฿0 / ฿100M</span>
       </div>
     </div>
     <div class="hud-right">
       <button class="hud-btn" id="btn-quests" onclick="openQuestsModal()">
-        <i class="fas fa-trophy"></i> Quests <span class="badge-count" id="quest-count">0/6</span>
+        <i class="fas fa-skull-crossbones"></i> Bounty Log <span class="badge-count" id="quest-count">0/6</span>
       </button>
-      <button class="hud-btn sfx-btn" id="btn-sfx" onclick="toggleSFX()" title="Toggle SFX Audio Synthesizer">
+      <button class="hud-btn sfx-btn" id="btn-sfx" onclick="toggleSFX()" title="Toggle Den Den Mushi Audio FX">
         <i class="fas fa-volume-up" id="sfx-icon"></i>
       </button>
     </div>
@@ -95,28 +95,28 @@
   <!-- FLOATING XP TOAST NOTIFICATION CONTAINER -->
   <div id="xp-toast-container"></div>
 
-  <!-- INTERACTIVE DATA ANOMALY DETECTOR BANNER -->
+  <!-- INTERACTIVE DEVIL FRUIT ANOMALY BANNER -->
   <div id="anomaly-alert" class="anomaly-alert" onclick="focusAnomaly()">
-    <i class="fas fa-bolt pulse-icon"></i> <span id="anomaly-text">DATA ANOMALY DETECTED! CLICK TO CAPTURE (+50 XP)</span>
+    <i class="fas fa-apple-alt pulse-icon"></i> <span id="anomaly-text">🍖 DEVIL FRUIT SPOTTED! CLICK TO CAPTURE (+฿50M BOUNTY)</span>
   </div>
 
-  <!-- CYBER QUESTS & ACHIEVEMENTS MODAL -->
+  <!-- GRAND LINE QUESTS & WANTED BOUNTY LOG MODAL -->
   <div class="modal-backdrop" id="quests-modal" onclick="closeQuestsModal()">
     <div class="modal-box quests-box" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeQuestsModal()"><i class="fas fa-times"></i></button>
       <div class="quests-header">
-        <h2 class="quests-title"><i class="fas fa-trophy gradient-text"></i> CYBER QUESTS &amp; ACHIEVEMENTS</h2>
-        <p class="quests-subtitle">Earn XP by exploring data analytics labs, running SQL queries, and catching anomalies!</p>
+        <h2 class="quests-title"><i class="fas fa-skull-crossbones gradient-text"></i> GRAND LINE WANTED BOUNTY LOG</h2>
+        <p class="quests-subtitle">Clear pirate quests across the Grand Line to increase your Bounty &amp; unlock Conqueror's Haki!</p>
       </div>
 
       <div class="quests-stats">
         <div class="q-stat-card">
-          <div class="q-stat-val gradient-text" id="q-stat-score">0</div>
-          <div class="q-stat-lbl">TOTAL XP</div>
+          <div class="q-stat-val gradient-text" id="q-stat-score">฿0</div>
+          <div class="q-stat-lbl">TOTAL BOUNTY</div>
         </div>
         <div class="q-stat-card">
           <div class="q-stat-val" id="q-stat-lvl" style="color:var(--accent)">1</div>
-          <div class="q-stat-lbl">ACCESS LEVEL</div>
+          <div class="q-stat-lbl">PIRATE LEVEL</div>
         </div>
         <div class="q-stat-card">
           <div class="q-stat-val" id="q-stat-completed" style="color:var(--green)">0 / 6</div>
