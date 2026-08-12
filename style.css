@@ -1397,8 +1397,13 @@ footer{
   .container, .hero-container { max-width: 1360px; }
 }
 
-/* Tablets & Small Laptops (769px - 1024px) */
+/* Tablets, iPads & Mobile Devices (max-width: 1200px) */
+@media (max-width: 1200px) {
+  #cyber-hud { display: none !important; }
+}
+
 @media (max-width: 1024px) {
+  #cyber-hud { display: none !important; }
   .container, .hero-container { width: 100% !important; max-width: 100% !important; padding: 0 20px !important; }
   .hero-container { grid-template-columns: 1fr !important; text-align: center !important; justify-items: center !important; }
   .hero-left { width: 100% !important; max-width: 100% !important; display: flex !important; flex-direction: column !important; align-items: center !important; }
