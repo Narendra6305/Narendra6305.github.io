@@ -1447,22 +1447,10 @@ footer{
     box-sizing: border-box !important;
   }
   
-  /* Floating Cyber HUD Anchor for Mobile */
+  /* Completely hide floating Cyber HUD bar on mobile so zero screen space is blocked */
   #cyber-hud {
-    position: fixed !important;
-    top: auto !important; bottom: 12px !important;
-    left: 50% !important; right: auto !important;
-    transform: translateX(-50%) !important;
-    width: calc(100% - 24px) !important;
-    max-width: 390px !important;
-    padding: 6px 12px !important;
-    justify-content: space-between !important;
-    border-radius: 16px !important;
-    z-index: 1000 !important;
+    display: none !important;
   }
-  .xp-bar-container { width: 95px !important; }
-  .player-rank { gap: 4px !important; }
-  .rank-title { font-size: 0.65rem !important; }
   
   /* Modals Scaling */
   .modal-box { width: calc(100% - 24px) !important; max-width: 520px !important; padding: 18px !important; margin: 0 auto !important; box-sizing: border-box !important; }
