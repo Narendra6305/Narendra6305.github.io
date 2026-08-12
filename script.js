@@ -58,6 +58,7 @@ function initAll() {
   initBenchmarkChart();
   initSQLSandbox();
   setupTheme();
+  initCyberRPG();
 }
 
 /* ---- THEME ---- */
@@ -129,6 +130,8 @@ function initNeuralCanvas() {
       case 'violet':  _c0 = 'rgba(192,132,252,0.75)'; break;
       case 'emerald': _c0 = 'rgba(0,255,135,0.75)';   break;
       case 'pink':    _c0 = 'rgba(255,0,127,0.75)';    break;
+      case 'red':     _c0 = 'rgba(255,42,95,0.85)';    break;
+      case 'gold':    _c0 = 'rgba(255,215,0,0.85)';    break;
       default:        _c0 = 'rgba(0,242,254,0.75)';
     }
     // Pre-build 10 edge opacity strings
@@ -138,6 +141,8 @@ function initNeuralCanvas() {
         case 'violet':  return `rgba(192,132,252,${a})`;
         case 'emerald': return `rgba(0,255,135,${a})`;
         case 'pink':    return `rgba(255,0,127,${a})`;
+        case 'red':     return `rgba(255,42,95,${a})`;
+        case 'gold':    return `rgba(255,215,0,${a})`;
         default:        return `rgba(0,242,254,${a})`;
       }
     });
@@ -445,7 +450,12 @@ function initCounters() {
 function initRevealSections() {
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        if (e.target.id === 'about') {
+          completeQuest('quest_boot');
+        }
+      }
     });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal-section').forEach(s => obs.observe(s));
@@ -600,6 +610,7 @@ function loadSQL() {
 
 function execSQL() {
   playBlip(780);
+  completeQuest('quest_sql');
   const key = document.getElementById('sql-select').value;
   const q   = SQL_QUERIES[key];
 
@@ -616,6 +627,7 @@ function execSQL() {
 
 /* ---- LAB: CONFUSION MATRIX ---- */
 function runMatrix() {
+  completeQuest('quest_matrix');
   const t = +document.getElementById('thresh-slider').value;
   document.getElementById('sv-thresh').textContent = t.toFixed(2);
 
@@ -757,6 +769,7 @@ const MODAL_DATA = {
 
 function openModal(key) {
   playBlip(680);
+  completeQuest('quest_bento');
   const d   = MODAL_DATA[key];
   const bd  = document.getElementById('modal-body');
   const backdrop = document.getElementById('modal-backdrop');
@@ -777,6 +790,7 @@ function closeModal() { document.getElementById('modal-backdrop').classList.remo
 /* ---- CLI TERMINAL ---- */
 function toggleCLI() {
   playBlip(500);
+  completeQuest('quest_cli');
   document.getElementById('cli-overlay').classList.toggle('open');
   setTimeout(() => document.getElementById('cli-input')?.focus(), 80);
 }
@@ -885,3 +899,291 @@ function starBurst(x, y) {
     ], { duration: 600, easing:'cubic-bezier(0.1,0.8,0.3,1)' }).onfinish = () => p.remove();
   }
 }
+
+/* ============================================================
+   CYBERPUNK RPG GAMIFICATION ENGINE & AUDIO FX SYNTH
+   ============================================================ */
+
+let _sfxMuted = false;
+
+function toggleSFX() {
+  _sfxMuted = !_sfxMuted;
+  const icon = document.getElementById('sfx-icon');
+  if (icon) {
+    icon.className = _sfxMuted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+  }
+  if (!_sfxMuted) playBlip(800, 0.1);
+}
+
+function playQuestSound() {
+  if (_sfxMuted) return;
+  try {
+    const ac = getAC();
+    if (ac.state === 'suspended') ac.resume();
+    const freqs = [523.25, 659.25, 783.99, 1046.50];
+    freqs.forEach((f, i) => {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = 'triangle';
+      o.frequency.value = f;
+      const t = ac.currentTime + i * 0.08;
+      g.gain.setValueAtTime(0.09, t);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
+      o.connect(g); g.connect(ac.destination);
+      o.start(t); o.stop(t + 0.25);
+    });
+  } catch(e) {}
+}
+
+function playZapSound() {
+  if (_sfxMuted) return;
+  try {
+    const ac = getAC();
+    if (ac.state === 'suspended') ac.resume();
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.type = 'sawtooth';
+    o.frequency.setValueAtTime(1400, ac.currentTime);
+    o.frequency.exponentialRampToValueAtTime(150, ac.currentTime + 0.2);
+    g.gain.setValueAtTime(0.12, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.2);
+    o.connect(g); g.connect(ac.destination);
+    o.start(); o.stop(ac.currentTime + 0.2);
+  } catch(e) {}
+}
+
+function playLevelUpSound() {
+  if (_sfxMuted) return;
+  try {
+    const ac = getAC();
+    if (ac.state === 'suspended') ac.resume();
+    const freqs = [440, 554.37, 659.25, 880];
+    freqs.forEach((f, i) => {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = 'sine';
+      o.frequency.value = f;
+      const t = ac.currentTime + i * 0.1;
+      g.gain.setValueAtTime(0.12, t);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+      o.connect(g); g.connect(ac.destination);
+      o.start(t); o.stop(t + 0.35);
+    });
+  } catch(e) {}
+}
+
+const CYBER_QUESTS = [
+  { id: 'quest_boot', name: 'Neural Core Boot', desc: 'Explore down past the Hero command center', xp: 50, icon: 'fa-power-off' },
+  { id: 'quest_bento', name: 'Project Inspector', desc: 'Inspect any high-impact ML project details', xp: 75, icon: 'fa-microchip' },
+  { id: 'quest_sql', name: 'SQL Query Master', desc: 'Run a live data query in the Analytics Lab', xp: 100, icon: 'fa-database' },
+  { id: 'quest_matrix', name: 'Hyperparameter Tuner', desc: 'Adjust the Confusion Matrix threshold slider', xp: 75, icon: 'fa-sliders-h' },
+  { id: 'quest_cli', name: 'Terminal Hacker', desc: 'Open CLI Command Center (Ctrl+K) and run a command', xp: 100, icon: 'fa-terminal' },
+  { id: 'quest_anomaly', name: 'Data Anomaly Hunter', desc: 'Zap and capture 3 floating data anomalies', xp: 150, icon: 'fa-bolt' }
+];
+
+const PLAYER_RANKS = [
+  { minLvl: 1, title: 'DATA NOVICE', reqXp: 100 },
+  { minLvl: 2, title: 'FEATURE ENGINEER', reqXp: 250 },
+  { minLvl: 3, title: 'NEURAL ARCHITECT', reqXp: 500 },
+  { minLvl: 4, title: 'MODEL OVERLORD', reqXp: 800 },
+  { minLvl: 5, title: 'DATA ARCHMAGE', reqXp: 1200 }
+];
+
+let RPG_STATE = {
+  score: 0,
+  level: 1,
+  completedQuests: [],
+  anomaliesCaptured: 0
+};
+
+function initCyberRPG() {
+  loadRPGState();
+  updateHUDUI();
+  renderQuestsList();
+  startAnomalyScheduler();
+}
+
+function loadRPGState() {
+  try {
+    const saved = localStorage.getItem('kn_cyber_rpg');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      RPG_STATE.score = parsed.score || 0;
+      RPG_STATE.level = parsed.level || 1;
+      RPG_STATE.completedQuests = parsed.completedQuests || [];
+      RPG_STATE.anomaliesCaptured = parsed.anomaliesCaptured || 0;
+    }
+  } catch(e) {}
+}
+
+function saveRPGState() {
+  try {
+    localStorage.setItem('kn_cyber_rpg', JSON.stringify(RPG_STATE));
+  } catch(e) {}
+}
+
+function addXP(amount, reason = '') {
+  RPG_STATE.score += amount;
+  
+  let currentRankIdx = 0;
+  for (let i = PLAYER_RANKS.length - 1; i >= 0; i--) {
+    if (RPG_STATE.score >= (i === 0 ? 0 : PLAYER_RANKS[i-1].reqXp)) {
+      currentRankIdx = i;
+      break;
+    }
+  }
+  
+  const newLevel = currentRankIdx + 1;
+  const leveledUp = newLevel > RPG_STATE.level;
+  RPG_STATE.level = newLevel;
+  
+  saveRPGState();
+  updateHUDUI();
+
+  showXPToast(amount, reason);
+
+  if (leveledUp) {
+    playLevelUpSound();
+    const rankObj = PLAYER_RANKS[currentRankIdx];
+    showXPToast(0, `🎉 LEVEL UP! You are now a ${rankObj.title}!`);
+    unlockSecretThemes(newLevel);
+  }
+}
+
+function unlockSecretThemes(lvl) {
+  if (lvl >= 3) {
+    const btn = document.getElementById('theme-red-btn');
+    if (btn) btn.style.display = 'inline-block';
+  }
+  if (lvl >= 4) {
+    const btn = document.getElementById('theme-gold-btn');
+    if (btn) btn.style.display = 'inline-block';
+  }
+}
+
+function completeQuest(questId) {
+  if (RPG_STATE.completedQuests.includes(questId)) return;
+  const q = CYBER_QUESTS.find(item => item.id === questId);
+  if (!q) return;
+
+  RPG_STATE.completedQuests.push(questId);
+  playQuestSound();
+  addXP(q.xp, `Quest Completed: ${q.name}!`);
+  renderQuestsList();
+}
+
+function updateHUDUI() {
+  const lvlEl = document.getElementById('player-lvl');
+  const titleEl = document.getElementById('player-title');
+  const barFill = document.getElementById('xp-bar-fill');
+  const xpText = document.getElementById('xp-text');
+  const questCount = document.getElementById('quest-count');
+  
+  const qStatScore = document.getElementById('q-stat-score');
+  const qStatLvl = document.getElementById('q-stat-lvl');
+  const qStatCompleted = document.getElementById('q-stat-completed');
+
+  const rankIdx = Math.min(RPG_STATE.level - 1, PLAYER_RANKS.length - 1);
+  const currentRank = PLAYER_RANKS[rankIdx];
+  const prevReq = rankIdx === 0 ? 0 : PLAYER_RANKS[rankIdx - 1].reqXp;
+  const nextReq = currentRank.reqXp;
+
+  const currentLevelProgress = RPG_STATE.score - prevReq;
+  const levelMaxNeeded = nextReq - prevReq;
+  const pct = Math.min(100, Math.max(0, Math.floor((currentLevelProgress / levelMaxNeeded) * 100)));
+
+  if (lvlEl) lvlEl.textContent = `LVL 0${RPG_STATE.level}`;
+  if (titleEl) titleEl.textContent = currentRank.title;
+  if (barFill) barFill.style.width = `${pct}%`;
+  if (xpText) xpText.textContent = `${RPG_STATE.score} / ${nextReq} XP`;
+  if (questCount) questCount.textContent = `${RPG_STATE.completedQuests.length}/${CYBER_QUESTS.length}`;
+
+  if (qStatScore) qStatScore.textContent = RPG_STATE.score;
+  if (qStatLvl) qStatLvl.textContent = RPG_STATE.level;
+  if (qStatCompleted) qStatCompleted.textContent = `${RPG_STATE.completedQuests.length} / ${CYBER_QUESTS.length}`;
+
+  unlockSecretThemes(RPG_STATE.level);
+}
+
+function renderQuestsList() {
+  const container = document.getElementById('quests-list');
+  if (!container) return;
+
+  container.innerHTML = CYBER_QUESTS.map(q => {
+    const isDone = RPG_STATE.completedQuests.includes(q.id);
+    return `
+      <div class="quest-item ${isDone ? 'completed' : ''}">
+        <div class="quest-info">
+          <div class="quest-icon">
+            <i class="fas ${isDone ? 'fa-check' : q.icon}"></i>
+          </div>
+          <div>
+            <div class="quest-name">${q.name}</div>
+            <div class="quest-desc">${q.desc}</div>
+          </div>
+        </div>
+        <div class="quest-reward">${isDone ? 'COMPLETED ✓' : '+' + q.xp + ' XP'}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function showXPToast(amount, msg) {
+  const container = document.getElementById('xp-toast-container');
+  if (!container) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'xp-toast';
+  toast.innerHTML = `
+    ${amount > 0 ? `<span class="xp-toast-val">+${amount} XP</span>` : ''}
+    <span>${msg}</span>
+  `;
+
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.remove();
+  }, 4000);
+}
+
+function openQuestsModal() {
+  playBlip(650);
+  const modal = document.getElementById('quests-modal');
+  if (modal) modal.classList.add('open');
+}
+
+function closeQuestsModal() {
+  playBlip(400);
+  const modal = document.getElementById('quests-modal');
+  if (modal) modal.classList.remove('open');
+}
+
+let anomalyActive = false;
+function startAnomalyScheduler() {
+  setInterval(() => {
+    if (!anomalyActive) spawnAnomaly();
+  }, 18000);
+  setTimeout(() => {
+    if (!anomalyActive) spawnAnomaly();
+  }, 4000);
+}
+
+function spawnAnomaly() {
+  anomalyActive = true;
+  const alertEl = document.getElementById('anomaly-alert');
+  if (alertEl) alertEl.classList.add('active');
+  playZapSound();
+}
+
+function focusAnomaly() {
+  if (!anomalyActive) return;
+  anomalyActive = false;
+  const alertEl = document.getElementById('anomaly-alert');
+  if (alertEl) alertEl.classList.remove('active');
+
+  playZapSound();
+  starBurst(innerWidth / 2, innerHeight - 60);
+  RPG_STATE.anomaliesCaptured++;
+  addXP(50, 'Data Anomaly Captured!');
+
+  if (RPG_STATE.anomaliesCaptured >= 3) {
+    completeQuest('quest_anomaly');
+  }
+}
+
