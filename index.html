@@ -14,7 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;900&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="style.css?v=4.0.0">
+  <link rel="stylesheet" href="style.css?v=5.0.0">
 </head>
 <body>
 
@@ -68,17 +68,6 @@
       <span class="brand-dot"></span>☠️ KN<span class="brand-accent">.grandline</span>
     </a>
     <ul class="nav-links" id="nav-links">
-      <li class="mobile-hud-drawer-item">
-        <div class="m-hud-box">
-          <div class="m-hud-rank">
-            <span class="rank-badge" id="m-player-lvl">LVL 01</span>
-            <span class="rank-title" id="m-player-title">CABIN BOY</span>
-          </div>
-          <button class="hud-btn" onclick="openQuestsModal(); toggleNavMenu();">
-            <i class="fas fa-skull-crossbones"></i> Bounty Log <span class="badge-count" id="m-quest-count">0/6</span>
-          </button>
-        </div>
-      </li>
       <li><a href="#hero" class="nav-link active" data-section="hero">Home</a></li>
       <li><a href="#about" class="nav-link" data-section="about">About</a></li>
       <li><a href="#experience" class="nav-link" data-section="experience">Experience</a></li>
@@ -123,27 +112,6 @@
     </div>
   </nav>
 
-  <!-- CYBER COMMAND CENTER HUD (DESKTOP ONLY) -->
-  <div id="cyber-hud" class="desktop-only-hud">
-    <div class="hud-left">
-      <div class="player-rank">
-        <span class="rank-badge" id="player-lvl">LVL 01</span>
-        <span class="rank-title" id="player-title">CABIN BOY</span>
-      </div>
-      <div class="xp-bar-container" onclick="openQuestsModal()" title="Click to view Grand Line Quests & Bounty Log">
-        <div class="xp-bar-fill" id="xp-bar-fill" style="width: 0%;"></div>
-        <span class="xp-text" id="xp-text">฿0 / ฿100M</span>
-      </div>
-    </div>
-    <div class="hud-right">
-      <button class="hud-btn" id="btn-quests" onclick="openQuestsModal()">
-        <i class="fas fa-skull-crossbones"></i> Bounty Log <span class="badge-count" id="quest-count">0/6</span>
-      </button>
-      <button class="hud-btn sfx-btn" id="btn-sfx" onclick="toggleSFX()" title="Toggle Den Den Mushi Audio FX">
-        <i class="fas fa-volume-up" id="sfx-icon"></i>
-      </button>
-    </div>
-  </div>
 
   <!-- FLOATING XP TOAST NOTIFICATION CONTAINER -->
   <div id="xp-toast-container"></div>
