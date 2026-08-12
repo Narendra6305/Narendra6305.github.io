@@ -128,23 +128,29 @@ function initNeuralCanvas() {
     if (theme === _cachedTheme) return;
     _cachedTheme = theme;
     switch(theme) {
-      case 'violet':  _c0 = 'rgba(192,132,252,0.75)'; break;
-      case 'emerald': _c0 = 'rgba(0,255,135,0.75)';   break;
-      case 'pink':    _c0 = 'rgba(255,0,127,0.75)';    break;
-      case 'red':     _c0 = 'rgba(255,42,95,0.85)';    break;
-      case 'gold':    _c0 = 'rgba(255,215,0,0.85)';    break;
-      default:        _c0 = 'rgba(0,242,254,0.75)';
+      case 'violet':     _c0 = 'rgba(192,132,252,0.85)'; break;
+      case 'emerald':    _c0 = 'rgba(0,255,135,0.85)';   break;
+      case 'pink':       _c0 = 'rgba(255,0,127,0.85)';    break;
+      case 'chopper':    _c0 = 'rgba(255,105,180,0.9)';   break;
+      case 'haki':       _c0 = 'rgba(255,0,51,0.9)';      break;
+      case 'nika':       _c0 = 'rgba(255,215,0,0.9)';     break;
+      case 'darkmatter': _c0 = 'rgba(123,44,191,0.85)';   break;
+      case 'pirateking': _c0 = 'rgba(255,215,0,0.9)';     break;
+      default:           _c0 = 'rgba(0,242,254,0.85)';
     }
     // Pre-build 10 edge opacity strings
     _cEdge = Array.from({length:10}, (_,i) => {
       const a = ((i+1)/10 * 0.28).toFixed(2);
       switch(theme) {
-        case 'violet':  return `rgba(192,132,252,${a})`;
-        case 'emerald': return `rgba(0,255,135,${a})`;
-        case 'pink':    return `rgba(255,0,127,${a})`;
-        case 'red':     return `rgba(255,42,95,${a})`;
-        case 'gold':    return `rgba(255,215,0,${a})`;
-        default:        return `rgba(0,242,254,${a})`;
+        case 'violet':     return `rgba(192,132,252,${a})`;
+        case 'emerald':    return `rgba(0,255,135,${a})`;
+        case 'pink':       return `rgba(255,0,127,${a})`;
+        case 'chopper':    return `rgba(255,105,180,${a})`;
+        case 'haki':       return `rgba(255,0,51,${a})`;
+        case 'nika':       return `rgba(255,215,0,${a})`;
+        case 'darkmatter': return `rgba(123,44,191,${a})`;
+        case 'pirateking': return `rgba(255,215,0,${a})`;
+        default:           return `rgba(0,242,254,${a})`;
       }
     });
   }
@@ -349,10 +355,17 @@ function initCustomCursor() {
 
   let mx = innerWidth/2, my = innerHeight/2;
   let rx = mx, ry = my;
+  let lastTrailTime = 0;
 
   window.addEventListener('mousemove', e => {
     mx = e.clientX; my = e.clientY;
     dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+
+    const now = Date.now();
+    if (now - lastTrailTime > 65) {
+      lastTrailTime = now;
+      spawnSakuraPetal(mx, my);
+    }
   });
 
   function animRing() {
@@ -363,10 +376,56 @@ function initCustomCursor() {
   }
   animRing();
 
-  document.querySelectorAll('a,button,.glass-card,.lab-tab,.proj-cta').forEach(el => {
-    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+  document.querySelectorAll('a,button,.glass-card,.lab-tab,.proj-cta,.wanted-poster-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.classList.add('hover');
+      playChopperChime();
+    });
     el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
   });
+}
+
+function spawnSakuraPetal(x, y) {
+  const p = document.createElement('div');
+  p.className = 'sakura-trail';
+  p.textContent = Math.random() > 0.4 ? '🌸' : '✨';
+  Object.assign(p.style, {
+    position: 'fixed',
+    left: (x + (Math.random() - 0.5) * 16) + 'px',
+    top: (y + (Math.random() - 0.5) * 16) + 'px',
+    fontSize: (Math.random() * 0.4 + 0.65) + 'rem',
+    pointerEvents: 'none',
+    zIndex: '8995',
+    opacity: '0.9',
+    userSelect: 'none',
+    filter: 'drop-shadow(0 0 6px #ff69b4)',
+    transform: `rotate(${Math.random() * 360}deg) scale(1)`,
+    transition: 'all 0.8s ease-out'
+  });
+  document.body.appendChild(p);
+
+  requestAnimationFrame(() => {
+    p.style.opacity = '0';
+    p.style.transform = `translate(${(Math.random() - 0.5) * 36}px, ${24 + Math.random() * 30}px) rotate(${Math.random() * 360}deg) scale(0.2)`;
+  });
+
+  setTimeout(() => p.remove(), 800);
+}
+
+function playChopperChime() {
+  if (_sfxMuted) return;
+  try {
+    const ac = getAC();
+    if (ac.state === 'suspended') ac.resume();
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(880, ac.currentTime);
+    o.frequency.exponentialRampToValueAtTime(1320, ac.currentTime + 0.12);
+    g.gain.setValueAtTime(0.06, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.12);
+    o.connect(g); g.connect(ac.destination);
+    o.start(); o.stop(ac.currentTime + 0.12);
+  } catch(e) {}
 }
 
 /* ---- SCROLL PROGRESS ---- */
