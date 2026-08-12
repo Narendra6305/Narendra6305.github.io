@@ -62,13 +62,48 @@ function initAll() {
   initCyberRPG();
 }
 
-/* ---- THEME ---- */
+/* ---- THEME & ONE PIECE AESTHETICS ENGINE ---- */
 function setupTheme() {
-  setTheme('cyan');
+  const savedTheme = localStorage.getItem('kn-theme') || 'cyan';
+  setTheme(savedTheme);
+  document.addEventListener('click', e => {
+    const dropdown = document.getElementById('theme-menu-dropdown');
+    const btn = document.getElementById('btn-theme-menu');
+    if (dropdown && dropdown.classList.contains('open')) {
+      if (!dropdown.contains(e.target) && !btn.contains(e.target)) {
+        dropdown.classList.remove('open');
+      }
+    }
+  });
 }
+
 function setTheme(name) {
-  document.documentElement.setAttribute('data-theme', name || 'cyan');
-  localStorage.setItem('kn-theme', 'cyan');
+  const theme = name || 'cyan';
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('kn-theme', theme);
+  
+  // Highlight active button in dropdown
+  const opts = document.querySelectorAll('.theme-opt-btn');
+  opts.forEach(b => {
+    if (b.getAttribute('data-theme-val') === theme) {
+      b.classList.add('active');
+    } else {
+      b.classList.remove('active');
+    }
+  });
+}
+
+function toggleThemeMenu(e) {
+  if (e) e.stopPropagation();
+  const dropdown = document.getElementById('theme-menu-dropdown');
+  if (dropdown) dropdown.classList.toggle('open');
+}
+
+function selectThemeOpt(themeName) {
+  setTheme(themeName);
+  playBlip(720, 0.1);
+  const dropdown = document.getElementById('theme-menu-dropdown');
+  if (dropdown) dropdown.classList.remove('open');
 }
 
 /* ---- WEB AUDIO SYNTH ---- */
@@ -87,80 +122,226 @@ function playBlip(freq = 600, dur = 0.08) {
   } catch(e) {}
 }
 
-/* ---- GRAND LINE NAUTICAL OCEAN & SKY CANVAS ---- */
+/* ---- GRAND LINE NAUTICAL OCEAN & SKY CANVAS (ONE PIECE ANIME AESTHETICS) ---- */
 function initNeuralCanvas() {
   const canvas = document.getElementById('neural-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d', { alpha: true });
-  let W, H;
+  let W, H, dpr = 1;
   let mx = -9999, my = -9999;
   let waveOffset = 0;
   let compassAngle = 0;
+  let shipX = -80;
   let ripples = [];
   let seaStars = [];
+  let skypieaClouds = [];
+  let sabaodyBubbles = [];
+  let sakuraPetals = [];
+  let hakiLightning = [];
+  let lastLightningTime = 0;
 
   function resize() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
+    dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width  = Math.floor(W * dpr);
+    canvas.height = Math.floor(H * dpr);
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr);
     buildSeaElements();
   }
 
   function buildSeaElements() {
-    seaStars = Array.from({length: 45}, () => ({
+    // 1. Stars
+    const starCount = Math.floor(Math.min(W, 1920) / 35);
+    seaStars = Array.from({length: starCount}, () => ({
       x: Math.random() * W,
       y: Math.random() * H,
-      r: Math.random() * 2 + 0.8,
-      speed: Math.random() * 0.4 + 0.1
+      r: Math.random() * 2 + 0.6,
+      speed: Math.random() * 0.35 + 0.1,
+      twinkle: Math.random() * Math.PI * 2
+    }));
+
+    // 2. Skypiea Sea-Clouds
+    const cloudCount = Math.max(3, Math.floor(W / 400));
+    skypieaClouds = Array.from({length: cloudCount}, (_, i) => ({
+      x: (i * (W / cloudCount)) + Math.random() * 100,
+      y: Math.random() * (H * 0.35) + 30,
+      scale: Math.random() * 0.6 + 0.7,
+      speed: Math.random() * 0.2 + 0.08,
+      alpha: Math.random() * 0.25 + 0.12
+    }));
+
+    // 3. Sabaody Resin Bubbles
+    const bubbleCount = Math.floor(Math.min(W, 1920) / 60);
+    sabaodyBubbles = Array.from({length: bubbleCount}, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 12 + 6,
+      speedY: Math.random() * 0.6 + 0.3,
+      wobble: Math.random() * Math.PI * 2,
+      wobbleSpeed: Math.random() * 0.03 + 0.01,
+      hue: Math.random() * 60 - 30
+    }));
+
+    // 4. Wano Sakura Petals
+    const sakuraCount = Math.floor(Math.min(W, 1920) / 70);
+    sakuraPetals = Array.from({length: sakuraCount}, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      size: Math.random() * 6 + 4,
+      speedY: Math.random() * 0.8 + 0.4,
+      speedX: Math.random() * 0.5 - 0.25,
+      angle: Math.random() * Math.PI * 2,
+      rotSpeed: Math.random() * 0.04 - 0.02
     }));
   }
 
-  let _cachedTheme = '', _waveColor1 = '', _waveColor2 = '', _starColor = '';
+  let _cachedTheme = '', _waveColor1 = '', _waveColor2 = '', _starColor = '', _hakiColor = '', _bubbleColor = '', _cloudColor = '';
   function refreshColors() {
     const theme = document.documentElement.getAttribute('data-theme') || 'cyan';
     if (theme === _cachedTheme) return;
     _cachedTheme = theme;
     switch(theme) {
       case 'chopper':
-        _waveColor1 = 'rgba(255, 105, 180, 0.18)';
-        _waveColor2 = 'rgba(255, 20, 147, 0.12)';
-        _starColor  = 'rgba(255, 182, 193, 0.8)';
+        _waveColor1  = 'rgba(255, 105, 180, 0.22)';
+        _waveColor2  = 'rgba(255, 20, 147, 0.14)';
+        _starColor   = 'rgba(255, 182, 193, 0.85)';
+        _hakiColor   = 'rgba(255, 105, 180, 0.9)';
+        _bubbleColor = 'rgba(255, 192, 203, 0.35)';
+        _cloudColor  = 'rgba(255, 220, 235, 0.18)';
         break;
       case 'haki':
-        _waveColor1 = 'rgba(255, 0, 51, 0.18)';
-        _waveColor2 = 'rgba(153, 0, 17, 0.12)';
-        _starColor  = 'rgba(255, 102, 102, 0.8)';
+        _waveColor1  = 'rgba(255, 0, 51, 0.24)';
+        _waveColor2  = 'rgba(153, 0, 17, 0.16)';
+        _starColor   = 'rgba(255, 102, 102, 0.85)';
+        _hakiColor   = 'rgba(255, 0, 51, 0.95)';
+        _bubbleColor = 'rgba(255, 51, 51, 0.35)';
+        _cloudColor  = 'rgba(255, 150, 150, 0.16)';
         break;
       case 'nika':
-        _waveColor1 = 'rgba(255, 215, 0, 0.18)';
-        _waveColor2 = 'rgba(255, 140, 0, 0.12)';
-        _starColor  = 'rgba(255, 235, 150, 0.8)';
+        _waveColor1  = 'rgba(255, 215, 0, 0.22)';
+        _waveColor2  = 'rgba(255, 140, 0, 0.14)';
+        _starColor   = 'rgba(255, 235, 150, 0.85)';
+        _hakiColor   = 'rgba(255, 215, 0, 0.95)';
+        _bubbleColor = 'rgba(255, 223, 100, 0.35)';
+        _cloudColor  = 'rgba(255, 245, 200, 0.2)';
         break;
       case 'darkmatter':
-        _waveColor1 = 'rgba(123, 44, 191, 0.18)';
-        _waveColor2 = 'rgba(60, 9, 108, 0.12)';
-        _starColor  = 'rgba(200, 150, 255, 0.8)';
+        _waveColor1  = 'rgba(123, 44, 191, 0.22)';
+        _waveColor2  = 'rgba(60, 9, 108, 0.14)';
+        _starColor   = 'rgba(200, 150, 255, 0.85)';
+        _hakiColor   = 'rgba(180, 100, 255, 0.9)';
+        _bubbleColor = 'rgba(190, 140, 255, 0.35)';
+        _cloudColor  = 'rgba(180, 160, 230, 0.16)';
         break;
       case 'pirateking':
-        _waveColor1 = 'rgba(255, 215, 0, 0.2)';
-        _waveColor2 = 'rgba(255, 0, 51, 0.15)';
-        _starColor  = 'rgba(255, 220, 100, 0.85)';
+        _waveColor1  = 'rgba(255, 215, 0, 0.24)';
+        _waveColor2  = 'rgba(255, 0, 51, 0.18)';
+        _starColor   = 'rgba(255, 220, 100, 0.9)';
+        _hakiColor   = 'rgba(255, 51, 51, 0.95)';
+        _bubbleColor = 'rgba(255, 215, 0, 0.4)';
+        _cloudColor  = 'rgba(255, 230, 180, 0.2)';
         break;
-      default:
-        _waveColor1 = 'rgba(0, 242, 254, 0.18)';
-        _waveColor2 = 'rgba(79, 172, 254, 0.12)';
-        _starColor  = 'rgba(180, 240, 255, 0.8)';
+      default: // cyan
+        _waveColor1  = 'rgba(0, 242, 254, 0.2)';
+        _waveColor2  = 'rgba(79, 172, 254, 0.14)';
+        _starColor   = 'rgba(180, 240, 255, 0.85)';
+        _hakiColor   = 'rgba(0, 242, 254, 0.9)';
+        _bubbleColor = 'rgba(0, 242, 254, 0.3)';
+        _cloudColor  = 'rgba(200, 245, 255, 0.16)';
     }
   }
 
   window.addEventListener('mousemove', e => {
     mx = e.clientX; my = e.clientY;
-    if (Math.random() > 0.4) {
-      ripples.push({ x: mx, y: my, r: 4, maxR: 35, alpha: 0.6 });
+    if (Math.random() > 0.45) {
+      ripples.push({ x: mx, y: my, r: 4, maxR: 36, alpha: 0.6 });
     }
   });
   window.addEventListener('mouseleave', () => { mx = -9999; my = -9999; });
   window.addEventListener('resize', resize);
   resize();
+
+  // Helper: Draw Skypiea Cloud
+  function drawCloud(c) {
+    ctx.save();
+    ctx.fillStyle = _cloudColor;
+    ctx.beginPath();
+    const x = c.x, y = c.y, s = c.scale;
+    ctx.arc(x, y, 24 * s, 0, Math.PI * 2);
+    ctx.arc(x + 18 * s, y - 12 * s, 20 * s, 0, Math.PI * 2);
+    ctx.arc(x + 40 * s, y - 6 * s, 22 * s, 0, Math.PI * 2);
+    ctx.arc(x + 58 * s, y, 20 * s, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // Helper: Draw Thousand Sunny Silhouette
+  function drawThousandSunny(sx, sy, pitch) {
+    ctx.save();
+    ctx.translate(sx, sy);
+    ctx.rotate(pitch);
+    ctx.fillStyle = '#050c18';
+    ctx.strokeStyle = _hakiColor;
+    ctx.lineWidth = 1;
+
+    // Ship Hull
+    ctx.beginPath();
+    ctx.moveTo(-32, 0);
+    ctx.bezierCurveTo(-28, 12, 28, 12, 34, -2);
+    ctx.lineTo(26, -10);
+    ctx.lineTo(-26, -10);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    // Thousand Sunny Lion Figurehead Head
+    ctx.beginPath();
+    ctx.arc(36, -8, 7, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+
+    // Main Mast & Sails
+    ctx.beginPath();
+    ctx.moveTo(0, -10); ctx.lineTo(0, -42); // Mast
+    ctx.moveTo(-16, -26); ctx.quadraticCurveTo(0, -32, 16, -26); // Main Sail Top
+    ctx.quadraticCurveTo(8, -14, -16, -14); // Main Sail Bottom
+    ctx.fill();
+    ctx.stroke();
+
+    // Strawhat Jolly Roger Symbol on Main Sail
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(0, -22, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Flag Waving at Top of Mast
+    ctx.fillStyle = _hakiColor;
+    ctx.beginPath();
+    ctx.moveTo(0, -42); ctx.lineTo(12, -45 + Math.sin(waveOffset * 3) * 2); ctx.lineTo(0, -38);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  // Helper: Generate Conqueror's Haki Lightning Arc
+  function spawnHakiLightning() {
+    const startX = Math.random() * W;
+    const startY = Math.random() * (H * 0.4);
+    let pts = [{x: startX, y: startY}];
+    let currX = startX, currY = startY;
+    const segs = Math.floor(Math.random() * 5) + 4;
+    for (let i = 0; i < segs; i++) {
+      currX += (Math.random() - 0.5) * 60;
+      currY += Math.random() * 40 + 15;
+      pts.push({x: currX, y: currY});
+    }
+    hakiLightning.push({ pts: pts, alpha: 1.0, life: 12 });
+  }
 
   const FRAME_MS = 33;
   let lastFrame = 0;
@@ -173,68 +354,161 @@ function initNeuralCanvas() {
     refreshColors();
     ctx.clearRect(0, 0, W, H);
 
-    // 1. Draw Sea Stars & Celestial Orbs
+    // 1. Skypiea Sea-Clouds
+    for (let i = 0; i < skypieaClouds.length; i++) {
+      const c = skypieaClouds[i];
+      c.x += c.speed;
+      if (c.x > W + 120) c.x = -120;
+      drawCloud(c);
+    }
+
+    // 2. Sea Stars & Celestial Twinkle
     ctx.fillStyle = _starColor;
     for (let i = 0; i < seaStars.length; i++) {
       const s = seaStars[i];
       s.y -= s.speed;
+      s.twinkle += 0.05;
       if (s.y < 0) { s.y = H; s.x = Math.random() * W; }
+      const currentRadius = s.r * (0.8 + Math.sin(s.twinkle) * 0.25);
       ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.arc(s.x, s.y, Math.max(0.4, currentRadius), 0, Math.PI * 2);
       ctx.fill();
     }
 
-    // 2. Draw Nautical Compass Rose in Center
-    compassAngle += 0.001;
+    // 3. Nautical Compass Rose in Background
+    compassAngle += 0.0008;
     ctx.save();
     ctx.translate(W / 2, H / 2);
     ctx.rotate(compassAngle);
     ctx.strokeStyle = _waveColor1;
     ctx.lineWidth = 1;
+    const compassR = Math.min(W, H) * 0.28;
     ctx.beginPath();
-    ctx.arc(0, 0, Math.min(W, H) * 0.28, 0, Math.PI * 2);
+    ctx.arc(0, 0, compassR, 0, Math.PI * 2);
     ctx.stroke();
     ctx.beginPath();
-    ctx.moveTo(0, -Math.min(W, H) * 0.32); ctx.lineTo(0, Math.min(W, H) * 0.32);
-    ctx.moveTo(-Math.min(W, H) * 0.32, 0); ctx.lineTo(Math.min(W, H) * 0.32, 0);
+    ctx.moveTo(0, -compassR * 1.15); ctx.lineTo(0, compassR * 1.15);
+    ctx.moveTo(-compassR * 1.15, 0); ctx.lineTo(compassR * 1.15, 0);
     ctx.stroke();
     ctx.restore();
 
-    // 3. Draw Rolling Ocean Waves
+    // 4. Sabaody Archipelago Rising Resin Bubbles
+    for (let i = 0; i < sabaodyBubbles.length; i++) {
+      const b = sabaodyBubbles[i];
+      b.y -= b.speedY;
+      b.wobble += b.wobbleSpeed;
+      const curX = b.x + Math.sin(b.wobble) * 12;
+      if (b.y < -30) { b.y = H + 30; b.x = Math.random() * W; }
+
+      // Mouse proximity interaction
+      const distSq = (mx - curX) * (mx - curX) + (my - b.y) * (my - b.y);
+      const isNear = distSq < 80 * 80;
+      const displayRadius = isNear ? b.r * 1.35 : b.r;
+
+      ctx.save();
+      ctx.strokeStyle = isNear ? _hakiColor : _bubbleColor;
+      ctx.lineWidth = isNear ? 1.8 : 1.2;
+      ctx.fillStyle = isNear ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.03)';
+      ctx.beginPath();
+      ctx.arc(curX, b.y, displayRadius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Bubble Glint Reflection Arc
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(curX - displayRadius * 0.3, b.y - displayRadius * 0.3, displayRadius * 0.45, Math.PI * 1.2, Math.PI * 1.7);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // 5. Wano Sakura Petals
+    ctx.fillStyle = _cachedTheme === 'chopper' ? 'rgba(255, 182, 193, 0.75)' : 'rgba(255, 105, 180, 0.6)';
+    for (let i = 0; i < sakuraPetals.length; i++) {
+      const p = sakuraPetals[i];
+      p.y += p.speedY;
+      p.x += p.speedX + Math.sin(p.angle) * 0.4;
+      p.angle += p.rotSpeed;
+      if (p.y > H + 20) { p.y = -20; p.x = Math.random() * W; }
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.angle);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, p.size, p.size * 0.5, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // 6. Conqueror's Haki Lightning Energy Arcs
+    if (ts - lastLightningTime > 4000 + Math.random() * 5000) {
+      lastLightningTime = ts;
+      if (Math.random() > 0.3) spawnHakiLightning();
+    }
+
+    for (let i = hakiLightning.length - 1; i >= 0; i--) {
+      const l = hakiLightning[i];
+      l.life--;
+      if (l.life <= 0) { hakiLightning.splice(i, 1); continue; }
+      ctx.save();
+      ctx.strokeStyle = _hakiColor;
+      ctx.lineWidth = 2;
+      ctx.shadowColor = _hakiColor;
+      ctx.shadowBlur = 15;
+      ctx.beginPath();
+      ctx.moveTo(l.pts[0].x, l.pts[0].y);
+      for (let p = 1; p < l.pts.length; p++) {
+        ctx.lineTo(l.pts[p].x, l.pts[p].y);
+      }
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // 7. Rolling Ocean Waves & Thousand Sunny Horizon
     waveOffset += 0.025;
+    const waveYBase1 = H - 65;
     ctx.fillStyle = _waveColor1;
     ctx.beginPath();
     ctx.moveTo(0, H);
     for (let x = 0; x <= W; x += 30) {
-      const y = H - 60 + Math.sin(x * 0.008 + waveOffset) * 20;
+      const y = waveYBase1 + Math.sin(x * 0.008 + waveOffset) * 20;
       ctx.lineTo(x, y);
     }
     ctx.lineTo(W, H);
     ctx.closePath();
     ctx.fill();
 
+    // Thousand Sunny Sailing Voyage
+    shipX += 0.45;
+    if (shipX > W + 80) shipX = -80;
+    const currentShipY = waveYBase1 + Math.sin(shipX * 0.008 + waveOffset) * 20 - 4;
+    const currentShipPitch = Math.cos(shipX * 0.008 + waveOffset * 1.2) * 0.08;
+    drawThousandSunny(shipX, currentShipY, currentShipPitch);
+
+    // Front Wave Layer
     ctx.fillStyle = _waveColor2;
     ctx.beginPath();
     ctx.moveTo(0, H);
     for (let x = 0; x <= W; x += 30) {
-      const y = H - 35 + Math.sin(x * 0.012 - waveOffset * 0.8) * 15;
+      const y = H - 38 + Math.sin(x * 0.012 - waveOffset * 0.8) * 15;
       ctx.lineTo(x, y);
     }
     ctx.lineTo(W, H);
     ctx.closePath();
     ctx.fill();
 
-    // 4. Draw Interactive Water Ripples
+    // 8. Interactive Water Ripples
     for (let i = ripples.length - 1; i >= 0; i--) {
       const rp = ripples[i];
-      rp.r += 0.8;
+      rp.r += 0.85;
       rp.alpha -= 0.018;
       if (rp.alpha <= 0 || rp.r >= rp.maxR) {
         ripples.splice(i, 1);
         continue;
       }
-      ctx.strokeStyle = _starColor.replace('0.8', rp.alpha.toFixed(2));
-      ctx.lineWidth = 1.2;
+      ctx.strokeStyle = _hakiColor.replace(/[\d\.]+\)$/, rp.alpha.toFixed(2) + ')');
+      ctx.lineWidth = 1.4;
       ctx.beginPath();
       ctx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
       ctx.stroke();

@@ -276,13 +276,63 @@ body{
 
 .nav-actions { display:flex;align-items:center;gap:14px; }
 
-.theme-switcher { display:flex;gap:5px;align-items:center;background:rgba(255,255,255,0.05);padding:5px 10px;border-radius:99px;border:1px solid var(--border); }
-.theme-btn {
-  width:13px;height:13px;border-radius:50%;border:2px solid transparent;
-  cursor:pointer;transition:transform 0.2s;
+.theme-dropdown-wrapper {
+  position: relative;
 }
-.theme-btn:hover,.theme-btn.active{transform:scale(1.3);border-color:rgba(255,255,255,0.5);}
-.t-cyan{background:#00f2fe;} .t-violet{background:#c084fc;} .t-emerald{background:#00ff87;} .t-pink{background:#ff007f;}
+.theme-toggle-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: 99px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: var(--text); font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: all 0.25s var(--ease);
+}
+.theme-toggle-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(0, 242, 254, 0.08);
+}
+.theme-menu-dropdown {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  width: 220px;
+  background: rgba(7, 13, 26, 0.96);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--r-md);
+  padding: 10px;
+  display: flex; flex-direction: column; gap: 4px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.6), var(--glow);
+  opacity: 0; pointer-events: none; transform: translateY(-8px);
+  transition: all 0.25s var(--ease);
+  z-index: 1010;
+}
+.theme-menu-dropdown.open {
+  opacity: 1; pointer-events: all; transform: translateY(0);
+}
+.theme-menu-title {
+  font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
+  color: var(--text-dim); letter-spacing: 0.5px;
+  padding: 4px 8px 8px; border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+}
+.theme-opt-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px; border-radius: var(--r-sm);
+  background: transparent; border: none;
+  color: var(--text-mid); font-family: var(--font); font-size: 0.84rem; font-weight: 600;
+  cursor: pointer; text-align: left; transition: all 0.2s;
+}
+.theme-opt-btn:hover, .theme-opt-btn.active {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+}
+.theme-opt-btn.active {
+  color: var(--accent); font-weight: 700;
+}
+.theme-color-dot {
+  width: 10px; height: 10px; border-radius: 50%; display: inline-block;
+  box-shadow: 0 0 6px currentColor;
+}
 
 .btn-connect {
   display:flex;align-items:center;gap:7px;
@@ -792,38 +842,120 @@ footer{
 .neural-orb-wrapper { contain:layout style; }
 .float-btn { will-change:transform; }
 
-/* ---- RESPONSIVE ---- */
-@media(max-width:1024px){
-  .hero-container{grid-template-columns:1fr;text-align:center;}
-  .hero-right{margin-top:48px;}
-  .hero-cta{justify-content:center;}
-  .hero-bio{margin:0 auto 30px;}
-  .projects-bento{grid-template-columns:repeat(2,1fr);}
-  .project-hero{grid-column:span 2;}
-  .contact-grid{grid-template-columns:1fr;}
-  .lab-panel.active{grid-template-columns:1fr;}
+/* ---- COMPREHENSIVE RESPONSIVE BREAKPOINTS (ALL SCREENS & TVS) ---- */
+
+/* Touch Devices: Gracefully hide hover cursor ring */
+@media (hover: none) and (pointer: coarse) {
+  #cursor-dot, #cursor-ring { display: none !important; }
 }
-@media(max-width:768px){
-  #navbar{padding:0 20px;}
-  .nav-links{
-    position:fixed;top:68px;left:0;width:100%;
-    background:rgba(4,8,16,0.96);backdrop-filter:blur(20px);
-    flex-direction:column;padding:24px;gap:16px;
-    border-bottom:1px solid var(--border);
-    opacity:0;pointer-events:none;
-    transform:translateY(-10px);transition:all 0.3s;
+
+/* 4K / 8K TV Screens & Large Display Monitors (> 1920px) */
+@media (min-width: 1921px) {
+  html { font-size: 18px; }
+  .container, .hero-container { max-width: 1750px; }
+  .section-pad { padding: 140px 0; }
+  .glass-card { padding: 36px; }
+  .wanted-poster-card { width: 320px; }
+  /* TV Remote Focus Ring Accessibility */
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 4px;
+    box-shadow: var(--glow-strong);
   }
-  .nav-links.open{opacity:1;pointer-events:all;transform:none;}
-  .hamburger{display:block;}
-  .hero-name{font-size:2.8rem;}
-  .section-title{font-size:2rem;}
-  .projects-bento{grid-template-columns:1fr;}
-  .project-hero{grid-column:span 1;}
-  .neural-orb-wrapper{width:240px;height:240px;}
-  .ring-1,.ring-2,.ring-3{display:none;}
-  #cyber-hud { top:auto; bottom:16px; right:50%; transform:translateX(50%); width:92%; max-width:400px; justify-content:space-between; }
-  .xp-bar-container { width:90px; }
-  .wanted-poster-card { width:240px; }
+}
+
+/* Standard Desktop & Ultra-wide Monitors (1025px - 1920px) */
+@media (min-width: 1025px) and (max-width: 1920px) {
+  .container, .hero-container { max-width: 1360px; }
+}
+
+/* Tablets & Small Laptops (769px - 1024px) */
+@media (max-width: 1024px) {
+  .hero-container { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+  .hero-right { margin-top: 40px; display: flex; flex-direction: column; align-items: center; }
+  .hero-cta { justify-content: center; }
+  .hero-bio { margin: 0 auto 30px; }
+  .projects-bento { grid-template-columns: repeat(2, 1fr); }
+  .project-hero { grid-column: span 2; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .lab-panel.active { grid-template-columns: 1fr; }
+  .skills-layout { grid-template-columns: 1fr; }
+  .edu-grid { grid-template-columns: 1fr; }
+  .theme-menu-dropdown { right: 0; left: auto; }
+}
+
+/* Mobile Devices & Foldables (481px - 768px) */
+@media (max-width: 768px) {
+  #navbar { padding: 0 16px; }
+  .nav-brand { font-size: 1.1rem; }
+  .nav-links {
+    position: fixed; top: 68px; left: 0; width: 100%;
+    background: rgba(4, 8, 16, 0.97); backdrop-filter: blur(24px);
+    flex-direction: column; padding: 24px; gap: 18px;
+    border-bottom: 1px solid var(--border-hi);
+    opacity: 0; pointer-events: none;
+    transform: translateY(-12px); transition: all 0.3s var(--ease);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.8);
+  }
+  .nav-links.open { opacity: 1; pointer-events: all; transform: translateY(0); }
+  .hamburger { display: block; }
+  .btn-connect { display: none; } /* Included inside mobile drawer */
+  .theme-btn-lbl { display: none; }
+  
+  .section-pad { padding: 75px 0; }
+  .projects-bento { grid-template-columns: 1fr; }
+  .project-hero { grid-column: span 1; }
+  .neural-orb-wrapper { width: 220px; height: 220px; }
+  .ring-1, .ring-2, .ring-3 { display: none; }
+  
+  /* Floating Cyber HUD for Mobile */
+  #cyber-hud {
+    top: auto; bottom: 14px; right: 50%;
+    transform: translateX(50%);
+    width: 94%; max-width: 420px;
+    padding: 8px 14px;
+    justify-content: space-between;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8), var(--glow);
+  }
+  .xp-bar-container { width: 105px; }
+  .wanted-poster-card { width: 250px; }
+  .about-grid { grid-template-columns: 1fr; }
+  
+  /* Modals scaling */
+  .modal-box { width: 94%; max-width: 540px; padding: 20px; }
+  .quests-box { max-height: 85vh; overflow-y: auto; }
+  .quests-stats { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .q-stat-card { padding: 8px; }
+  .q-stat-val { font-size: 1.2rem; }
+  .q-stat-lbl { font-size: 0.62rem; }
+}
+
+/* Extra Small Phones & Narrow Viewports (320px - 480px) */
+@media (max-width: 480px) {
+  html { font-size: 14px; }
+  .container, .hero-container { width: 95%; padding: 0 10px; }
+  .hero-cta { flex-direction: column; width: 100%; }
+  .btn-primary, .btn-ghost { width: 100%; justify-content: center; }
+  .hero-metrics { flex-direction: column; gap: 16px; width: 100%; }
+  .metric { border: 1px solid var(--border); padding: 12px; border-radius: var(--r-md); background: rgba(255,255,255,0.02); }
+  .wanted-poster-card { width: 100%; max-width: 260px; margin: 0 auto 20px; }
+  
+  .section-badge { font-size: 0.72rem; padding: 4px 12px; }
+  .project-filters { gap: 6px; }
+  .proj-filter-btn { font-size: 0.78rem; padding: 6px 12px; }
+  
+  .lab-tabs { flex-wrap: wrap; }
+  .lab-tab { flex: 1 1 45%; text-align: center; justify-content: center; font-size: 0.8rem; padding: 8px; }
+  .sql-top-bar { flex-direction: column; align-items: stretch; gap: 10px; }
+  .sql-controls { width: 100%; flex-direction: column; }
+  .sql-select { width: 100%; }
+  .btn-execute { width: 100%; justify-content: center; }
+  
+  .cli-overlay { padding: 10px; }
+  .cli-window { height: 90vh; }
+  
+  .modal-box { padding: 16px; }
+  #anomaly-alert { font-size: 0.72rem; padding: 8px 12px; }
 }
 
 /* ---- ONE PIECE WANTED POSTER CARD ---- */
