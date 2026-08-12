@@ -32,6 +32,16 @@
 </head>
 <body>
 
+  <!-- Top Scroll Progress Glow Beam -->
+  <div id="scroll-progress"></div>
+
+  <!-- Custom Neon Dual-Ring Cursor -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-outline"></div>
+
+  <!-- Matrix Rain Canvas Overlay -->
+  <canvas id="matrix-canvas"></canvas>
+
   <!-- Ambient Glow Effects -->
   <div class="ambient-glow-1"></div>
   <div class="ambient-glow-2"></div>
@@ -774,7 +784,7 @@
       </div>
 
       <div class="contact-wrapper">
-        <!-- Contact Form / Direct Info -->
+        <!-- Contact Form Card -->
         <div class="glass-card">
           <h3 style="font-size: 1.4rem; color: var(--cyan); margin-bottom: 16px;"><i class="fas fa-paper-plane"></i> Send a Direct Message</h3>
           
@@ -792,6 +802,14 @@
               <i class="fas fa-paper-plane"></i> Send Message
             </button>
           </form>
+        </div>
+
+        <!-- Direct Contact Info Card -->
+        <div class="glass-card" style="display: flex; flex-direction: column; justify-content: center;">
+          <h3 style="font-size: 1.4rem; color: var(--purple); margin-bottom: 16px;"><i class="fas fa-address-card"></i> Contact Information</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px; line-height: 1.6;">
+            Open to full-time Data Analyst, Data Science Consultant, and Machine Learning Specialist opportunities. Feel free to reach out directly via email, phone, or LinkedIn!
+          </p>
 
           <div class="contact-info-list">
             <div class="contact-item">
@@ -827,46 +845,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Step-by-Step GitHub Free Hosting Guide -->
-        <div class="glass-card guide-box">
-          <h3 style="font-size: 1.3rem; color: var(--cyan); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-            <i class="fab fa-github"></i> Free Hosting on GitHub Pages
-          </h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
-            Follow these simple steps to host this website live for free under your username <strong>Narendra6305</strong>:
-          </p>
-
-          <div class="guide-step">
-            <div class="step-num">1</div>
-            <div>
-              <strong style="color: var(--text-main); font-size: 0.95rem;">Create a GitHub Repository</strong>
-              <div style="font-size: 0.85rem; color: var(--text-muted);">Go to github.com and create a new public repository named:</div>
-              <span class="code-snippet">Narendra6305.github.io</span>
-            </div>
-          </div>
-
-          <div class="guide-step">
-            <div class="step-num">2</div>
-            <div>
-              <strong style="color: var(--text-main); font-size: 0.95rem;">Push Portfolio Files</strong>
-              <div style="font-size: 0.85rem; color: var(--text-muted);">Push `index.html`, `style.css`, and `script.js` to the repository using Git:</div>
-              <span class="code-snippet">git init<br>git add .<br>git commit -m "Initial portfolio release"<br>git remote add origin https://github.com/Narendra6305/Narendra6305.github.io.git<br>git push -u origin main</span>
-            </div>
-          </div>
-
-          <div class="guide-step">
-            <div class="step-num">3</div>
-            <div>
-              <strong style="color: var(--text-main); font-size: 0.95rem;">Enable GitHub Pages</strong>
-              <div style="font-size: 0.85rem; color: var(--text-muted);">In your repository, go to <strong>Settings</strong> &gt; <strong>Pages</strong>, set Branch to <strong>main / root</strong>, and click Save.</div>
-            </div>
-          </div>
-
-          <div style="margin-top: 20px; padding: 12px; background: rgba(0, 255, 135, 0.08); border: 1px solid var(--green); border-radius: var(--radius-sm); text-align: center; color: var(--green); font-size: 0.88rem; font-weight: 600;">
-            🚀 Your site will instantly go live at: https://narendra6305.github.io
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -878,11 +856,50 @@
     </div>
   </footer>
 
+  <!-- FLOATING DEVELOPER CLI TRIGGER BUTTON -->
+  <button class="cli-floating-btn" onclick="toggleCLIModal()">
+    <i class="fas fa-terminal"></i> [ &gt;_ CLI Mode ]
+  </button>
+
+  <!-- FLOATING AUDIO VISUALIZER WIDGET -->
+  <div class="visualizer-widget" id="audio-widget" onclick="toggleAudioPulse()">
+    <div class="eq-bars">
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+    </div>
+    <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-main);" id="audio-status-text">Ambient Pulse</span>
+  </div>
+
   <!-- MODAL FOR PROJECT DETAILS -->
   <div class="modal-overlay" id="project-modal">
     <div class="modal-container">
       <button class="modal-close" onclick="closeProjectModal()">&times;</button>
       <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- RETRO DEVELOPER CLI TERMINAL MODAL -->
+  <div class="cli-modal-overlay" id="cli-modal">
+    <div class="cli-container">
+      <div class="cli-header">
+        <div class="cli-title"><i class="fas fa-terminal"></i> narendra@analytics-terminal:~</div>
+        <div class="cli-dots">
+          <div class="cli-dot dot-red" onclick="toggleCLIModal()" style="cursor: pointer;"></div>
+          <div class="cli-dot dot-yellow"></div>
+          <div class="cli-dot dot-green"></div>
+        </div>
+      </div>
+      <div class="cli-body" id="cli-body">
+        <div>Welcome to Narendra's Developer Terminal v2.5 [Type <span style="color: var(--cyan);">'help'</span> for available commands]</div>
+        <div style="color: var(--text-dim); margin-bottom: 12px;">----------------------------------------------------------------------</div>
+        <div id="cli-output"></div>
+        <div class="cli-input-row">
+          <span class="cli-prompt">narendra@analytics:~$</span>
+          <input type="text" class="cli-input" id="cli-input" autofocus onkeydown="handleCLISubmit(event)">
+        </div>
+      </div>
     </div>
   </div>
 
