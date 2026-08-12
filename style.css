@@ -144,64 +144,80 @@ body{
   transition:width 0.1s linear;
 }
 
-/* ---- TONY TONY CHOPPER CUSTOM CURSOR ---- */
+/* ---- TONY TONY CHOPPER VECTOR CURSOR & LOG POSE COMPASS RING ---- */
 #cursor-dot {
   position: fixed;
-  width: 22px;
-  height: 22px;
+  width: 36px;
+  height: 36px;
   pointer-events: none;
   z-index: 8999;
   transform: translate(-50%, -50%);
-  transition: transform 0.05s ease, font-size 0.2s;
+  transition: transform 0.05s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.15rem;
-  user-select: none;
-  filter: drop-shadow(0 0 10px #ff69b4);
+  filter: drop-shadow(0 0 10px rgba(255, 105, 180, 0.8));
 }
 
-.chopper-hat {
-  display: inline-block;
+.chopper-hat-svg {
   animation: chopperFloat 2s ease-in-out infinite alternate;
+  transform-origin: center;
 }
 
 @keyframes chopperFloat {
-  0% { transform: scale(1) rotate(0deg); }
-  100% { transform: scale(1.18) rotate(12deg); }
+  0% { transform: translateY(0) rotate(0deg) scale(1); }
+  100% { transform: translateY(-3px) rotate(8deg) scale(1.1); }
 }
 
 #cursor-ring {
   position: fixed;
-  width: 38px;
-  height: 38px;
-  border: 2px dashed rgba(255, 105, 180, 0.85);
+  width: 50px;
+  height: 50px;
+  border: 1.5px dashed rgba(255, 105, 180, 0.6);
   border-radius: 50%;
   pointer-events: none;
   z-index: 8998;
   transform: translate(-50%, -50%);
   transition: width 0.25s var(--bounce), height 0.25s var(--bounce), border-color 0.25s, background 0.25s;
-  box-shadow: 0 0 16px rgba(255, 105, 180, 0.4), inset 0 0 10px rgba(255, 105, 180, 0.2);
+  box-shadow: 0 0 20px rgba(255, 105, 180, 0.35), inset 0 0 12px rgba(255, 105, 180, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: logposeSpin 12s linear infinite;
 }
 
-.chopper-aura-cross {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 900;
-  color: #ff69b4;
-  opacity: 0.8;
+@keyframes logposeSpin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
+
+.logpose-compass {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.lp-cardinal {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.lp-n { top: 2px; left: 50%; transform: translateX(-50%); }
+.lp-s { bottom: 2px; left: 50%; transform: translateX(-50%); }
+.lp-e { right: 2px; top: 50%; transform: translateY(-50%); }
+.lp-w { left: 2px; top: 50%; transform: translateY(-50%); }
 
 #cursor-ring.hover {
-  width: 56px;
-  height: 56px;
+  width: 68px;
+  height: 68px;
   border-style: solid;
   border-color: #ff1493;
   background: rgba(255, 20, 147, 0.15);
-  box-shadow: 0 0 30px #ff1493, inset 0 0 15px rgba(255, 20, 147, 0.4);
+  box-shadow: 0 0 35px #ff1493, inset 0 0 20px rgba(255, 20, 147, 0.4);
 }
 @media(max-width:992px){#cursor-dot,#cursor-ring{display:none;}}
 

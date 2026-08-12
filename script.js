@@ -92,76 +92,81 @@ function playBlip(freq = 600, dur = 0.08) {
   } catch(e) {}
 }
 
-/* ---- FULL-PAGE NEURAL NETWORK CANVAS (OPTIMIZED) ---- */
+/* ---- GRAND LINE NAUTICAL OCEAN & SKY CANVAS ---- */
 function initNeuralCanvas() {
   const canvas = document.getElementById('neural-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d', { alpha: true });
-  let W, H, nodes;
-  let mx = -9999, my = -9999; // start off-screen so no repulsion on load
-  const DIST_SQ = 110 * 110;  // connection threshold² (no sqrt needed)
-  const DIST    = 110;
-  const REPEL_SQ = 140 * 140;
-  const REPEL    = 140;
+  let W, H;
+  let mx = -9999, my = -9999;
+  let waveOffset = 0;
+  let compassAngle = 0;
+  let ripples = [];
+  let seaStars = [];
 
   function resize() {
     W = canvas.width  = window.innerWidth;
     H = canvas.height = window.innerHeight;
-    buildNodes();
+    buildSeaElements();
   }
 
-  function buildNodes() {
-    // Cap at 42 nodes — sweet spot for visual quality vs perf
-    const count = Math.min(Math.floor(W / 38), 42);
-    nodes = Array.from({length: count}, () => ({
-      x: Math.random() * W, y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.45,
-      vy: (Math.random() - 0.5) * 0.45,
-      r: Math.random() * 1.8 + 1
+  function buildSeaElements() {
+    seaStars = Array.from({length: 45}, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 2 + 0.8,
+      speed: Math.random() * 0.4 + 0.1
     }));
   }
 
-  // Cache accent color — only recompute on theme change
-  let _cachedTheme = '', _c0 = '', _cEdge = [];
+  let _cachedTheme = '', _waveColor1 = '', _waveColor2 = '', _starColor = '';
   function refreshColors() {
     const theme = document.documentElement.getAttribute('data-theme') || 'cyan';
     if (theme === _cachedTheme) return;
     _cachedTheme = theme;
     switch(theme) {
-      case 'violet':     _c0 = 'rgba(192,132,252,0.85)'; break;
-      case 'emerald':    _c0 = 'rgba(0,255,135,0.85)';   break;
-      case 'pink':       _c0 = 'rgba(255,0,127,0.85)';    break;
-      case 'chopper':    _c0 = 'rgba(255,105,180,0.9)';   break;
-      case 'haki':       _c0 = 'rgba(255,0,51,0.9)';      break;
-      case 'nika':       _c0 = 'rgba(255,215,0,0.9)';     break;
-      case 'darkmatter': _c0 = 'rgba(123,44,191,0.85)';   break;
-      case 'pirateking': _c0 = 'rgba(255,215,0,0.9)';     break;
-      default:           _c0 = 'rgba(0,242,254,0.85)';
+      case 'chopper':
+        _waveColor1 = 'rgba(255, 105, 180, 0.18)';
+        _waveColor2 = 'rgba(255, 20, 147, 0.12)';
+        _starColor  = 'rgba(255, 182, 193, 0.8)';
+        break;
+      case 'haki':
+        _waveColor1 = 'rgba(255, 0, 51, 0.18)';
+        _waveColor2 = 'rgba(153, 0, 17, 0.12)';
+        _starColor  = 'rgba(255, 102, 102, 0.8)';
+        break;
+      case 'nika':
+        _waveColor1 = 'rgba(255, 215, 0, 0.18)';
+        _waveColor2 = 'rgba(255, 140, 0, 0.12)';
+        _starColor  = 'rgba(255, 235, 150, 0.8)';
+        break;
+      case 'darkmatter':
+        _waveColor1 = 'rgba(123, 44, 191, 0.18)';
+        _waveColor2 = 'rgba(60, 9, 108, 0.12)';
+        _starColor  = 'rgba(200, 150, 255, 0.8)';
+        break;
+      case 'pirateking':
+        _waveColor1 = 'rgba(255, 215, 0, 0.2)';
+        _waveColor2 = 'rgba(255, 0, 51, 0.15)';
+        _starColor  = 'rgba(255, 220, 100, 0.85)';
+        break;
+      default:
+        _waveColor1 = 'rgba(0, 242, 254, 0.18)';
+        _waveColor2 = 'rgba(79, 172, 254, 0.12)';
+        _starColor  = 'rgba(180, 240, 255, 0.8)';
     }
-    // Pre-build 10 edge opacity strings
-    _cEdge = Array.from({length:10}, (_,i) => {
-      const a = ((i+1)/10 * 0.28).toFixed(2);
-      switch(theme) {
-        case 'violet':     return `rgba(192,132,252,${a})`;
-        case 'emerald':    return `rgba(0,255,135,${a})`;
-        case 'pink':       return `rgba(255,0,127,${a})`;
-        case 'chopper':    return `rgba(255,105,180,${a})`;
-        case 'haki':       return `rgba(255,0,51,${a})`;
-        case 'nika':       return `rgba(255,215,0,${a})`;
-        case 'darkmatter': return `rgba(123,44,191,${a})`;
-        case 'pirateking': return `rgba(255,215,0,${a})`;
-        default:           return `rgba(0,242,254,${a})`;
-      }
-    });
   }
-  refreshColors();
 
-  window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  window.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    if (Math.random() > 0.4) {
+      ripples.push({ x: mx, y: my, r: 4, maxR: 35, alpha: 0.6 });
+    }
+  });
   window.addEventListener('mouseleave', () => { mx = -9999; my = -9999; });
   window.addEventListener('resize', resize);
   resize();
 
-  // Throttle to ~30fps using timestamp
   const FRAME_MS = 33;
   let lastFrame = 0;
 
@@ -173,58 +178,72 @@ function initNeuralCanvas() {
     refreshColors();
     ctx.clearRect(0, 0, W, H);
 
-    // Update positions
-    for (let i = 0; i < nodes.length; i++) {
-      const n = nodes[i];
-      const dx = n.x - mx, dy = n.y - my;
-      const dSq = dx*dx + dy*dy;
-      if (dSq < REPEL_SQ && dSq > 0) {
-        const d = Math.sqrt(dSq);
-        const f = (REPEL - d) / REPEL * 0.12;
-        n.vx += (dx / d) * f;
-        n.vy += (dy / d) * f;
-      }
-      // Dampen & cap
-      n.vx *= 0.98; n.vy *= 0.98;
-      const spd = n.vx*n.vx + n.vy*n.vy;
-      if (spd > 2.5) { const s = Math.sqrt(spd); n.vx = n.vx/s*1.58; n.vy = n.vy/s*1.58; }
-      n.x += n.vx; n.y += n.vy;
-      if (n.x < 0 || n.x > W) { n.vx *= -1; n.x = n.x < 0 ? 0 : W; }
-      if (n.y < 0 || n.y > H) { n.vy *= -1; n.y = n.y < 0 ? 0 : H; }
+    // 1. Draw Sea Stars & Celestial Orbs
+    ctx.fillStyle = _starColor;
+    for (let i = 0; i < seaStars.length; i++) {
+      const s = seaStars[i];
+      s.y -= s.speed;
+      if (s.y < 0) { s.y = H; s.x = Math.random() * W; }
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
     }
 
-    // Batch all edges into grouped paths by opacity bucket (avoids per-edge stroke calls)
-    const edgePaths = Array.from({length:10}, () => new Path2D());
-    let hasEdge = false;
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const dx = nodes[i].x - nodes[j].x;
-        const dy = nodes[i].y - nodes[j].y;
-        const dSq = dx*dx + dy*dy;
-        if (dSq < DIST_SQ) {
-          const bucket = Math.floor((1 - Math.sqrt(dSq)/DIST) * 9);
-          edgePaths[bucket].moveTo(nodes[i].x, nodes[i].y);
-          edgePaths[bucket].lineTo(nodes[j].x, nodes[j].y);
-          hasEdge = true;
-        }
-      }
-    }
-    if (hasEdge) {
-      ctx.lineWidth = 1;
-      for (let b = 0; b < 10; b++) {
-        ctx.strokeStyle = _cEdge[b];
-        ctx.stroke(edgePaths[b]);
-      }
-    }
-
-    // Draw all nodes in ONE path batch — no shadowBlur
-    ctx.fillStyle = _c0;
+    // 2. Draw Nautical Compass Rose in Center
+    compassAngle += 0.001;
+    ctx.save();
+    ctx.translate(W / 2, H / 2);
+    ctx.rotate(compassAngle);
+    ctx.strokeStyle = _waveColor1;
+    ctx.lineWidth = 1;
     ctx.beginPath();
-    for (let i = 0; i < nodes.length; i++) {
-      ctx.moveTo(nodes[i].x + nodes[i].r, nodes[i].y);
-      ctx.arc(nodes[i].x, nodes[i].y, nodes[i].r, 0, 6.2832);
+    ctx.arc(0, 0, Math.min(W, H) * 0.28, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, -Math.min(W, H) * 0.32); ctx.lineTo(0, Math.min(W, H) * 0.32);
+    ctx.moveTo(-Math.min(W, H) * 0.32, 0); ctx.lineTo(Math.min(W, H) * 0.32, 0);
+    ctx.stroke();
+    ctx.restore();
+
+    // 3. Draw Rolling Ocean Waves
+    waveOffset += 0.025;
+    ctx.fillStyle = _waveColor1;
+    ctx.beginPath();
+    ctx.moveTo(0, H);
+    for (let x = 0; x <= W; x += 30) {
+      const y = H - 60 + Math.sin(x * 0.008 + waveOffset) * 20;
+      ctx.lineTo(x, y);
     }
+    ctx.lineTo(W, H);
+    ctx.closePath();
     ctx.fill();
+
+    ctx.fillStyle = _waveColor2;
+    ctx.beginPath();
+    ctx.moveTo(0, H);
+    for (let x = 0; x <= W; x += 30) {
+      const y = H - 35 + Math.sin(x * 0.012 - waveOffset * 0.8) * 15;
+      ctx.lineTo(x, y);
+    }
+    ctx.lineTo(W, H);
+    ctx.closePath();
+    ctx.fill();
+
+    // 4. Draw Interactive Water Ripples
+    for (let i = ripples.length - 1; i >= 0; i--) {
+      const rp = ripples[i];
+      rp.r += 0.8;
+      rp.alpha -= 0.018;
+      if (rp.alpha <= 0 || rp.r >= rp.maxR) {
+        ripples.splice(i, 1);
+        continue;
+      }
+      ctx.strokeStyle = _starColor.replace('0.8', rp.alpha.toFixed(2));
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
+      ctx.stroke();
+    }
   }
   requestAnimationFrame(draw);
 }
