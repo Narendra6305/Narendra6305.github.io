@@ -90,12 +90,17 @@ function playBlip(freq = 600, dur = 0.08) {
   } catch(e) {}
 }
 
-/* ---- FULL-PAGE NEURAL NETWORK CANVAS ---- */
+/* ---- FULL-PAGE NEURAL NETWORK CANVAS (OPTIMIZED) ---- */
 function initNeuralCanvas() {
   const canvas = document.getElementById('neural-canvas');
   if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let W, H, nodes, mx = 0, my = 0;
+  const ctx = canvas.getContext('2d', { alpha: true });
+  let W, H, nodes;
+  let mx = -9999, my = -9999; // start off-screen so no repulsion on load
+  const DIST_SQ = 110 * 110;  // connection threshold² (no sqrt needed)
+  const DIST    = 110;
+  const REPEL_SQ = 140 * 140;
+  const REPEL    = 140;
 
   function resize() {
     W = canvas.width  = window.innerWidth;
@@ -104,188 +109,230 @@ function initNeuralCanvas() {
   }
 
   function buildNodes() {
-    const count = Math.min(Math.floor(W / 20), 90);
+    // Cap at 42 nodes — sweet spot for visual quality vs perf
+    const count = Math.min(Math.floor(W / 38), 42);
     nodes = Array.from({length: count}, () => ({
       x: Math.random() * W, y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.55,
-      vy: (Math.random() - 0.5) * 0.55,
-      r: Math.random() * 2.2 + 1,
-      hue: Math.random() > 0.6 ? 0 : Math.random() > 0.5 ? 270 : 190
+      vx: (Math.random() - 0.5) * 0.45,
+      vy: (Math.random() - 0.5) * 0.45,
+      r: Math.random() * 1.8 + 1
     }));
   }
 
-  // Get accent color from CSS
-  function accentColor(alpha) {
+  // Cache accent color — only recompute on theme change
+  let _cachedTheme = '', _c0 = '', _cEdge = [];
+  function refreshColors() {
     const theme = document.documentElement.getAttribute('data-theme') || 'cyan';
+    if (theme === _cachedTheme) return;
+    _cachedTheme = theme;
     switch(theme) {
-      case 'violet':  return `rgba(192,132,252,${alpha})`;
-      case 'emerald': return `rgba(0,255,135,${alpha})`;
-      case 'pink':    return `rgba(255,0,127,${alpha})`;
-      default:        return `rgba(0,242,254,${alpha})`;
+      case 'violet':  _c0 = 'rgba(192,132,252,0.75)'; break;
+      case 'emerald': _c0 = 'rgba(0,255,135,0.75)';   break;
+      case 'pink':    _c0 = 'rgba(255,0,127,0.75)';    break;
+      default:        _c0 = 'rgba(0,242,254,0.75)';
     }
+    // Pre-build 10 edge opacity strings
+    _cEdge = Array.from({length:10}, (_,i) => {
+      const a = ((i+1)/10 * 0.28).toFixed(2);
+      switch(theme) {
+        case 'violet':  return `rgba(192,132,252,${a})`;
+        case 'emerald': return `rgba(0,255,135,${a})`;
+        case 'pink':    return `rgba(255,0,127,${a})`;
+        default:        return `rgba(0,242,254,${a})`;
+      }
+    });
   }
+  refreshColors();
 
   window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  window.addEventListener('mouseleave', () => { mx = -9999; my = -9999; });
   window.addEventListener('resize', resize);
   resize();
 
-  let frameId;
-  function draw() {
+  // Throttle to ~30fps using timestamp
+  const FRAME_MS = 33;
+  let lastFrame = 0;
+
+  function draw(ts) {
+    requestAnimationFrame(draw);
+    if (ts - lastFrame < FRAME_MS) return;
+    lastFrame = ts;
+
+    refreshColors();
     ctx.clearRect(0, 0, W, H);
 
-    nodes.forEach(n => {
-      // Repel from mouse
+    // Update positions
+    for (let i = 0; i < nodes.length; i++) {
+      const n = nodes[i];
       const dx = n.x - mx, dy = n.y - my;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      if (dist < 160) {
-        const f = (160 - dist) / 160 * 1.8;
-        n.vx += (dx / dist) * f * 0.06;
-        n.vy += (dy / dist) * f * 0.06;
+      const dSq = dx*dx + dy*dy;
+      if (dSq < REPEL_SQ && dSq > 0) {
+        const d = Math.sqrt(dSq);
+        const f = (REPEL - d) / REPEL * 0.12;
+        n.vx += (dx / d) * f;
+        n.vy += (dy / d) * f;
       }
-      // Speed limit
-      const spd = Math.sqrt(n.vx*n.vx + n.vy*n.vy);
-      if (spd > 1.8) { n.vx *= 1.8/spd; n.vy *= 1.8/spd; }
-
+      // Dampen & cap
+      n.vx *= 0.98; n.vy *= 0.98;
+      const spd = n.vx*n.vx + n.vy*n.vy;
+      if (spd > 2.5) { const s = Math.sqrt(spd); n.vx = n.vx/s*1.58; n.vy = n.vy/s*1.58; }
       n.x += n.vx; n.y += n.vy;
-      if (n.x < 0 || n.x > W) n.vx *= -1;
-      if (n.y < 0 || n.y > H) n.vy *= -1;
-    });
+      if (n.x < 0 || n.x > W) { n.vx *= -1; n.x = n.x < 0 ? 0 : W; }
+      if (n.y < 0 || n.y > H) { n.vy *= -1; n.y = n.y < 0 ? 0 : H; }
+    }
 
-    // Draw edges
+    // Batch all edges into grouped paths by opacity bucket (avoids per-edge stroke calls)
+    const edgePaths = Array.from({length:10}, () => new Path2D());
+    let hasEdge = false;
     for (let i = 0; i < nodes.length; i++) {
       for (let j = i + 1; j < nodes.length; j++) {
         const dx = nodes[i].x - nodes[j].x;
         const dy = nodes[i].y - nodes[j].y;
-        const dist = Math.sqrt(dx*dx + dy*dy);
-        if (dist < 130) {
-          const a = (1 - dist / 130) * 0.3;
-          ctx.beginPath();
-          ctx.moveTo(nodes[i].x, nodes[i].y);
-          ctx.lineTo(nodes[j].x, nodes[j].y);
-          ctx.strokeStyle = accentColor(a);
-          ctx.lineWidth = 1;
-          ctx.stroke();
+        const dSq = dx*dx + dy*dy;
+        if (dSq < DIST_SQ) {
+          const bucket = Math.floor((1 - Math.sqrt(dSq)/DIST) * 9);
+          edgePaths[bucket].moveTo(nodes[i].x, nodes[i].y);
+          edgePaths[bucket].lineTo(nodes[j].x, nodes[j].y);
+          hasEdge = true;
         }
       }
     }
+    if (hasEdge) {
+      ctx.lineWidth = 1;
+      for (let b = 0; b < 10; b++) {
+        ctx.strokeStyle = _cEdge[b];
+        ctx.stroke(edgePaths[b]);
+      }
+    }
 
-    // Draw nodes
-    nodes.forEach(n => {
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-      ctx.fillStyle = accentColor(0.7);
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = accentColor(1);
-      ctx.fill();
-      ctx.shadowBlur = 0;
-    });
-
-    frameId = requestAnimationFrame(draw);
+    // Draw all nodes in ONE path batch — no shadowBlur
+    ctx.fillStyle = _c0;
+    ctx.beginPath();
+    for (let i = 0; i < nodes.length; i++) {
+      ctx.moveTo(nodes[i].x + nodes[i].r, nodes[i].y);
+      ctx.arc(nodes[i].x, nodes[i].y, nodes[i].r, 0, 6.2832);
+    }
+    ctx.fill();
   }
-  draw();
+  requestAnimationFrame(draw);
 }
 
-/* ---- HERO ORB CANVAS (3D SPHERE) ---- */
+/* ---- HERO ORB CANVAS (3D SPHERE — OPTIMIZED) ---- */
 function initOrbCanvas() {
   const canvas = document.getElementById('orb-canvas');
   if (!canvas) return;
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', { alpha: true });
   const W = canvas.width  = 340;
   const H = canvas.height = 340;
   const cx = W / 2, cy = H / 2, R = 110;
-  const nodeCount = 80;
+  const NODE_COUNT = 48; // down from 80 — still looks great
+  const EDGE_DIST  = 55; // connection threshold in projected space
+  const EDGE_DIST_SQ = EDGE_DIST * EDGE_DIST;
 
-  let nodes = Array.from({length: nodeCount}, () => {
-    const theta = Math.random() * Math.PI * 2;
+  // Spherical coordinates stored flat for in-place rotation (no allocations)
+  const ox = new Float32Array(NODE_COUNT);
+  const oy = new Float32Array(NODE_COUNT);
+  const oz = new Float32Array(NODE_COUNT);
+  const px = new Float32Array(NODE_COUNT); // projected
+  const py = new Float32Array(NODE_COUNT);
+  const pz = new Float32Array(NODE_COUNT);
+
+  for (let i = 0; i < NODE_COUNT; i++) {
+    const theta = Math.random() * 6.2832;
     const phi   = Math.acos(2 * Math.random() - 1);
-    return {
-      x: R * Math.sin(phi) * Math.cos(theta),
-      y: R * Math.sin(phi) * Math.sin(theta),
-      z: R * Math.cos(phi)
-    };
-  });
+    ox[i] = R * Math.sin(phi) * Math.cos(theta);
+    oy[i] = R * Math.sin(phi) * Math.sin(theta);
+    oz[i] = R * Math.cos(phi);
+  }
 
-  let ax = 0, ay = 0;
-  let mx = 0, my = 0;
-
+  let ax = 0, ay = 0, mx = 0, my = 0;
   document.querySelector('.neural-orb-wrapper')?.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect();
     mx = (e.clientX - rect.left - W/2) / W;
     my = (e.clientY - rect.top  - H/2) / H;
   });
 
-  function accentColor(alpha) {
-    const theme = document.documentElement.getAttribute('data-theme') || 'cyan';
-    switch(theme) {
-      case 'violet':  return `rgba(192,132,252,${alpha})`;
-      case 'emerald': return `rgba(0,255,135,${alpha})`;
-      case 'pink':    return `rgba(255,0,127,${alpha})`;
-      default:        return `rgba(0,242,254,${alpha})`;
+  let _ct = '', _cfill = '', _cedge = '';
+  function refreshColors() {
+    const t = document.documentElement.getAttribute('data-theme') || 'cyan';
+    if (t === _ct) return; _ct = t;
+    switch(t) {
+      case 'violet':  _cfill = 'rgba(192,132,252,0.85)'; _cedge = 'rgba(192,132,252,'; break;
+      case 'emerald': _cfill = 'rgba(0,255,135,0.85)';   _cedge = 'rgba(0,255,135,';   break;
+      case 'pink':    _cfill = 'rgba(255,0,127,0.85)';    _cedge = 'rgba(255,0,127,';    break;
+      default:        _cfill = 'rgba(0,242,254,0.85)';    _cedge = 'rgba(0,242,254,';
+    }
+  }
+  refreshColors();
+
+  // In-place rotate to avoid array allocations every frame
+  function applyRotations() {
+    const cX = Math.cos(ax), sX = Math.sin(ax);
+    const cY = Math.cos(ay), sY = Math.sin(ay);
+    for (let i = 0; i < NODE_COUNT; i++) {
+      // RotateX
+      let ry = oy[i]*cX - oz[i]*sX;
+      let rz = oy[i]*sX + oz[i]*cX;
+      // RotateY
+      let rx = ox[i]*cY + rz*sY;
+      rz     = -ox[i]*sY + rz*cY;
+      // Project
+      const sc = 250 / (250 + rz);
+      px[i] = cx + rx * sc;
+      py[i] = cy + ry * sc;
+      pz[i] = rz;
     }
   }
 
-  function rotateX(nodes, angle) {
-    const c = Math.cos(angle), s = Math.sin(angle);
-    return nodes.map(n => ({ x: n.x, y: n.y*c - n.z*s, z: n.y*s + n.z*c }));
-  }
-  function rotateY(nodes, angle) {
-    const c = Math.cos(angle), s = Math.sin(angle);
-    return nodes.map(n => ({ x: n.x*c + n.z*s, y: n.y, z: -n.x*s + n.z*c }));
-  }
+  // Throttle to 30fps
+  const FRAME_MS = 33;
+  let lastT = 0;
 
-  function frame() {
-    ax += 0.006 + my * 0.003;
-    ay += 0.009 + mx * 0.003;
+  function frame(ts) {
+    requestAnimationFrame(frame);
+    if (ts - lastT < FRAME_MS) return;
+    lastT = ts;
 
-    let rotated = rotateX(nodes, ax);
-    rotated = rotateY(rotated, ay);
-
-    const projected = rotated.map(n => {
-      const scale = 260 / (260 + n.z);
-      return { px: cx + n.x * scale, py: cy + n.y * scale, z: n.z, s: scale };
-    });
+    refreshColors();
+    ax += 0.005 + my * 0.002;
+    ay += 0.008 + mx * 0.002;
+    applyRotations();
 
     ctx.clearRect(0, 0, W, H);
 
-    // Central core glow
-    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 90);
-    grad.addColorStop(0, accentColor(0.12));
-    grad.addColorStop(1, 'transparent');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, W, H);
-
-    // Edges
-    for (let i = 0; i < projected.length; i++) {
-      for (let j = i + 1; j < projected.length; j++) {
-        const dx = projected[i].px - projected[j].px;
-        const dy = projected[i].py - projected[j].py;
-        const d  = Math.sqrt(dx*dx + dy*dy);
-        if (d < 60) {
-          ctx.beginPath();
-          ctx.moveTo(projected[i].px, projected[i].py);
-          ctx.lineTo(projected[j].px, projected[j].py);
-          ctx.strokeStyle = accentColor((1 - d/60) * 0.45);
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
+    // Batch edges — one stroke call per render
+    ctx.lineWidth = 0.7;
+    ctx.beginPath();
+    let hasEdge = false;
+    for (let i = 0; i < NODE_COUNT; i++) {
+      for (let j = i+1; j < NODE_COUNT; j++) {
+        const dx = px[i]-px[j], dy = py[i]-py[j];
+        if (dx*dx + dy*dy < EDGE_DIST_SQ) {
+          ctx.moveTo(px[i], py[i]);
+          ctx.lineTo(px[j], py[j]);
+          hasEdge = true;
         }
       }
     }
+    if (hasEdge) {
+      ctx.strokeStyle = _cedge + '0.3)';
+      ctx.stroke();
+    }
 
-    // Nodes
-    projected.forEach(p => {
-      const brightness = (p.z + R) / (2 * R);
-      ctx.beginPath();
-      ctx.arc(p.px, p.py, 2.2 * p.s, 0, Math.PI * 2);
-      ctx.fillStyle = accentColor(0.3 + brightness * 0.7);
-      ctx.shadowBlur = 8 * brightness;
-      ctx.shadowColor = accentColor(1);
-      ctx.fill();
-      ctx.shadowBlur = 0;
-    });
-
-    requestAnimationFrame(frame);
+    // Draw all nodes in ONE batch — no per-node shadowBlur
+    ctx.fillStyle = _cfill;
+    ctx.beginPath();
+    for (let i = 0; i < NODE_COUNT; i++) {
+      const brightness = (pz[i] + R) / (2 * R);
+      const r = 1.8 * (250 / (250 + pz[i]));
+      if (brightness > 0.2) { // skip rear-facing nodes
+        ctx.moveTo(px[i] + r, py[i]);
+        ctx.arc(px[i], py[i], r, 0, 6.2832);
+      }
+    }
+    ctx.fill();
   }
-  frame();
+  requestAnimationFrame(frame);
 }
 
 /* ---- CUSTOM CURSOR ---- */
