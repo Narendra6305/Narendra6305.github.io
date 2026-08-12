@@ -64,16 +64,11 @@ function initAll() {
 
 /* ---- THEME ---- */
 function setupTheme() {
-  const saved = localStorage.getItem('kn-theme') || 'cyan';
-  setTheme(saved);
+  setTheme('cyan');
 }
 function setTheme(name) {
-  document.documentElement.setAttribute('data-theme', name);
-  localStorage.setItem('kn-theme', name);
-  document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-  const btn = document.querySelector(`.t-${name}`);
-  if (btn) btn.classList.add('active');
-  playBlip(440);
+  document.documentElement.setAttribute('data-theme', name || 'cyan');
+  localStorage.setItem('kn-theme', 'cyan');
 }
 
 /* ---- WEB AUDIO SYNTH ---- */
