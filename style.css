@@ -1000,22 +1000,28 @@ footer{
   color: #fff;
 }
 
-/* ---- CYBERPUNK HUD BAR ---- */
-#cyber-hud {
-  position: fixed;
-  top: 76px;
-  right: 24px;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  background: rgba(8, 15, 32, 0.88);
-  border: 1px solid var(--border-hi);
-  border-radius: 99px;
-  padding: 6px 16px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4), var(--glow);
-  backdrop-filter: blur(12px);
-  transition: all 0.3s var(--ease);
+/* ---- CYBERPUNK HUD BAR (DESKTOP ONLY — HIDDEN BY DEFAULT) ---- */
+#cyber-hud, .desktop-only-hud {
+  display: none !important;
+}
+
+@media (min-width: 1201px) {
+  #cyber-hud, .desktop-only-hud {
+    display: flex !important;
+    position: fixed;
+    top: 76px;
+    right: 24px;
+    z-index: 1000;
+    align-items: center;
+    gap: 16px;
+    background: rgba(8, 15, 32, 0.88);
+    border: 1px solid var(--border-hi);
+    border-radius: 99px;
+    padding: 6px 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4), var(--glow);
+    backdrop-filter: blur(12px);
+    transition: all 0.3s var(--ease);
+  }
 }
 #cyber-hud:hover {
   border-color: var(--accent);
