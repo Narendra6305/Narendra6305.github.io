@@ -606,48 +606,58 @@
   <section id="skills" class="section-pad reveal-section">
     <div class="container">
       <div class="section-badge"><i class="fas fa-khanda"></i> ⚔️ LOG POSE ISLAND V · HAKI &amp; SKILL TREE</div>
-      <h2 class="section-title">Skills &amp; <span class="gradient-text">Expertise</span></h2>
+      <h2 class="section-title">Haki Mastery &amp; <span class="gradient-text">Skill Tree</span></h2>
 
-      <div class="skills-layout">
-        <div class="glass-card glow-hover">
-          <h4 class="skills-cat-title"><i class="fas fa-brain"></i> Machine Learning & AI</h4>
-          <div class="skill-list">
-            <div class="skill-row"><span>Python (Scikit-Learn, Pandas)</span><span class="skill-pct">92%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="92%"></div></div>
-            <div class="skill-row"><span>Random Forest & Ensemble Models</span><span class="skill-pct">90%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="90%"></div></div>
-            <div class="skill-row"><span>ANN / Neural Networks</span><span class="skill-pct">85%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="85%"></div></div>
-            <div class="skill-row"><span>SVM & Regression Models</span><span class="skill-pct">88%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="88%"></div></div>
+      <div class="skills-wrapper">
+        <!-- RADAR CHART BOX -->
+        <div class="glass-card skills-radar-card glow-hover" style="margin-bottom:24px;">
+          <h4 class="skills-cat-title"><i class="fas fa-compass"></i> Haki Mastery Hexagon Radar</h4>
+          <div style="height: 300px; position: relative;">
+            <canvas id="skillsRadarChart"></canvas>
           </div>
         </div>
 
-        <div class="glass-card glow-hover">
-          <h4 class="skills-cat-title"><i class="fas fa-database"></i> Data Engineering & SQL</h4>
-          <div class="skill-list">
-            <div class="skill-row"><span>SQL / MySQL (Advanced Queries)</span><span class="skill-pct">90%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="90%"></div></div>
-            <div class="skill-row"><span>ETL Pipelines & Data Cleaning</span><span class="skill-pct">87%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="87%"></div></div>
-            <div class="skill-row"><span>AWS Cloud Infrastructure</span><span class="skill-pct">82%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="82%"></div></div>
-            <div class="skill-row"><span>Statistical Analysis & EDA</span><span class="skill-pct">91%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="91%"></div></div>
+        <div class="skills-layout">
+          <div class="glass-card glow-hover">
+            <h4 class="skills-cat-title"><i class="fas fa-khanda" style="color:#ff0033"></i> ⚔️ Conqueror's Haki (Machine Learning &amp; AI)</h4>
+            <div class="skill-list">
+              <div class="skill-row"><span>Python (Scikit-Learn, Pandas)</span><span class="skill-pct">92%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="92%"></div></div>
+              <div class="skill-row"><span>Random Forest &amp; Ensemble Models</span><span class="skill-pct">90%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="90%"></div></div>
+              <div class="skill-row"><span>ANN / Neural Networks</span><span class="skill-pct">85%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="85%"></div></div>
+              <div class="skill-row"><span>SVM &amp; Regression Models</span><span class="skill-pct">88%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="88%"></div></div>
+            </div>
           </div>
-        </div>
 
-        <div class="glass-card glow-hover">
-          <h4 class="skills-cat-title"><i class="fas fa-chart-pie"></i> Visualization & BI</h4>
-          <div class="skill-list">
-            <div class="skill-row"><span>Power BI (DAX, Reports)</span><span class="skill-pct">88%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="88%"></div></div>
-            <div class="skill-row"><span>Tableau Desktop</span><span class="skill-pct">85%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="85%"></div></div>
-            <div class="skill-row"><span>Matplotlib & Seaborn</span><span class="skill-pct">89%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="89%"></div></div>
-            <div class="skill-row"><span>Excel & Advanced Analytics</span><span class="skill-pct">86%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="86%"></div></div>
+          <div class="glass-card glow-hover">
+            <h4 class="skills-cat-title"><i class="fas fa-shield-alt" style="color:#00f2fe"></i> 🛡️ Armament Haki (Data Engineering &amp; SQL)</h4>
+            <div class="skill-list">
+              <div class="skill-row"><span>SQL / MySQL (Advanced Joins &amp; Windowing)</span><span class="skill-pct">90%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="90%"></div></div>
+              <div class="skill-row"><span>ETL Pipelines &amp; Data Cleaning</span><span class="skill-pct">87%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="87%"></div></div>
+              <div class="skill-row"><span>AWS Cloud Infrastructure</span><span class="skill-pct">82%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="82%"></div></div>
+              <div class="skill-row"><span>Statistical Analysis &amp; EDA</span><span class="skill-pct">91%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="91%"></div></div>
+            </div>
+          </div>
+
+          <div class="glass-card glow-hover">
+            <h4 class="skills-cat-title"><i class="fas fa-eye" style="color:#ffd700"></i> 👁️ Observation Haki (Visualization &amp; BI)</h4>
+            <div class="skill-list">
+              <div class="skill-row"><span>Power BI (DAX, Reports)</span><span class="skill-pct">88%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="88%"></div></div>
+              <div class="skill-row"><span>Tableau Desktop</span><span class="skill-pct">85%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="85%"></div></div>
+              <div class="skill-row"><span>Matplotlib &amp; Seaborn</span><span class="skill-pct">89%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="89%"></div></div>
+              <div class="skill-row"><span>Executive Telemetry Dashboards</span><span class="skill-pct">86%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="86%"></div></div>
+            </div>
           </div>
         </div>
       </div>
