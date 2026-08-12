@@ -1,514 +1,216 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="cyan">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kurugodu Sai Narendra | Data Analytics & Data Science Portfolio</title>
-  <meta name="description" content="Portfolio of Kurugodu Sai Narendra - MSc in Data Analytics student, ML Consultant, and Data Specialist featuring interactive analytics, machine learning models, and cloud deployments.">
-  <meta name="keywords" content="Kurugodu Sai Narendra, Data Analytics, Data Science, Machine Learning, Python, SQL, Power BI, AWS, Churn Prediction, CHRIST University">
+  <title>Kurugodu Sai Narendra | Data Analytics & ML Specialist</title>
+  <meta name="description" content="Portfolio of Kurugodu Sai Narendra — MSc Data Analytics, ML Specialist, and Data Science Consultant. Interactive neural network experience.">
+  <meta name="keywords" content="Kurugodu Sai Narendra, Data Analytics, Machine Learning, Python, SQL, Power BI, AWS, CHRIST University">
   <meta name="author" content="Kurugodu Sai Narendra">
-
-  <!-- Open Graph / Social Media -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Kurugodu Sai Narendra | Data Analytics & ML Specialist">
-  <meta property="og:description" content="MSc Data Analytics Scholar & Data Science Consultant Intern. Machine Learning, AWS, Statistical Modeling, and Business Intelligence.">
-
-  <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
-
-  <!-- Fonts & Icons -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-  
-  <!-- FontAwesome Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;900&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Top Scroll Progress Glow Beam -->
+  <!-- BOOT SEQUENCE OVERLAY -->
+  <div id="boot-overlay">
+    <div class="boot-content">
+      <div class="boot-logo">KN<span class="boot-dot">.ai</span></div>
+      <div class="boot-subtitle" id="boot-text"></div>
+      <div class="boot-bar-container">
+        <div class="boot-bar" id="boot-bar"></div>
+      </div>
+      <div class="boot-status" id="boot-status">INITIALIZING NEURAL NETWORK...</div>
+    </div>
+  </div>
+
+  <!-- NEURAL NETWORK BACKGROUND CANVAS (FULL PAGE) -->
+  <canvas id="neural-canvas"></canvas>
+
+  <!-- SCROLL PROGRESS -->
   <div id="scroll-progress"></div>
 
-  <!-- Perspective Cyber Grid Backdrop -->
-  <div class="perspective-grid-bg"></div>
-
-  <!-- Custom Neon Dual-Ring Cursor -->
+  <!-- CUSTOM CURSOR -->
   <div id="cursor-dot"></div>
-  <div id="cursor-outline"></div>
+  <div id="cursor-ring"></div>
 
-  <!-- Matrix Rain Canvas Overlay -->
-  <canvas id="matrix-canvas"></canvas>
-
-  <!-- Ambient Glow Effects -->
-  <div class="ambient-glow-1"></div>
-  <div class="ambient-glow-2"></div>
-
-  <!-- Dynamic Particle Canvas -->
-  <canvas id="particle-canvas"></canvas>
-
-  <!-- 1. NAVIGATION BAR -->
-  <nav class="navbar" id="navbar">
-    <a href="#home" class="nav-logo">
-      <span class="dot"></span> KN<span class="gradient-text">.analytics</span>
+  <!-- NAVBAR -->
+  <nav id="navbar">
+    <a href="#hero" class="nav-brand">
+      <span class="brand-dot"></span>KN<span class="brand-accent">.analytics</span>
     </a>
     <ul class="nav-links" id="nav-links">
-      <li><a href="#home" class="nav-link active">Home</a></li>
-      <li><a href="#about" class="nav-link">About</a></li>
-      <li><a href="#experience" class="nav-link">Experience</a></li>
-      <li><a href="#projects" class="nav-link">Projects</a></li>
-      <li><a href="#lab" class="nav-link">Analytics Lab</a></li>
-      <li><a href="#skills" class="nav-link">Skills</a></li>
-      <li><a href="#education" class="nav-link">Education</a></li>
-      <li><a href="#contact" class="nav-link">Contact</a></li>
+      <li><a href="#hero" class="nav-link active" data-section="hero">Home</a></li>
+      <li><a href="#about" class="nav-link" data-section="about">About</a></li>
+      <li><a href="#experience" class="nav-link" data-section="experience">Experience</a></li>
+      <li><a href="#projects" class="nav-link" data-section="projects">Projects</a></li>
+      <li><a href="#lab" class="nav-link" data-section="lab">Lab</a></li>
+      <li><a href="#skills" class="nav-link" data-section="skills">Skills</a></li>
+      <li><a href="#contact" class="nav-link" data-section="contact">Contact</a></li>
     </ul>
-    <div style="display: flex; align-items: center; gap: 12px;">
-      <div class="theme-matrix-bar">
-        <div class="theme-chip theme-cyan" title="Cyan Neon" onclick="setTheme('cyan')"></div>
-        <div class="theme-chip theme-violet" title="Deep Violet" onclick="setTheme('violet')"></div>
-        <div class="theme-chip theme-emerald" title="Matrix Emerald" onclick="setTheme('emerald')"></div>
-        <div class="theme-chip theme-synthwave" title="Synthwave Pink" onclick="setTheme('synthwave')"></div>
+    <div class="nav-actions">
+      <div class="theme-switcher">
+        <button class="theme-btn t-cyan active" onclick="setTheme('cyan')" title="Cyan"></button>
+        <button class="theme-btn t-violet" onclick="setTheme('violet')" title="Violet"></button>
+        <button class="theme-btn t-emerald" onclick="setTheme('emerald')" title="Emerald"></button>
+        <button class="theme-btn t-pink" onclick="setTheme('pink')" title="Synthwave"></button>
       </div>
-      <a href="https://linkedin.com/in/kurugodusainarendra" target="_blank" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.85rem;" id="linkedin-nav-btn">
+      <a href="https://linkedin.com/in/kurugodusainarendra" target="_blank" class="btn-connect">
         <i class="fab fa-linkedin"></i> Connect
       </a>
-      <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu">
-        <i class="fas fa-bars"></i>
-      </button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
     </div>
   </nav>
 
-  <!-- 2. HERO SECTION -->
-  <section class="hero" id="home">
+  <!-- ==================== HERO ==================== -->
+  <section id="hero" class="section-hero">
+    <div class="hero-container">
+      <div class="hero-left">
+        <div class="available-chip">
+          <span class="pulse-dot"></span>
+          Available for Opportunities
+        </div>
+
+        <h1 class="hero-title">
+          <span class="hero-greeting">Hi, I'm</span><br>
+          <span class="hero-name gradient-text">Sai Narendra</span>
+        </h1>
+
+        <div class="typed-line">
+          <span class="typed-prefix">&gt; </span>
+          <span id="typed-text"></span>
+          <span class="typed-cursor">_</span>
+        </div>
+
+        <p class="hero-bio">
+          MSc Data Analytics Scholar at <strong>CHRIST University, Bengaluru</strong>. 
+          Turning raw data into precision-engineered machine learning pipelines and 
+          executive-grade insights.
+        </p>
+
+        <div class="hero-cta">
+          <a href="#projects" class="btn-primary"><i class="fas fa-rocket"></i> Explore Work</a>
+          <a href="#lab" class="btn-ghost"><i class="fas fa-flask"></i> Live Analytics Lab</a>
+          <a href="https://github.com/Narendra6305" target="_blank" class="btn-ghost"><i class="fab fa-github"></i> GitHub</a>
+        </div>
+
+        <div class="hero-metrics">
+          <div class="metric">
+            <div class="metric-num"><span class="counter" data-target="90">0</span>%</div>
+            <div class="metric-lbl">Model Accuracy</div>
+          </div>
+          <div class="metric">
+            <div class="metric-num"><span class="counter" data-target="15">0</span>+</div>
+            <div class="metric-lbl">ML Pipelines</div>
+          </div>
+          <div class="metric">
+            <div class="metric-num"><span class="counter" data-target="8">0</span>+</div>
+            <div class="metric-lbl">GitHub Projects</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="neural-orb-wrapper">
+          <canvas id="orb-canvas"></canvas>
+          <div class="orb-label"><i class="fas fa-brain"></i> Neural Data Core</div>
+          <div class="orb-ring ring-1"></div>
+          <div class="orb-ring ring-2"></div>
+          <div class="orb-ring ring-3"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      <span>Scroll to explore</span>
+    </div>
+  </section>
+
+  <!-- ==================== ABOUT ==================== -->
+  <section id="about" class="section-pad reveal-section">
     <div class="container">
-      <div class="hero-grid">
-        <div class="hero-content">
-          <div class="hero-badge">
-            <span class="status-dot"></span> Available for Data Analyst & Science Roles
-          </div>
-          <h1 class="hero-title">
-            Hi, I'm <span class="gradient-text">Sai Narendra</span>
-          </h1>
-          
-          <div class="typed-text-container">
-            <span class="typed-prefix">&gt; </span>
-            <span id="typed-text"></span>
-            <span class="typed-cursor">|</span>
-          </div>
+      <div class="section-badge"><i class="fas fa-user-astronaut"></i> Who I Am</div>
+      <h2 class="section-title">Bridging Data &amp; <span class="gradient-text">Strategic Decisions</span></h2>
 
-          <p class="hero-description">
-            Master of Science in Data Analytics scholar at CHRIST (Deemed to be University), Bengaluru. Experienced in building machine learning models, database querying, AWS cloud deployment, and creating executive dashboards that drive measurable impact.
-          </p>
-
-          <div class="hero-actions">
-            <a href="#projects" class="btn btn-primary">
-              <i class="fas fa-rocket"></i> Explore Work
-            </a>
-            <a href="#lab" class="btn btn-secondary">
-              <i class="fas fa-flask"></i> Interactive Lab
-            </a>
-            <a href="https://github.com/Narendra6305" target="_blank" class="btn btn-secondary" id="github-hero-btn">
-              <i class="fab fa-github"></i> GitHub
-            </a>
+      <div class="about-grid">
+        <div class="glass-card glow-hover">
+          <div class="card-icon-header c-cyan">
+            <i class="fas fa-graduation-cap"></i>
           </div>
-
-          <div class="hero-stats">
-            <div class="stat-card">
-              <div class="stat-number"><span class="counter" data-target="80">0</span>%+</div>
-              <div class="stat-label">Model Accuracy</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-number"><span class="counter" data-target="15">0</span>+</div>
-              <div class="stat-label">ML Pipelines Built</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-number"><span class="counter" data-target="20">0</span>%</div>
-              <div class="stat-label">Delivery Speedup</div>
-            </div>
+          <h3>Academic Excellence</h3>
+          <p>Pursuing MSc in Data Analytics (2025–27) at <strong>CHRIST (Deemed to be University)</strong>, Bengaluru — CGPA 3.47 / 4.0. Previously completed BCA at RJS College with CGPA 8.7 / 10.0.</p>
+          <div class="chip-row">
+            <span class="chip">Statistical Modeling</span>
+            <span class="chip">ML Algorithm Design</span>
+            <span class="chip">Data Governance</span>
           </div>
         </div>
 
-        <div class="hero-visual">
-          <div class="hologram-wrapper">
-            <canvas id="hologram-canvas"></canvas>
-            <div class="hologram-overlay-card">
-              <i class="fas fa-microchip"></i> &lt;3D Hologram Data Core /&gt;
-            </div>
-            
-            <div class="floating-badge badge-1">
-              <i class="fas fa-brain" style="color: var(--cyan);"></i>
-              <div>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">Specialization</div>
-                <div>Machine Learning & Analytics</div>
-              </div>
-            </div>
+        <div class="glass-card glow-hover">
+          <div class="card-icon-header c-purple">
+            <i class="fas fa-briefcase"></i>
+          </div>
+          <h3>Industry Experience</h3>
+          <p>As a Data Science Consultant Intern at <strong>Rubixe AI Solutions</strong>, deployed 15+ ML models on AWS cloud achieving 80%+ accuracy and reducing project delivery time by 20%.</p>
+          <div class="chip-row">
+            <span class="chip">AWS Deployment</span>
+            <span class="chip">Executive Dashboards</span>
+            <span class="chip">Agile Methods</span>
+          </div>
+        </div>
 
-            <div class="floating-badge badge-2">
-              <i class="fas fa-award" style="color: var(--amber);"></i>
-              <div>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">Grade A Distinction</div>
-                <div>CDS Project Award</div>
-              </div>
-            </div>
+        <div class="glass-card glow-hover">
+          <div class="card-icon-header c-green">
+            <i class="fas fa-certificate"></i>
+          </div>
+          <h3>Certifications</h3>
+          <p>Certified Data Scientist with <strong>Grade A Distinction</strong> from NASSCOM FutureSkills Prime. Google Data Analytics Professional Certificate holder.</p>
+          <div class="chip-row">
+            <span class="chip">NASSCOM CDS</span>
+            <span class="chip">Google Analytics</span>
+            <span class="chip">Grade A Distinction</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 3. ABOUT SECTION -->
-  <section class="section-padding" id="about" style="background: rgba(11, 15, 25, 0.4);">
+  <!-- ==================== EXPERIENCE ==================== -->
+  <section id="experience" class="section-pad reveal-section alt-bg">
     <div class="container">
-      <div class="section-header">
-        <span class="section-tag"><i class="fas fa-user"></i> Professional Profile</span>
-        <h2 class="section-title">Bridging Data & Strategic Decisions</h2>
-        <p class="section-subtitle">A passion for statistical rigor, clean code, and predictive analytics.</p>
-      </div>
-
-      <div class="glass-card" style="max-width: 1000px; margin: 0 auto;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px;">
-          <div>
-            <h3 style="font-size: 1.4rem; color: var(--cyan); margin-bottom: 16px;">
-              <i class="fas fa-graduation-cap"></i> MSc Data Analytics Scholar
-            </h3>
-            <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.7; margin-bottom: 16px;">
-              Currently pursuing my MSc in Data Analytics (Batch 2025–27) at <strong>CHRIST (Deemed to be University), Bengaluru</strong> maintaining a strong <strong>CGPA of 3.47 / 4.0</strong>. My academic foundation combines mathematical statistics, machine learning algorithm design, and data governance.
-            </p>
-            <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.7;">
-              Previously completed Bachelor of Computer Applications (BCA) at RJS College, Bengaluru with a <strong>CGPA of 8.7 / 10.0</strong>.
-            </p>
-          </div>
-
-          <div>
-            <h3 style="font-size: 1.4rem; color: var(--purple); margin-bottom: 16px;">
-              <i class="fas fa-chart-pie"></i> Industry Experience & Leadership
-            </h3>
-            <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.7; margin-bottom: 16px;">
-              As a Data Science Consultant Intern at <strong>Rubixe AI Solutions</strong>, I worked on designing, optimizing, and deploying 15+ machine learning models on AWS cloud infrastructure achieving over 80% accuracy.
-            </p>
-            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;">
-              <span class="tag"><i class="fas fa-check-circle" style="color: var(--green);"></i> AWS Cloud Deployment</span>
-              <span class="tag"><i class="fas fa-check-circle" style="color: var(--green);"></i> Hypothesis Testing</span>
-              <span class="tag"><i class="fas fa-check-circle" style="color: var(--green);"></i> Executive Dashboards</span>
-              <span class="tag"><i class="fas fa-check-circle" style="color: var(--green);"></i> Cross-Functional Collaboration</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 4. WORK EXPERIENCE & LEADERSHIP SECTION -->
-  <section class="section-padding" id="experience">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag"><i class="fas fa-briefcase"></i> Track Record</span>
-        <h2 class="section-title">Experience & Leadership</h2>
-        <p class="section-subtitle">Real-world impact across consulting, machine learning deployment, and community workshops.</p>
-      </div>
+      <div class="section-badge"><i class="fas fa-history"></i> Career Journey</div>
+      <h2 class="section-title">Professional <span class="gradient-text">Timeline</span></h2>
 
       <div class="timeline">
-        <!-- Item 1: Rubixe AI Solutions Consultant Intern -->
         <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-header">
+          <div class="tl-dot"></div>
+          <div class="glass-card glow-hover">
+            <div class="tl-header">
               <div>
-                <h3 class="role-title">Data Science Consultant Intern</h3>
-                <div class="company-name"><i class="fas fa-building"></i> Rubixe AI Solutions, Bengaluru</div>
+                <div class="tl-role">Data Science Consultant Intern</div>
+                <div class="tl-company">Rubixe AI Solutions · Bengaluru</div>
               </div>
-              <span class="timeline-date"><i class="far fa-calendar-alt"></i> Apr 2024 – Oct 2024</span>
+              <div class="tl-date">Dec 2023 – Jun 2024</div>
             </div>
-            <ul class="timeline-bullets">
-              <li>Built and optimized <strong>15+ machine learning models</strong> achieving <strong>80%+ accuracy</strong>, significantly accelerating client decision-making workflows.</li>
-              <li>Deployed scalable machine learning pipelines on <strong>AWS Cloud Infrastructure</strong> to support production-level, automated data pipelines.</li>
-              <li>Streamlined data workflows and engineered novel feature techniques adopted organization-wide, effectively reducing data preprocessing time.</li>
-              <li>Awarded the <strong>Project Delivery Honor</strong> for leading technical solutions to completion.</li>
+            <ul class="tl-bullets">
+              <li>Engineered end-to-end Smart Targeting & Churn Prevention ML pipeline achieving <strong>90% prediction accuracy</strong></li>
+              <li>Deployed 15+ ML models on <strong>AWS cloud infrastructure</strong>, reducing business churn rate by 20%</li>
+              <li>Designed RFM segmentation and customer clustering pipelines in MySQL for executive-level retention strategy</li>
+              <li>Built and delivered interactive Power BI dashboards to C-suite stakeholders</li>
             </ul>
-          </div>
-        </div>
-
-        <!-- Item 3: CAA Core Committee Member -->
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-header">
-              <div>
-                <h3 class="role-title">Core Committee Member</h3>
-                <div class="company-name"><i class="fas fa-laptop-code"></i> Computer Applications Association, RJS College</div>
-              </div>
-              <span class="timeline-date"><i class="far fa-calendar-alt"></i> Jun 2022 – Apr 2024</span>
-            </div>
-            <ul class="timeline-bullets">
-              <li>Led a <strong>5-member student core team</strong> organizing weekly coding and data visualization workshops.</li>
-              <li>Boosted active member participation across the department through hands-on Python and SQL bootcamps.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 5. PROJECTS SHOWCASE -->
-  <section class="section-padding" id="projects" style="background: rgba(11, 15, 25, 0.4);">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag"><i class="fas fa-project-diagram"></i> Portfolio Highlights</span>
-        <h2 class="section-title">Featured Projects</h2>
-        <p class="section-subtitle">Machine learning algorithms, ensemble modeling, healthcare biostatistics, and database optimization.</p>
-      </div>
-
-      <div class="projects-grid">
-        <!-- Project 1: Smart Targeting & Churn Prevention System -->
-        <div class="glass-card project-card" data-tilt>
-          <div>
-            <div class="project-header">
-              <div class="project-icon"><i class="fas fa-users-slash"></i></div>
-              <span class="project-date">May 2024 – Jun 2024</span>
-            </div>
-            <h3 class="project-title">Smart Targeting & Churn Prevention System</h3>
-            <p class="project-desc">
-              Developed an ensemble churn model with customer segmentation to analyze financial metrics and predict purchasing behavior. Attained 90% prediction accuracy for targeted marketing campaigns.
-            </p>
-            <div class="project-tags">
-              <span class="tag">Python</span>
-              <span class="tag">Flask</span>
-              <span class="tag">Random Forest</span>
-              <span class="tag">ANN</span>
-              <span class="tag">MySQL</span>
-            </div>
-          </div>
-          <div class="project-footer">
-            <span class="metric-badge"><i class="fas fa-chart-line"></i> 90% Model Accuracy</span>
-            <div style="display: flex; gap: 8px;">
-              <a href="https://github.com/Narendra6305/portugese-bank" target="_blank" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">
-                <i class="fab fa-github"></i> GitHub
-              </a>
-              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openProjectModal('churn')">
-                Details <i class="fas fa-arrow-right"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 2: Heart Disease Early Detection System -->
-        <div class="glass-card project-card" data-tilt>
-          <div>
-            <div class="project-header">
-              <div class="project-icon"><i class="fas fa-heartbeat"></i></div>
-              <span class="project-date">Aug 2024 – Oct 2024</span>
-            </div>
-            <h3 class="project-title">Heart Disease Early Detection System</h3>
-            <p class="project-desc">
-              Engineered a risk assessment system to interpret biostatistics and predict cardiovascular risk prior to clinical symptom appearance with interpretable predictions designed for clinical decision support.
-            </p>
-            <div class="project-tags">
-              <span class="tag">Python</span>
-              <span class="tag">Random Forest</span>
-              <span class="tag">SVM</span>
-              <span class="tag">Matplotlib</span>
-              <span class="tag">Seaborn</span>
-            </div>
-          </div>
-          <div class="project-footer">
-            <span class="metric-badge"><i class="fas fa-shield-alt"></i> Ethical AI Aligned</span>
-            <div style="display: flex; gap: 8px;">
-              <a href="https://github.com/Narendra6305/Heart-Disease-Prediction" target="_blank" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">
-                <i class="fab fa-github"></i> GitHub
-              </a>
-              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openProjectModal('heart')">
-                Details <i class="fas fa-arrow-right"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 3: SatyaLens -->
-        <div class="glass-card project-card" data-tilt>
-          <div>
-            <div class="project-header">
-              <div class="project-icon"><i class="fas fa-eye"></i></div>
-              <span class="project-date">GitHub Repository</span>
-            </div>
-            <h3 class="project-title">SatyaLens — Truth Verification Engine</h3>
-            <p class="project-desc">
-              Multimodal analytical lens and verification framework engineered in Python for deepfake signal detection, media integrity verification, and data stream validation.
-            </p>
-            <div class="project-tags">
-              <span class="tag">Python</span>
-              <span class="tag">Deep Learning</span>
-              <span class="tag">Computer Vision</span>
-              <span class="tag">Multimodal AI</span>
-            </div>
-          </div>
-          <div class="project-footer">
-            <span class="metric-badge"><i class="fas fa-lock"></i> Verification Engine</span>
-            <div style="display: flex; gap: 8px;">
-              <a href="https://github.com/Narendra6305/SatyaLens" target="_blank" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">
-                <i class="fab fa-github"></i> Repository
-              </a>
-              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openProjectModal('satyalens')">
-                Details <i class="fas fa-arrow-right"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 4: Employee Performance Prediction -->
-        <div class="glass-card project-card" data-tilt>
-          <div>
-            <div class="project-header">
-              <div class="project-icon"><i class="fas fa-user-chart"></i></div>
-              <span class="project-date">GitHub Repository</span>
-            </div>
-            <h3 class="project-title">Employee Performance & Attrition Analysis</h3>
-            <p class="project-desc">
-              End-to-end Machine Learning pipeline utilizing HR data features to predict employee performance ratings, evaluate workplace factors, and identify attrition risks.
-            </p>
-            <div class="project-tags">
-              <span class="tag">Jupyter</span>
-              <span class="tag">Python</span>
-              <span class="tag">Scikit-Learn</span>
-              <span class="tag">EDA</span>
-            </div>
-          </div>
-          <div class="project-footer">
-            <span class="metric-badge"><i class="fas fa-briefcase"></i> People Analytics</span>
-            <div style="display: flex; gap: 8px;">
-              <a href="https://github.com/Narendra6305/Employee-Performance-Prediction" target="_blank" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">
-                <i class="fab fa-github"></i> Repository
-              </a>
-              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openProjectModal('employee')">
-                Details <i class="fas fa-arrow-right"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 5: Texas Public Salary Prediction -->
-        <div class="glass-card project-card" data-tilt>
-          <div>
-            <div class="project-header">
-              <div class="project-icon"><i class="fas fa-dollar-sign"></i></div>
-              <span class="project-date">GitHub Repository</span>
-            </div>
-            <h3 class="project-title">Texas Public Employee Salary Forecast</h3>
-            <p class="project-desc">
-              Predictive regression analysis model built to estimate state employee compensation based on agency, job metrics, tenure, and historical state payroll data.
-            </p>
-            <div class="project-tags">
-              <span class="tag">Python</span>
-              <span class="tag">Pandas</span>
-              <span class="tag">Regression</span>
-              <span class="tag">Feature Engineering</span>
-            </div>
-          </div>
-          <div class="project-footer">
-            <span class="metric-badge"><i class="fas fa-calculator"></i> Predictive Regression</span>
-            <div style="display: flex; gap: 8px;">
-              <a href="https://github.com/Narendra6305/Texas-Salary-Prediction" target="_blank" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">
-                <i class="fab fa-github"></i> Repository
-              </a>
-              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openProjectModal('texas')">
-                Details <i class="fas fa-arrow-right"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 6: Medintel-OS -->
-        <div class="glass-card project-card" data-tilt>
-          <div>
-            <div class="project-header">
-              <div class="project-icon"><i class="fas fa-hospital-user"></i></div>
-              <span class="project-date">GitHub Repository</span>
-            </div>
-            <h3 class="project-title">Medintel-OS — Clinical Intelligence Dashboard</h3>
-            <p class="project-desc">
-              Medical intelligence web application designed for interactive patient data visualization, automated diagnostic metrics, and healthcare analytics workflows.
-            </p>
-            <div class="project-tags">
-              <span class="tag">JavaScript</span>
-              <span class="tag">Healthcare UI</span>
-              <span class="tag">Chart.js</span>
-              <span class="tag">REST API</span>
-            </div>
-          </div>
-          <div class="project-footer">
-            <span class="metric-badge"><i class="fas fa-clinic-medical"></i> Health Tech</span>
-            <div style="display: flex; gap: 8px;">
-              <a href="https://github.com/Narendra6305/Medintel-OS" target="_blank" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">
-                <i class="fab fa-github"></i> Repository
-              </a>
-              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openProjectModal('medintel')">
-                Details <i class="fas fa-arrow-right"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 7: ADMIS -->
-        <div class="glass-card project-card" data-tilt>
-          <div>
-            <div class="project-header">
-              <div class="project-icon"><i class="fas fa-database"></i></div>
-              <span class="project-date">GitHub Repository</span>
-            </div>
-            <h3 class="project-title">ADMIS — Adaptive Data Intelligence System</h3>
-            <p class="project-desc">
-              Enterprise management data intelligence architecture written in TypeScript for streaming analytical queries, dynamic data transformation, and reporting.
-            </p>
-            <div class="project-tags">
-              <span class="tag">TypeScript</span>
-              <span class="tag">Node.js</span>
-              <span class="tag">Data Engineering</span>
-              <span class="tag">SQL</span>
-            </div>
-          </div>
-          <div class="project-footer">
-            <span class="metric-badge"><i class="fas fa-network-wired"></i> Data Engineering</span>
-            <div style="display: flex; gap: 8px;">
-              <a href="https://github.com/Narendra6305/ADMIS" target="_blank" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">
-                <i class="fab fa-github"></i> Repository
-              </a>
-              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openProjectModal('admis')">
-                Details <i class="fas fa-arrow-right"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 8: Aegis-Lite -->
-        <div class="glass-card project-card" data-tilt>
-          <div>
-            <div class="project-header">
-              <div class="project-icon"><i class="fas fa-user-shield"></i></div>
-              <span class="project-date">GitHub Repository</span>
-            </div>
-            <h3 class="project-title">Aegis-Lite — Anomaly & Threat Security System</h3>
-            <p class="project-desc">
-              Python security analytics toolkit implementing intelligent anomaly detection, log parsing, and automated risk scoring for cyber telemetry data.
-            </p>
-            <div class="project-tags">
-              <span class="tag">Python</span>
-              <span class="tag">Security Analytics</span>
-              <span class="tag">Anomaly Detection</span>
-            </div>
-          </div>
-          <div class="project-footer">
-            <span class="metric-badge"><i class="fas fa-shield-alt"></i> Cyber Analytics</span>
-            <div style="display: flex; gap: 8px;">
-              <a href="https://github.com/Narendra6305/Aegis-Lite" target="_blank" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">
-                <i class="fab fa-github"></i> Repository
-              </a>
-              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openProjectModal('aegis')">
-                Details <i class="fas fa-arrow-right"></i>
-              </button>
+            <div class="chip-row" style="margin-top:16px;">
+              <span class="chip chip-cyan">Python</span>
+              <span class="chip chip-cyan">AWS</span>
+              <span class="chip chip-cyan">Random Forest</span>
+              <span class="chip chip-cyan">MySQL</span>
+              <span class="chip chip-cyan">Power BI</span>
             </div>
           </div>
         </div>
@@ -516,436 +218,360 @@
     </div>
   </section>
 
-  <!-- 6. INTERACTIVE ANALYTICS LAB -->
-  <section class="section-padding" id="lab">
+  <!-- ==================== PROJECTS ==================== -->
+  <section id="projects" class="section-pad reveal-section">
     <div class="container">
-      <div class="section-header">
-        <span class="section-tag"><i class="fas fa-vial"></i> Interactive Sandbox</span>
-        <h2 class="section-title">Interactive Data Analytics Lab</h2>
-        <p class="section-subtitle">Test live machine learning score models and inspect model benchmark analytics.</p>
-      </div>
+      <div class="section-badge"><i class="fas fa-layer-group"></i> Featured Work</div>
+      <h2 class="section-title">Projects &amp; <span class="gradient-text">Repositories</span></h2>
 
-      <div class="lab-container">
+      <div class="projects-bento">
+
+        <!-- HERO PROJECT: Churn -->
+        <div class="glass-card project-hero glow-hover" onclick="openModal('churn')">
+          <div class="project-glow-tag">⭐ Featured Case Study</div>
+          <div class="project-top-row">
+            <div class="proj-icon-lg"><i class="fas fa-bullseye"></i></div>
+            <div class="project-acc-badge">90% Acc.</div>
+          </div>
+          <h3 class="project-title">Smart Targeting &amp; Churn Prevention System</h3>
+          <p class="project-desc">End-to-end ML pipeline using Random Forest + ANN ensemble. RFM segmentation in MySQL. Flask API served on AWS with automated retention triggers.</p>
+          <div class="chip-row"><span class="chip">Python</span><span class="chip">Flask</span><span class="chip">ANN</span><span class="chip">MySQL</span><span class="chip">AWS</span></div>
+          <div class="project-footer-row"><span class="proj-cta">View Case Study <i class="fas fa-arrow-right"></i></span></div>
+        </div>
+
+        <!-- Heart Disease -->
+        <div class="glass-card glow-hover" onclick="openModal('heart')">
+          <div class="proj-icon-sm"><i class="fas fa-heartbeat"></i></div>
+          <h3 class="project-title">Heart Disease Early Detection</h3>
+          <p class="project-desc">Clinical decision support risk assessment with SVM & Random Forest. Ethical AI aligned with false-negative minimization.</p>
+          <div class="chip-row"><span class="chip">Python</span><span class="chip">SVM</span><span class="chip">Seaborn</span></div>
+          <div class="project-footer-row"><span class="proj-cta">Details <i class="fas fa-arrow-right"></i></span><a href="https://github.com/Narendra6305/Heart-Disease-Prediction" target="_blank" onclick="event.stopPropagation()" class="proj-gh"><i class="fab fa-github"></i></a></div>
+        </div>
+
+        <!-- SatyaLens -->
+        <div class="glass-card glow-hover" onclick="openModal('satyalens')">
+          <div class="proj-icon-sm"><i class="fas fa-eye"></i></div>
+          <h3 class="project-title">SatyaLens — Truth Verification</h3>
+          <p class="project-desc">Multimodal deepfake detection & media integrity verification engine using Computer Vision and signal analysis.</p>
+          <div class="chip-row"><span class="chip">Python</span><span class="chip">Deep Learning</span><span class="chip">CV</span></div>
+          <div class="project-footer-row"><span class="proj-cta">Details <i class="fas fa-arrow-right"></i></span><a href="https://github.com/Narendra6305/SatyaLens" target="_blank" onclick="event.stopPropagation()" class="proj-gh"><i class="fab fa-github"></i></a></div>
+        </div>
+
+        <!-- Employee Performance -->
+        <div class="glass-card glow-hover" onclick="openModal('employee')">
+          <div class="proj-icon-sm"><i class="fas fa-users-cog"></i></div>
+          <h3 class="project-title">Employee Performance Prediction</h3>
+          <p class="project-desc">Workforce analytics using Scikit-Learn to predict attrition risk and performance ratings with EDA feature engineering.</p>
+          <div class="chip-row"><span class="chip">Jupyter</span><span class="chip">Scikit-Learn</span><span class="chip">Pandas</span></div>
+          <div class="project-footer-row"><span class="proj-cta">Details <i class="fas fa-arrow-right"></i></span><a href="https://github.com/Narendra6305/Employee-Performance-Prediction" target="_blank" onclick="event.stopPropagation()" class="proj-gh"><i class="fab fa-github"></i></a></div>
+        </div>
+
+        <!-- Texas Salary -->
+        <div class="glass-card glow-hover" onclick="openModal('texas')">
+          <div class="proj-icon-sm"><i class="fas fa-dollar-sign"></i></div>
+          <h3 class="project-title">Texas Public Salary Forecast</h3>
+          <p class="project-desc">Predictive regression model on government payroll data. Gradient Boosting with feature sensitivity analysis.</p>
+          <div class="chip-row"><span class="chip">Python</span><span class="chip">Regression</span><span class="chip">Data Mining</span></div>
+          <div class="project-footer-row"><span class="proj-cta">Details <i class="fas fa-arrow-right"></i></span><a href="https://github.com/Narendra6305/Texas-Salary-Prediction" target="_blank" onclick="event.stopPropagation()" class="proj-gh"><i class="fab fa-github"></i></a></div>
+        </div>
+
+        <!-- Medintel-OS -->
+        <div class="glass-card glow-hover" onclick="openModal('medintel')">
+          <div class="proj-icon-sm"><i class="fas fa-hospital-user"></i></div>
+          <h3 class="project-title">Medintel-OS Clinical Dashboard</h3>
+          <p class="project-desc">Medical telemetry monitoring web application with real-time diagnostic charts and patient data analytics workflows.</p>
+          <div class="chip-row"><span class="chip">JavaScript</span><span class="chip">Chart.js</span><span class="chip">REST API</span></div>
+          <div class="project-footer-row"><span class="proj-cta">Details <i class="fas fa-arrow-right"></i></span><a href="https://github.com/Narendra6305/Medintel-OS" target="_blank" onclick="event.stopPropagation()" class="proj-gh"><i class="fab fa-github"></i></a></div>
+        </div>
+
+        <!-- ADMIS -->
+        <div class="glass-card glow-hover" onclick="openModal('admis')">
+          <div class="proj-icon-sm"><i class="fas fa-database"></i></div>
+          <h3 class="project-title">ADMIS — Adaptive Data System</h3>
+          <p class="project-desc">Enterprise TypeScript data intelligence architecture for structured query processing and system telemetry analytics.</p>
+          <div class="chip-row"><span class="chip">TypeScript</span><span class="chip">Node.js</span><span class="chip">SQL</span></div>
+          <div class="project-footer-row"><span class="proj-cta">Details <i class="fas fa-arrow-right"></i></span><a href="https://github.com/Narendra6305/ADMIS" target="_blank" onclick="event.stopPropagation()" class="proj-gh"><i class="fab fa-github"></i></a></div>
+        </div>
+
+        <!-- Aegis-Lite -->
+        <div class="glass-card glow-hover" onclick="openModal('aegis')">
+          <div class="proj-icon-sm"><i class="fas fa-shield-alt"></i></div>
+          <h3 class="project-title">Aegis-Lite Security Analytics</h3>
+          <p class="project-desc">Python anomaly detection suite for security log parsing, threat classification, and real-time risk threshold alerts.</p>
+          <div class="chip-row"><span class="chip">Python</span><span class="chip">Anomaly Detection</span><span class="chip">Security</span></div>
+          <div class="project-footer-row"><span class="proj-cta">Details <i class="fas fa-arrow-right"></i></span><a href="https://github.com/Narendra6305/Aegis-Lite" target="_blank" onclick="event.stopPropagation()" class="proj-gh"><i class="fab fa-github"></i></a></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ANALYTICS LAB ==================== -->
+  <section id="lab" class="section-pad reveal-section alt-bg">
+    <div class="container">
+      <div class="section-badge"><i class="fas fa-vial"></i> Interactive Sandbox</div>
+      <h2 class="section-title">Live <span class="gradient-text">Analytics Lab</span></h2>
+
+      <div class="lab-shell">
         <div class="lab-tabs">
-          <button class="lab-tab active" onclick="switchLabTab('churn-sim')">
-            <i class="fas fa-sliders-h"></i> Customer Churn Simulator
-          </button>
-          <button class="lab-tab" onclick="switchLabTab('heart-sim')">
-            <i class="fas fa-stethoscope"></i> Cardiovascular Risk Assessor
-          </button>
-          <button class="lab-tab" onclick="switchLabTab('sql')">
-            <i class="fas fa-database"></i> Live SQL Sandbox
-          </button>
-          <button class="lab-tab" onclick="switchLabTab('confusion')">
-            <i class="fas fa-th-large"></i> ML Confusion Matrix
-          </button>
-          <button class="lab-tab" onclick="switchLabTab('benchmark')">
-            <i class="fas fa-chart-bar"></i> Algorithm Benchmarks
-          </button>
+          <button class="lab-tab active" onclick="switchTab(event,'churn')"><i class="fas fa-sliders-h"></i> Churn Sim</button>
+          <button class="lab-tab" onclick="switchTab(event,'heart')"><i class="fas fa-heartbeat"></i> Cardio Risk</button>
+          <button class="lab-tab" onclick="switchTab(event,'sql')"><i class="fas fa-database"></i> SQL Sandbox</button>
+          <button class="lab-tab" onclick="switchTab(event,'matrix')"><i class="fas fa-th"></i> Confusion Matrix</button>
+          <button class="lab-tab" onclick="switchTab(event,'bench')"><i class="fas fa-chart-bar"></i> Benchmarks</button>
         </div>
 
-        <!-- Tab 1: Churn Simulator -->
-        <div class="lab-panel active" id="panel-churn-sim">
-          <div class="calculator-controls">
-            <h4 style="color: var(--cyan); margin-bottom: 12px;">Customer Behavior Metrics</h4>
-            
-            <div class="control-group">
-              <label>Monthly Spend ($): <span id="spend-val">$450</span></label>
-              <input type="range" id="spend-slider" min="50" max="1500" value="450" oninput="updateChurnSim()">
+        <!-- CHURN SIM -->
+        <div class="lab-panel active" id="panel-churn">
+          <div class="lab-controls">
+            <h4 class="panel-title"><i class="fas fa-sliders-h"></i> Customer Churn Simulator</h4>
+            <div class="control-row">
+              <label>Monthly Spend: <b id="sv-spend">$450</b></label>
+              <input type="range" id="spend-slider" min="50" max="1500" value="450" oninput="runChurnSim()">
             </div>
-
-            <div class="control-group">
-              <label>Tenure (Months): <span id="tenure-val">14 mos</span></label>
-              <input type="range" id="tenure-slider" min="1" max="60" value="14" oninput="updateChurnSim()">
+            <div class="control-row">
+              <label>Tenure: <b id="sv-tenure">14 months</b></label>
+              <input type="range" id="tenure-slider" min="1" max="60" value="14" oninput="runChurnSim()">
             </div>
-
-            <div class="control-group">
-              <label>Support Tickets Opened: <span id="tickets-val">2</span></label>
-              <input type="range" id="tickets-slider" min="0" max="10" value="2" oninput="updateChurnSim()">
+            <div class="control-row">
+              <label>Support Tickets: <b id="sv-tickets">2</b></label>
+              <input type="range" id="tickets-slider" min="0" max="10" value="2" oninput="runChurnSim()">
             </div>
           </div>
-
-          <div class="prediction-result">
-            <div style="font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">
-              Predicted Churn Probability
+          <div class="lab-result">
+            <div class="result-label">Churn Probability</div>
+            <div class="result-score" id="churn-score">24.5<span>%</span></div>
+            <div class="result-status" id="churn-status" data-level="low">
+              <i class="fas fa-check-circle"></i> Low Risk — Retention Target
             </div>
-            <div class="score-display gradient-text" id="churn-score">24.5%</div>
-            <div id="churn-status" style="font-size: 0.95rem; margin-top: 10px; color: var(--green); font-weight: 600;">
-              <i class="fas fa-check-circle"></i> Low Risk Customer (Retention Target)
-            </div>
+            <div class="result-bar-bg"><div class="result-bar" id="churn-bar" style="width:24.5%;background:var(--green)"></div></div>
           </div>
         </div>
 
-        <!-- Tab 2: Heart Disease Risk Assessor -->
-        <div class="lab-panel" id="panel-heart-sim">
-          <div class="calculator-controls">
-            <h4 style="color: var(--purple); margin-bottom: 12px;">Biostatistical Metrics</h4>
-            
-            <div class="control-group">
-              <label>Resting Blood Pressure (mm Hg): <span id="bp-val">128</span></label>
-              <input type="range" id="bp-slider" min="90" max="200" value="128" oninput="updateHeartSim()">
+        <!-- CARDIO RISK -->
+        <div class="lab-panel" id="panel-heart">
+          <div class="lab-controls">
+            <h4 class="panel-title"><i class="fas fa-heartbeat"></i> Cardiovascular Risk Assessor</h4>
+            <div class="control-row">
+              <label>Blood Pressure: <b id="sv-bp">128 mmHg</b></label>
+              <input type="range" id="bp-slider" min="90" max="200" value="128" oninput="runHeartSim()">
             </div>
-
-            <div class="control-group">
-              <label>Serum Cholesterol (mg/dl): <span id="chol-val">210</span></label>
-              <input type="range" id="chol-slider" min="120" max="400" value="210" oninput="updateHeartSim()">
+            <div class="control-row">
+              <label>Cholesterol: <b id="sv-chol">210 mg/dl</b></label>
+              <input type="range" id="chol-slider" min="120" max="400" value="210" oninput="runHeartSim()">
             </div>
-
-            <div class="control-group">
-              <label>Max Heart Rate (bpm): <span id="hr-val">152</span></label>
-              <input type="range" id="hr-slider" min="80" max="210" value="152" oninput="updateHeartSim()">
+            <div class="control-row">
+              <label>Max Heart Rate: <b id="sv-hr">152 bpm</b></label>
+              <input type="range" id="hr-slider" min="80" max="210" value="152" oninput="runHeartSim()">
             </div>
           </div>
-
-          <div class="prediction-result">
-            <div style="font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">
-              Predicted Cardiovascular Risk Score
+          <div class="lab-result">
+            <div class="result-label">Cardiovascular Risk</div>
+            <div class="result-score" id="heart-score">18.2<span>%</span></div>
+            <div class="result-status" id="heart-status" data-level="low">
+              <i class="fas fa-shield-alt"></i> Normal Biomarker Profile
             </div>
-            <div class="score-display gradient-text-accent" id="heart-score">18.2%</div>
-            <div id="heart-status" style="font-size: 0.95rem; margin-top: 10px; color: var(--green); font-weight: 600;">
-              <i class="fas fa-shield-alt"></i> Normal Biostatistics Profile
-            </div>
+            <div class="result-bar-bg"><div class="result-bar" id="heart-bar" style="width:18.2%;background:var(--green)"></div></div>
           </div>
         </div>
 
-        <!-- Tab 3: Interactive Live SQL Sandbox -->
+        <!-- SQL SANDBOX -->
         <div class="lab-panel" id="panel-sql">
-          <div class="sql-editor-container">
-            <div class="sql-editor-header">
-              <h4 style="color: var(--cyan);"><i class="fas fa-terminal"></i> Live SQL Query Engine</h4>
-              <div style="display: flex; gap: 10px; align-items: center;">
-                <select class="sql-select-dropdown" id="sql-query-select" onchange="loadPresetSQLQuery()">
-                  <option value="churn">Query: High Churn Risk Customers</option>
-                  <option value="high_spend">Query: Top Spenders & RFM Clusters</option>
-                  <option value="model_metrics">Query: Model Performance Log</option>
+          <div class="sql-panel-inner">
+            <div class="sql-top-bar">
+              <h4 class="panel-title"><i class="fas fa-terminal"></i> Live SQL Query Engine</h4>
+              <div class="sql-controls">
+                <select class="sql-select" id="sql-select" onchange="loadSQL()">
+                  <option value="churn">High Churn Risk Customers</option>
+                  <option value="rfm">Top Spenders — RFM Clusters</option>
+                  <option value="models">Model Performance Registry</option>
                 </select>
-                <button class="btn btn-primary" style="padding: 8px 16px; font-size: 0.82rem;" onclick="executeSQLQuery()">
-                  <i class="fas fa-play"></i> Execute SQL
-                </button>
+                <button class="btn-execute" onclick="execSQL()"><i class="fas fa-play"></i> Execute</button>
               </div>
             </div>
-
-            <div class="sql-code-box" id="sql-code-box">
-              <code id="sql-query-display">SELECT customer_id, monthly_spend, tenure_months, churn_probability FROM customer_telemetry WHERE churn_probability &gt; 0.65 ORDER BY monthly_spend DESC LIMIT 5;</code>
-            </div>
-
-            <div style="overflow-x: auto;">
-              <table class="sql-results-table" id="sql-results-table">
-                <thead>
-                  <tr id="sql-table-head">
-                    <th>customer_id</th><th>monthly_spend</th><th>tenure_months</th><th>churn_probability</th>
-                  </tr>
-                </thead>
-                <tbody id="sql-table-body">
-                  <tr><td>CUST_9402</td><td>$1,240</td><td>3 mos</td><td style="color: var(--pink); font-weight: 700;">84.2%</td></tr>
-                  <tr><td>CUST_8819</td><td>$980</td><td>5 mos</td><td style="color: var(--pink); font-weight: 700;">76.5%</td></tr>
-                  <tr><td>CUST_7210</td><td>$850</td><td>2 mos</td><td style="color: var(--pink); font-weight: 700;">71.8%</td></tr>
-                </tbody>
+            <div class="sql-code-block" id="sql-code"></div>
+            <div class="sql-table-wrap">
+              <table class="sql-table">
+                <thead id="sql-head"></thead>
+                <tbody id="sql-body"></tbody>
               </table>
             </div>
-            <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--green);" id="sql-status-info">
-              ⚡ Executed in 0.03ms | 3 rows returned | Cache Status: HIT
+            <div class="sql-footer" id="sql-footer">⚡ Ready to execute query...</div>
+          </div>
+        </div>
+
+        <!-- CONFUSION MATRIX -->
+        <div class="lab-panel" id="panel-matrix">
+          <div class="lab-controls">
+            <h4 class="panel-title"><i class="fas fa-th"></i> ML Confusion Matrix</h4>
+            <div class="control-row">
+              <label>Decision Threshold: <b id="sv-thresh">0.50</b></label>
+              <input type="range" id="thresh-slider" min="0.10" max="0.90" step="0.05" value="0.50" oninput="runMatrix()">
+            </div>
+            <div class="matrix-metrics">
+              <div class="mm-box"><div class="mm-val" id="mm-prec">91.4%</div><div class="mm-lbl">Precision</div></div>
+              <div class="mm-box"><div class="mm-val" id="mm-rec">88.2%</div><div class="mm-lbl">Recall</div></div>
+              <div class="mm-box"><div class="mm-val" id="mm-f1">89.8%</div><div class="mm-lbl">F1-Score</div></div>
+            </div>
+          </div>
+          <div class="cm-grid">
+            <div class="cm-label-row"><span></span><span class="cm-axis-lbl">Predicted +</span><span class="cm-axis-lbl">Predicted −</span></div>
+            <div class="cm-data-row">
+              <span class="cm-row-lbl">Actual +</span>
+              <div class="cm-cell cm-tp"><div class="cm-abbr">TP</div><div class="cm-val" id="cm-tp">428</div></div>
+              <div class="cm-cell cm-fn"><div class="cm-abbr">FN</div><div class="cm-val" id="cm-fn">57</div></div>
+            </div>
+            <div class="cm-data-row">
+              <span class="cm-row-lbl">Actual −</span>
+              <div class="cm-cell cm-fp"><div class="cm-abbr">FP</div><div class="cm-val" id="cm-fp">40</div></div>
+              <div class="cm-cell cm-tn"><div class="cm-abbr">TN</div><div class="cm-val" id="cm-tn">975</div></div>
             </div>
           </div>
         </div>
 
-        <!-- Tab 4: ML Confusion Matrix Diagnostics -->
-        <div class="lab-panel" id="panel-confusion">
-          <div class="calculator-controls">
-            <h4 style="color: var(--green); margin-bottom: 12px;">Model Threshold Tuner</h4>
-            <div class="control-group">
-              <label>Decision Threshold: <span id="threshold-val">0.50</span></label>
-              <input type="range" id="threshold-slider" min="0.10" max="0.90" step="0.05" value="0.50" oninput="updateConfusionMatrix()">
-            </div>
-            
-            <div class="metrics-summary-grid">
-              <div class="metric-stat-box">
-                <div class="metric-stat-label">Precision</div>
-                <div class="metric-stat-val" id="mat-precision">91.4%</div>
-              </div>
-              <div class="metric-stat-box">
-                <div class="metric-stat-label">Recall</div>
-                <div class="metric-stat-val" id="mat-recall">88.2%</div>
-              </div>
-              <div class="metric-stat-box">
-                <div class="metric-stat-label">F1-Score</div>
-                <div class="metric-stat-val" id="mat-f1">89.8%</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="confusion-matrix-container">
-            <div style="font-size: 0.85rem; color: var(--cyan); font-family: var(--font-mono); margin-bottom: 4px;">2x2 CONFUSION MATRIX</div>
-            <div class="confusion-grid">
-              <div class="matrix-cell">
-                <div class="matrix-cell-title">True Positive</div>
-                <div class="matrix-cell-value" id="cell-tp">428</div>
-              </div>
-              <div class="matrix-cell">
-                <div class="matrix-cell-title">False Positive</div>
-                <div class="matrix-cell-value" style="color: var(--pink);" id="cell-fp">40</div>
-              </div>
-              <div class="matrix-cell">
-                <div class="matrix-cell-title">False Negative</div>
-                <div class="matrix-cell-value" style="color: var(--amber);" id="cell-fn">57</div>
-              </div>
-              <div class="matrix-cell">
-                <div class="matrix-cell-title">True Negative</div>
-                <div class="matrix-cell-value" style="color: var(--green);" id="cell-tn">975</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tab 3: Algorithm Benchmark Chart -->
-        <div class="lab-panel" id="panel-benchmark">
-          <div style="grid-column: span 2;">
-            <h4 style="color: var(--cyan); margin-bottom: 16px; text-align: center;">Machine Learning Algorithm Performance Comparison</h4>
-            <div class="chart-wrapper">
-              <canvas id="benchmarkChart"></canvas>
-            </div>
+        <!-- BENCHMARKS -->
+        <div class="lab-panel" id="panel-bench">
+          <div style="grid-column: span 2; height: 340px;">
+            <h4 class="panel-title" style="margin-bottom:16px;"><i class="fas fa-chart-bar"></i> Algorithm Performance Benchmark</h4>
+            <canvas id="benchmarkChart"></canvas>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 7. SKILLS & CERTIFICATIONS -->
-  <section class="section-padding" id="skills" style="background: rgba(11, 15, 25, 0.4);">
+  <!-- ==================== SKILLS ==================== -->
+  <section id="skills" class="section-pad reveal-section">
     <div class="container">
-      <div class="section-header">
-        <span class="section-tag"><i class="fas fa-tools"></i> Core Capabilities</span>
-        <h2 class="section-title">Technical & Domain Skills</h2>
-        <p class="section-subtitle">Statistical modeling, query languages, ML frameworks, cloud computing, and storytelling.</p>
-      </div>
+      <div class="section-badge"><i class="fas fa-code"></i> Tech Stack</div>
+      <h2 class="section-title">Skills &amp; <span class="gradient-text">Expertise</span></h2>
 
-      <div class="skills-grid">
-        <!-- Technical Skills -->
-        <div class="glass-card">
-          <div class="skill-category-title"><i class="fas fa-code"></i> Technical Stack</div>
-          <div class="skill-items">
-            <div class="skill-item">
-              <div class="skill-info"><span class="skill-name">Python (Scikit-learn, Pandas, NumPy)</span><span class="skill-pct">92%</span></div>
-              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="92%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span class="skill-name">SQL (MySQL, Complex Querying)</span><span class="skill-pct">90%</span></div>
-              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="90%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span class="skill-name">Power BI & Executive Dashboards</span><span class="skill-pct">88%</span></div>
-              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="88%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span class="skill-name">Tableau & Data Visualization</span><span class="skill-pct">85%</span></div>
-              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="85%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span class="skill-name">Matplotlib & Seaborn</span><span class="skill-pct">90%</span></div>
-              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="90%"></div></div>
-            </div>
+      <div class="skills-layout">
+        <div class="glass-card glow-hover">
+          <h4 class="skills-cat-title"><i class="fas fa-brain"></i> Machine Learning & AI</h4>
+          <div class="skill-list">
+            <div class="skill-row"><span>Python (Scikit-Learn, Pandas)</span><span class="skill-pct">92%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="92%"></div></div>
+            <div class="skill-row"><span>Random Forest & Ensemble Models</span><span class="skill-pct">90%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="90%"></div></div>
+            <div class="skill-row"><span>ANN / Neural Networks</span><span class="skill-pct">85%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="85%"></div></div>
+            <div class="skill-row"><span>SVM & Regression Models</span><span class="skill-pct">88%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="88%"></div></div>
           </div>
         </div>
 
-        <!-- Domain Skills -->
-        <div class="glass-card">
-          <div class="skill-category-title"><i class="fas fa-microchip"></i> Domain & Analytics</div>
-          <div class="skill-items">
-            <div class="skill-item">
-              <div class="skill-info"><span class="skill-name">Machine Learning Pipelines</span><span class="skill-pct">88%</span></div>
-              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="88%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span class="skill-name">AWS Cloud Infrastructure</span><span class="skill-pct">82%</span></div>
-              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="82%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span class="skill-name">Statistical Modelling & Inference</span><span class="skill-pct">90%</span></div>
-              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="90%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span class="skill-name">Hypothesis Testing & A/B Analysis</span><span class="skill-pct">86%</span></div>
-              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="86%"></div></div>
-            </div>
+        <div class="glass-card glow-hover">
+          <h4 class="skills-cat-title"><i class="fas fa-database"></i> Data Engineering & SQL</h4>
+          <div class="skill-list">
+            <div class="skill-row"><span>SQL / MySQL (Advanced Queries)</span><span class="skill-pct">90%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="90%"></div></div>
+            <div class="skill-row"><span>ETL Pipelines & Data Cleaning</span><span class="skill-pct">87%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="87%"></div></div>
+            <div class="skill-row"><span>AWS Cloud Infrastructure</span><span class="skill-pct">82%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="82%"></div></div>
+            <div class="skill-row"><span>Statistical Analysis & EDA</span><span class="skill-pct">91%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="91%"></div></div>
           </div>
         </div>
 
-        <!-- Soft Skills & Languages -->
-        <div class="glass-card">
-          <div class="skill-category-title"><i class="fas fa-comments"></i> Leadership & Languages</div>
-          <div class="skill-items">
-            <div class="skill-item">
-              <div class="skill-info"><span class="skill-name">Team Management & Agile Lead</span><span class="skill-pct">92%</span></div>
-              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="92%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span class="skill-name">Data Storytelling & Presentations</span><span class="skill-pct">90%</span></div>
-              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="90%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span class="skill-name">Cross-functional Collaboration</span><span class="skill-pct">95%</span></div>
-              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="95%"></div></div>
-            </div>
-            
-            <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-glass);">
-              <div style="font-size: 0.9rem; font-weight: 600; color: var(--cyan); margin-bottom: 8px;">Languages Spoken</div>
-              <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                <span class="tag">English — Proficient</span>
-                <span class="tag">Hindi — Fluent</span>
-                <span class="tag">Kannada — Fluent</span>
-                <span class="tag">Telugu — Native</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Certifications -->
-      <div class="cert-grid">
-        <div class="glass-card cert-card">
-          <div class="cert-icon"><i class="fas fa-certificate"></i></div>
-          <div>
-            <h4 class="cert-title">Certified Data Scientist (CDS)</h4>
-            <div class="cert-issuer">DataMites / IABAC / NASSCOM — Jul 2024</div>
-            <div class="cgpa-pill" style="margin-top: 8px;"><i class="fas fa-star"></i> Received Grade "A" Project Distinction</div>
-          </div>
-        </div>
-
-        <div class="glass-card cert-card">
-          <div class="cert-icon"><i class="fas fa-chart-line"></i></div>
-          <div>
-            <h4 class="cert-title">Data Visualization Specialist</h4>
-            <div class="cert-issuer">Tata Forage Virtual Experience Program — Jan 2024</div>
-            <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">Executive readiness dashboard creation & insight delivery.</div>
+        <div class="glass-card glow-hover">
+          <h4 class="skills-cat-title"><i class="fas fa-chart-pie"></i> Visualization & BI</h4>
+          <div class="skill-list">
+            <div class="skill-row"><span>Power BI (DAX, Reports)</span><span class="skill-pct">88%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="88%"></div></div>
+            <div class="skill-row"><span>Tableau Desktop</span><span class="skill-pct">85%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="85%"></div></div>
+            <div class="skill-row"><span>Matplotlib & Seaborn</span><span class="skill-pct">89%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="89%"></div></div>
+            <div class="skill-row"><span>Excel & Advanced Analytics</span><span class="skill-pct">86%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="86%"></div></div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 8. EDUCATION & ACHIEVEMENTS -->
-  <section class="section-padding" id="education">
+  <!-- ==================== EDUCATION ==================== -->
+  <section id="education" class="section-pad reveal-section alt-bg">
     <div class="container">
-      <div class="section-header">
-        <span class="section-tag"><i class="fas fa-university"></i> Academic Journey</span>
-        <h2 class="section-title">Education & Achievements</h2>
-        <p class="section-subtitle">Academic excellence and distinction awards.</p>
-      </div>
-
+      <div class="section-badge"><i class="fas fa-university"></i> Education</div>
+      <h2 class="section-title">Academic <span class="gradient-text">Foundation</span></h2>
       <div class="edu-grid">
-        <!-- CHRIST University -->
-        <div class="glass-card">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-            <div style="width: 44px; height: 44px; background: rgba(0, 242, 254, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--cyan);">
-              <i class="fas fa-university"></i>
+        <div class="glass-card glow-hover edu-card">
+          <div class="edu-icon"><i class="fas fa-graduation-cap"></i></div>
+          <div class="edu-body">
+            <div class="edu-degree">Master of Science in Data Analytics</div>
+            <div class="edu-school">CHRIST (Deemed to be University), Bengaluru</div>
+            <div class="edu-year">2025 – 2027</div>
+            <div class="edu-cgpa-row">
+              <span class="cgpa-badge">CGPA: 3.47 / 4.0</span>
             </div>
-            <span class="timeline-date">Jun 2025 – May 2027</span>
           </div>
-          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 4px;">Master of Science in Data Analytics (MScDA)</h3>
-          <div style="color: var(--cyan); font-weight: 600; margin-bottom: 8px;">CHRIST (Deemed to be University), Bengaluru</div>
-          <div class="cgpa-pill"><i class="fas fa-award"></i> CGPA: 3.47 / 4.0</div>
         </div>
-
-        <!-- RJS College -->
-        <div class="glass-card">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-            <div style="width: 44px; height: 44px; background: rgba(121, 40, 202, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--purple);">
-              <i class="fas fa-laptop"></i>
+        <div class="glass-card glow-hover edu-card">
+          <div class="edu-icon"><i class="fas fa-laptop-code"></i></div>
+          <div class="edu-body">
+            <div class="edu-degree">Bachelor of Computer Applications (BCA)</div>
+            <div class="edu-school">RJS College, Bengaluru</div>
+            <div class="edu-year">2021 – 2024</div>
+            <div class="edu-cgpa-row">
+              <span class="cgpa-badge">CGPA: 8.7 / 10.0</span>
+              <span class="cgpa-badge">Class X: 9.7 / 10.0</span>
             </div>
-            <span class="timeline-date">Jun 2021 – Apr 2024</span>
-          </div>
-          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 4px;">Bachelor of Computer Applications (BCA)</h3>
-          <div style="color: var(--purple); font-weight: 600; margin-bottom: 8px;">RJS College | Bangalore University</div>
-          <div class="cgpa-pill"><i class="fas fa-award"></i> CGPA: 8.7 / 10.0</div>
-        </div>
-
-        <!-- Schooling -->
-        <div class="glass-card">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-            <div style="width: 44px; height: 44px; background: rgba(0, 255, 135, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--green);">
-              <i class="fas fa-school"></i>
-            </div>
-            <span class="timeline-date">Apr 2018 – Apr 2020</span>
-          </div>
-          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 4px;">Class XII & Class X Boarding</h3>
-          <div style="color: var(--green); font-weight: 600; margin-bottom: 8px;">Akshara Sree College, Adoni</div>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <div class="cgpa-pill">Class XII: 9.17 / 10.0</div>
-            <div class="cgpa-pill">Class X: 9.7 / 10.0</div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 9. CONTACT SECTION -->
-  <section class="section-padding" id="contact" style="background: rgba(11, 15, 25, 0.4);">
+  <!-- ==================== CONTACT ==================== -->
+  <section id="contact" class="section-pad reveal-section">
     <div class="container">
-      <div class="section-header">
-        <span class="section-tag"><i class="fas fa-envelope"></i> Get In Touch</span>
-        <h2 class="section-title">Contact Information</h2>
-        <p class="section-subtitle">Let's connect for data opportunities.</p>
-      </div>
+      <div class="section-badge"><i class="fas fa-satellite-dish"></i> Get In Touch</div>
+      <h2 class="section-title">Contact <span class="gradient-text">Information</span></h2>
+      <p class="section-sub">Open to Data Analyst, Data Science, and ML Engineer roles.</p>
 
-      <div class="contact-wrapper">
-        <!-- Contact Form Card -->
-        <div class="glass-card">
-          <h3 style="font-size: 1.4rem; color: var(--cyan); margin-bottom: 16px;"><i class="fas fa-paper-plane"></i> Send a Direct Message</h3>
-          
-          <form id="contact-form" onsubmit="handleFormSubmit(event)">
-            <div style="margin-bottom: 16px;">
-              <input type="text" id="sender-name" placeholder="Your Name" required style="width: 100%; padding: 12px 16px; background: rgba(7, 10, 18, 0.6); border: 1px solid var(--border-glass); border-radius: var(--radius-sm); color: var(--text-main); font-family: var(--font-sans);">
+      <div class="contact-grid">
+        <div class="glass-card glow-hover">
+          <h3 class="contact-form-title"><i class="fas fa-paper-plane"></i> Send a Message</h3>
+          <form id="contact-form" onsubmit="submitForm(event)">
+            <div class="form-group">
+              <input type="text" id="sender-name" placeholder="Your Name" required>
             </div>
-            <div style="margin-bottom: 16px;">
-              <input type="email" id="sender-email" placeholder="Your Email" required style="width: 100%; padding: 12px 16px; background: rgba(7, 10, 18, 0.6); border: 1px solid var(--border-glass); border-radius: var(--radius-sm); color: var(--text-main); font-family: var(--font-sans);">
+            <div class="form-group">
+              <input type="email" id="sender-email" placeholder="Your Email" required>
             </div>
-            <div style="margin-bottom: 20px;">
-              <textarea id="sender-msg" rows="4" placeholder="Your Message" required style="width: 100%; padding: 12px 16px; background: rgba(7, 10, 18, 0.6); border: 1px solid var(--border-glass); border-radius: var(--radius-sm); color: var(--text-main); font-family: var(--font-sans); resize: none;"></textarea>
+            <div class="form-group">
+              <textarea id="sender-msg" rows="4" placeholder="Your Message" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%;">
-              <i class="fas fa-paper-plane"></i> Send Message
-            </button>
+            <button type="submit" class="btn-primary w-full"><i class="fas fa-paper-plane"></i> Send Message</button>
           </form>
         </div>
 
-        <!-- Direct Contact Info Card -->
-        <div class="glass-card" style="display: flex; flex-direction: column; justify-content: center;">
-          <h3 style="font-size: 1.4rem; color: var(--purple); margin-bottom: 16px;"><i class="fas fa-address-card"></i> Contact Information</h3>
-          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px; line-height: 1.6;">
-            Open to full-time Data Analyst, Data Science Consultant, and Machine Learning Specialist opportunities. Feel free to reach out directly via email, phone, or LinkedIn!
-          </p>
-
-          <div class="contact-info-list">
+        <div class="glass-card glow-hover contact-info-card">
+          <h3><i class="fas fa-address-card"></i> Direct Contact</h3>
+          <p style="color:var(--text-muted);margin-bottom:28px;line-height:1.7;">Available for full-time roles, freelance projects, and research collaborations.</p>
+          <div class="contact-items">
+            <a href="mailto:kurugodusai.narendra@arts.christuniversity.in" class="contact-item">
+              <div class="ci-icon"><i class="fas fa-envelope"></i></div>
+              <div><div class="ci-lbl">Email</div><div class="ci-val">kurugodusai.narendra@arts.christuniversity.in</div></div>
+            </a>
+            <a href="tel:+916305525857" class="contact-item">
+              <div class="ci-icon"><i class="fas fa-phone"></i></div>
+              <div><div class="ci-lbl">Phone</div><div class="ci-val">+91 6305525857</div></div>
+            </a>
+            <a href="https://linkedin.com/in/kurugodusainarendra" target="_blank" class="contact-item">
+              <div class="ci-icon"><i class="fab fa-linkedin"></i></div>
+              <div><div class="ci-lbl">LinkedIn</div><div class="ci-val">kurugodusainarendra</div></div>
+            </a>
+            <a href="https://github.com/Narendra6305" target="_blank" class="contact-item">
+              <div class="ci-icon"><i class="fab fa-github"></i></div>
+              <div><div class="ci-lbl">GitHub</div><div class="ci-val">Narendra6305</div></div>
+            </a>
             <div class="contact-item">
-              <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-              <div class="contact-detail">
-                <p>Email</p>
-                <a href="mailto:kurugodusai.narendra@arts.christuniversity.in">kurugodusai.narendra@arts.christuniversity.in</a>
-              </div>
-            </div>
-
-            <div class="contact-item">
-              <div class="contact-icon"><i class="fas fa-phone"></i></div>
-              <div class="contact-detail">
-                <p>Phone</p>
-                <a href="tel:+916305525857">+91 6305525857</a>
-              </div>
-            </div>
-
-            <div class="contact-item">
-              <div class="contact-icon"><i class="fab fa-linkedin"></i></div>
-              <div class="contact-detail">
-                <p>LinkedIn</p>
-                <a href="https://linkedin.com/in/kurugodusainarendra" target="_blank">linkedin.com/in/kurugodusainarendra</a>
-              </div>
-            </div>
-
-            <div class="contact-item">
-              <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-              <div class="contact-detail">
-                <p>Location</p>
-                <span>Bengaluru, Karnataka, India</span>
-              </div>
+              <div class="ci-icon"><i class="fas fa-map-marker-alt"></i></div>
+              <div><div class="ci-lbl">Location</div><div class="ci-val">Bengaluru, Karnataka, India</div></div>
             </div>
           </div>
         </div>
@@ -953,61 +579,54 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- ==================== FOOTER ==================== -->
   <footer>
-    <div class="container">
-      <p>&copy; 2026 Kurugodu Sai Narendra.</p>
+    <div class="footer-inner">
+      <div class="footer-brand">KN<span>.analytics</span></div>
+      <p class="footer-copy">&copy; 2026 Kurugodu Sai Narendra.</p>
+      <div class="footer-links">
+        <a href="https://github.com/Narendra6305" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://linkedin.com/in/kurugodusainarendra" target="_blank"><i class="fab fa-linkedin"></i></a>
+      </div>
     </div>
   </footer>
 
-  <!-- FLOATING DEVELOPER CLI TRIGGER BUTTON -->
-  <button class="cli-floating-btn" onclick="toggleCLIModal()">
-    <i class="fas fa-terminal"></i> [ &gt;_ CLI Mode ]
+  <!-- FLOATING CLI BUTTON -->
+  <button class="float-btn" id="cli-btn" onclick="toggleCLI()" title="Developer Terminal (Ctrl+K)">
+    <i class="fas fa-terminal"></i>
   </button>
 
-  <!-- FLOATING AUDIO VISUALIZER WIDGET -->
-  <div class="visualizer-widget" id="audio-widget" onclick="toggleAudioPulse()">
-    <div class="eq-bars">
-      <div class="eq-bar"></div>
-      <div class="eq-bar"></div>
-      <div class="eq-bar"></div>
-      <div class="eq-bar"></div>
-    </div>
-    <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-main);" id="audio-status-text">Ambient Pulse</span>
-  </div>
+  <!-- MATRIX CANVAS -->
+  <canvas id="matrix-canvas"></canvas>
 
-  <!-- MODAL FOR PROJECT DETAILS -->
-  <div class="modal-overlay" id="project-modal">
-    <div class="modal-container">
-      <button class="modal-close" onclick="closeProjectModal()">&times;</button>
-      <div id="modal-content"></div>
+  <!-- PROJECT MODAL -->
+  <div class="modal-backdrop" id="modal-backdrop" onclick="closeModal()">
+    <div class="modal-box" id="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+      <div id="modal-body"></div>
     </div>
   </div>
 
-  <!-- RETRO DEVELOPER CLI TERMINAL MODAL -->
-  <div class="cli-modal-overlay" id="cli-modal">
-    <div class="cli-container">
-      <div class="cli-header">
-        <div class="cli-title"><i class="fas fa-terminal"></i> narendra@analytics-terminal:~</div>
-        <div class="cli-dots">
-          <div class="cli-dot dot-red" onclick="toggleCLIModal()" style="cursor: pointer;"></div>
-          <div class="cli-dot dot-yellow"></div>
-          <div class="cli-dot dot-green"></div>
-        </div>
+  <!-- CLI TERMINAL -->
+  <div class="cli-overlay" id="cli-overlay">
+    <div class="cli-window">
+      <div class="cli-title-bar">
+        <span class="cli-dot cd-red" onclick="toggleCLI()"></span>
+        <span class="cli-dot cd-yellow"></span>
+        <span class="cli-dot cd-green"></span>
+        <span class="cli-title-txt"><i class="fas fa-terminal"></i> narendra@analytics ~</span>
+        <span style="margin-left:auto;font-size:0.75rem;color:var(--text-dim)">Ctrl+K to toggle</span>
       </div>
       <div class="cli-body" id="cli-body">
-        <div>Welcome to Narendra's Developer Terminal v2.5 [Type <span style="color: var(--cyan);">'help'</span> for available commands]</div>
-        <div style="color: var(--text-dim); margin-bottom: 12px;">----------------------------------------------------------------------</div>
-        <div id="cli-output"></div>
-        <div class="cli-input-row">
-          <span class="cli-prompt">narendra@analytics:~$</span>
-          <input type="text" class="cli-input" id="cli-input" autofocus onkeydown="handleCLISubmit(event)">
-        </div>
+        <div style="color:var(--accent);margin-bottom:8px;">Welcome to the Data Analytics Command Center. Type <span style="color:#fff">help</span> to see commands.</div>
+      </div>
+      <div class="cli-input-row">
+        <span class="cli-prompt">narendra@analytics:~$</span>
+        <input class="cli-input" id="cli-input" autocomplete="off" onkeydown="handleCLI(event)" placeholder="Type a command...">
       </div>
     </div>
   </div>
 
-  <!-- Custom JavaScript Logic -->
   <script src="script.js"></script>
 </body>
 </html>

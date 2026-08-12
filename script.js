@@ -1,1117 +1,840 @@
-/* -------------------------------------------------------------
- *  ADVANCED DATA ANALYTICS COMMAND CENTER ENGINE
- *  Candidate: Kurugodu Sai Narendra (MSc Data Analytics)
- * ------------------------------------------------------------- */
+/* ============================================================
+   LIQUID NEURAL NETWORK PORTFOLIO — SCRIPT ENGINE
+   Kurugodu Sai Narendra | MSc Data Analytics
+   ============================================================ */
 
-document.addEventListener('DOMContentLoaded', () => {
+/* ---- BOOT SEQUENCE ---- */
+(function bootSequence() {
+  const overlay  = document.getElementById('boot-overlay');
+  const bootText = document.getElementById('boot-text');
+  const bootBar  = document.getElementById('boot-bar');
+  const bootStat = document.getElementById('boot-status');
+  if (!overlay) return;
+
+  const steps = [
+    { pct: 15,  txt: 'LOADING NEURAL WEIGHTS...',       stat: 'INITIALIZING NEURAL NETWORK...' },
+    { pct: 35,  txt: 'ESTABLISHING DATA PIPELINE...',   stat: 'CONNECTING DATA STREAMS...' },
+    { pct: 55,  txt: 'CALIBRATING ML MODELS...',        stat: 'LOADING MODEL REGISTRY...' },
+    { pct: 75,  txt: 'RENDERING HOLOGRAPHIC NODES...',  stat: 'BUILDING VISUALIZATION ENGINE...' },
+    { pct: 92,  txt: 'SYSTEM READY — NARENDRA@AI...',   stat: 'FINALIZE BOOT SEQUENCE...' },
+    { pct: 100, txt: 'BOOT COMPLETE ✓',                 stat: 'LAUNCHING PORTFOLIO COMMAND CENTER...' },
+  ];
+
+  let i = 0;
+  function tick() {
+    if (i >= steps.length) {
+      setTimeout(() => {
+        overlay.classList.add('done');
+        document.body.style.overflow = '';
+        initAll();
+      }, 420);
+      return;
+    }
+    const s = steps[i++];
+    bootText.textContent = s.txt;
+    bootStat.textContent = s.stat;
+    bootBar.style.width  = s.pct + '%';
+    setTimeout(tick, 360 + Math.random() * 120);
+  }
+  document.body.style.overflow = 'hidden';
+  tick();
+})();
+
+/* ============================================================
+   MAIN INIT — called after boot
+   ============================================================ */
+function initAll() {
+  initNeuralCanvas();
+  initOrbCanvas();
   initCustomCursor();
   initScrollProgress();
-  initParticleCanvas();
-  initHologramCore();
-  initTypedEffect();
+  initNavbar();
+  initTyped();
   initCounters();
+  initRevealSections();
   initSkillBars();
-  initNavbarScroll();
-  initBenchmarkChart();
-  initTiltAndSpotlight();
-  initCardSpotlightTracking();
+  initCardSpotlight();
   initMatrixRain();
-  initGlobalButtonParticles();
-});
-
-/* 1. THEME MATRIX SWITCHER */
-function setTheme(themeName) {
-  document.documentElement.setAttribute('data-theme', themeName);
-  playSciFiBlip(440, 0.08);
+  initBenchmarkChart();
+  initSQLSandbox();
+  setupTheme();
 }
 
-/* 2. WEB AUDIO API SCI-FI SOUND FX SYNTHESIZER */
-let audioCtx = null;
-function getAudioContext() {
-  if (!audioCtx) {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (AudioContext) audioCtx = new AudioContext();
-  }
-  return audioCtx;
+/* ---- THEME ---- */
+function setupTheme() {
+  const saved = localStorage.getItem('kn-theme') || 'cyan';
+  setTheme(saved);
+}
+function setTheme(name) {
+  document.documentElement.setAttribute('data-theme', name);
+  localStorage.setItem('kn-theme', name);
+  document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.t-${name}`);
+  if (btn) btn.classList.add('active');
+  playBlip(440);
 }
 
-function playSciFiBlip(freq = 600, duration = 0.08, type = 'sine') {
+/* ---- WEB AUDIO SYNTH ---- */
+let _ac = null;
+function getAC() { return _ac || (_ac = new (window.AudioContext||window.webkitAudioContext)()); }
+function playBlip(freq = 600, dur = 0.08) {
   try {
-    const ctx = getAudioContext();
-    if (!ctx) return;
-    if (ctx.state === 'suspended') ctx.resume();
-
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(freq * 1.5, ctx.currentTime + duration);
-
-    gain.gain.setValueAtTime(0.1, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
-
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc.start();
-    osc.stop(ctx.currentTime + duration);
-  } catch (err) {
-    // Silent fail if audio disabled
-  }
+    const ac = getAC();
+    if (ac.state === 'suspended') ac.resume();
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.type = 'sine'; o.frequency.value = freq;
+    g.gain.setValueAtTime(0.08, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
+    o.connect(g); g.connect(ac.destination);
+    o.start(); o.stop(ac.currentTime + dur);
+  } catch(e) {}
 }
 
-/* 3. 3D HOLOGRAM DATA CORE ENGINE */
-function initHologramCore() {
-  const canvas = document.getElementById('hologram-canvas');
+/* ---- FULL-PAGE NEURAL NETWORK CANVAS ---- */
+function initNeuralCanvas() {
+  const canvas = document.getElementById('neural-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  let W, H, nodes, mx = 0, my = 0;
 
-  let width = (canvas.width = 360);
-  let height = (canvas.height = 360);
-
-  const radius = 100;
-  const nodeCount = 60;
-  const nodes = [];
-
-  for (let i = 0; i < nodeCount; i++) {
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.acos(Math.random() * 2 - 1);
-    nodes.push({
-      x: radius * Math.sin(phi) * Math.cos(theta),
-      y: radius * Math.sin(phi) * Math.sin(theta),
-      z: radius * Math.cos(phi),
-      baseX: 0, baseY: 0, baseZ: 0
-    });
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    buildNodes();
   }
 
-  let angleX = 0.005;
-  let angleY = 0.008;
+  function buildNodes() {
+    const count = Math.min(Math.floor(W / 20), 90);
+    nodes = Array.from({length: count}, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.55,
+      vy: (Math.random() - 0.5) * 0.55,
+      r: Math.random() * 2.2 + 1,
+      hue: Math.random() > 0.6 ? 0 : Math.random() > 0.5 ? 270 : 190
+    }));
+  }
 
-  let mouseX = 0;
-  let mouseY = 0;
+  // Get accent color from CSS
+  function accentColor(alpha) {
+    const theme = document.documentElement.getAttribute('data-theme') || 'cyan';
+    switch(theme) {
+      case 'violet':  return `rgba(192,132,252,${alpha})`;
+      case 'emerald': return `rgba(0,255,135,${alpha})`;
+      case 'pink':    return `rgba(255,0,127,${alpha})`;
+      default:        return `rgba(0,242,254,${alpha})`;
+    }
+  }
 
-  window.addEventListener('mousemove', (e) => {
-    mouseX = (e.clientX - window.innerWidth / 2) * 0.0001;
-    mouseY = (e.clientY - window.innerHeight / 2) * 0.0001;
-  });
+  window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  window.addEventListener('resize', resize);
+  resize();
 
-  function renderHologram() {
-    ctx.clearRect(0, 0, width, height);
+  let frameId;
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
 
-    const rotX = angleX + mouseY;
-    const rotY = angleY + mouseX;
+    nodes.forEach(n => {
+      // Repel from mouse
+      const dx = n.x - mx, dy = n.y - my;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 160) {
+        const f = (160 - dist) / 160 * 1.8;
+        n.vx += (dx / dist) * f * 0.06;
+        n.vy += (dy / dist) * f * 0.06;
+      }
+      // Speed limit
+      const spd = Math.sqrt(n.vx*n.vx + n.vy*n.vy);
+      if (spd > 1.8) { n.vx *= 1.8/spd; n.vy *= 1.8/spd; }
 
-    const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
-    const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
-
-    const projected = [];
-
-    nodes.forEach((n) => {
-      // Rotate 3D point
-      let y = n.y * cosX - n.z * sinX;
-      let z = n.y * sinX + n.z * cosX;
-      let x = n.x * cosY + z * sinY;
-      z = -n.x * sinY + z * cosY;
-
-      n.x = x; n.y = y; n.z = z;
-
-      const scale = 250 / (250 + z);
-      const projX = width / 2 + x * scale;
-      const projY = height / 2 + y * scale;
-
-      projected.push({ x: projX, y: projY, z: z, scale: scale });
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
     });
 
-    // Draw connecting 3D core lines
-    for (let i = 0; i < projected.length; i++) {
-      for (let j = i + 1; j < projected.length; j++) {
-        const dx = projected[i].x - projected[j].x;
-        const dy = projected[i].y - projected[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < 55) {
+    // Draw edges
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 130) {
+          const a = (1 - dist / 130) * 0.3;
           ctx.beginPath();
-          ctx.moveTo(projected[i].x, projected[i].y);
-          ctx.lineTo(projected[j].x, projected[j].y);
-          ctx.strokeStyle = `rgba(0, 242, 254, ${(1 - dist / 55) * 0.4})`;
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.strokeStyle = accentColor(a);
           ctx.lineWidth = 1;
           ctx.stroke();
         }
       }
     }
 
-    // Draw glowing 3D nodes
-    projected.forEach((p) => {
+    // Draw nodes
+    nodes.forEach(n => {
       ctx.beginPath();
-      ctx.arc(p.x, p.y, 2.5 * p.scale, 0, Math.PI * 2);
-      ctx.fillStyle = p.z > 0 ? '#00f2fe' : '#7928ca';
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fillStyle = accentColor(0.7);
       ctx.shadowBlur = 10;
-      ctx.shadowColor = '#00f2fe';
+      ctx.shadowColor = accentColor(1);
       ctx.fill();
+      ctx.shadowBlur = 0;
     });
 
-    requestAnimationFrame(renderHologram);
+    frameId = requestAnimationFrame(draw);
   }
-
-  renderHologram();
+  draw();
 }
 
-/* 4. CUSTOM NEON DUAL-RING CURSOR PHYSICS */
+/* ---- HERO ORB CANVAS (3D SPHERE) ---- */
+function initOrbCanvas() {
+  const canvas = document.getElementById('orb-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width  = 340;
+  const H = canvas.height = 340;
+  const cx = W / 2, cy = H / 2, R = 110;
+  const nodeCount = 80;
+
+  let nodes = Array.from({length: nodeCount}, () => {
+    const theta = Math.random() * Math.PI * 2;
+    const phi   = Math.acos(2 * Math.random() - 1);
+    return {
+      x: R * Math.sin(phi) * Math.cos(theta),
+      y: R * Math.sin(phi) * Math.sin(theta),
+      z: R * Math.cos(phi)
+    };
+  });
+
+  let ax = 0, ay = 0;
+  let mx = 0, my = 0;
+
+  document.querySelector('.neural-orb-wrapper')?.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    mx = (e.clientX - rect.left - W/2) / W;
+    my = (e.clientY - rect.top  - H/2) / H;
+  });
+
+  function accentColor(alpha) {
+    const theme = document.documentElement.getAttribute('data-theme') || 'cyan';
+    switch(theme) {
+      case 'violet':  return `rgba(192,132,252,${alpha})`;
+      case 'emerald': return `rgba(0,255,135,${alpha})`;
+      case 'pink':    return `rgba(255,0,127,${alpha})`;
+      default:        return `rgba(0,242,254,${alpha})`;
+    }
+  }
+
+  function rotateX(nodes, angle) {
+    const c = Math.cos(angle), s = Math.sin(angle);
+    return nodes.map(n => ({ x: n.x, y: n.y*c - n.z*s, z: n.y*s + n.z*c }));
+  }
+  function rotateY(nodes, angle) {
+    const c = Math.cos(angle), s = Math.sin(angle);
+    return nodes.map(n => ({ x: n.x*c + n.z*s, y: n.y, z: -n.x*s + n.z*c }));
+  }
+
+  function frame() {
+    ax += 0.006 + my * 0.003;
+    ay += 0.009 + mx * 0.003;
+
+    let rotated = rotateX(nodes, ax);
+    rotated = rotateY(rotated, ay);
+
+    const projected = rotated.map(n => {
+      const scale = 260 / (260 + n.z);
+      return { px: cx + n.x * scale, py: cy + n.y * scale, z: n.z, s: scale };
+    });
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Central core glow
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 90);
+    grad.addColorStop(0, accentColor(0.12));
+    grad.addColorStop(1, 'transparent');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Edges
+    for (let i = 0; i < projected.length; i++) {
+      for (let j = i + 1; j < projected.length; j++) {
+        const dx = projected[i].px - projected[j].px;
+        const dy = projected[i].py - projected[j].py;
+        const d  = Math.sqrt(dx*dx + dy*dy);
+        if (d < 60) {
+          ctx.beginPath();
+          ctx.moveTo(projected[i].px, projected[i].py);
+          ctx.lineTo(projected[j].px, projected[j].py);
+          ctx.strokeStyle = accentColor((1 - d/60) * 0.45);
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Nodes
+    projected.forEach(p => {
+      const brightness = (p.z + R) / (2 * R);
+      ctx.beginPath();
+      ctx.arc(p.px, p.py, 2.2 * p.s, 0, Math.PI * 2);
+      ctx.fillStyle = accentColor(0.3 + brightness * 0.7);
+      ctx.shadowBlur = 8 * brightness;
+      ctx.shadowColor = accentColor(1);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    });
+
+    requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+/* ---- CUSTOM CURSOR ---- */
 function initCustomCursor() {
-  const dot = document.getElementById('cursor-dot');
-  const outline = document.getElementById('cursor-outline');
-  if (!dot || !outline) return;
+  const dot  = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  if (!dot || !ring) return;
 
-  let mouseX = window.innerWidth / 2;
-  let mouseY = window.innerHeight / 2;
-  let outlineX = mouseX;
-  let outlineY = mouseY;
+  let mx = innerWidth/2, my = innerHeight/2;
+  let rx = mx, ry = my;
 
-  window.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+  window.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
   });
 
-  function animateCursor() {
-    outlineX += (mouseX - outlineX) * 0.18;
-    outlineY += (mouseY - outlineY) * 0.18;
-    outline.style.transform = `translate(${outlineX}px, ${outlineY}px) translate(-50%, -50%)`;
-    requestAnimationFrame(animateCursor);
+  function animRing() {
+    rx += (mx - rx) * 0.16;
+    ry += (my - ry) * 0.16;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
   }
-  animateCursor();
+  animRing();
 
-  const hoverables = document.querySelectorAll('a, button, .glass-card, input, select, textarea, .lab-tab');
-  hoverables.forEach((elem) => {
-    elem.addEventListener('mouseenter', () => outline.classList.add('hovered'));
-    elem.addEventListener('mouseleave', () => outline.classList.remove('hovered'));
+  document.querySelectorAll('a,button,.glass-card,.lab-tab,.proj-cta').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
   });
 }
 
-/* 5. TOP SCROLL PROGRESS BAR */
+/* ---- SCROLL PROGRESS ---- */
 function initScrollProgress() {
   const bar = document.getElementById('scroll-progress');
   if (!bar) return;
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.documentElement.scrollHeight - innerHeight) * 100;
+    bar.style.width = pct + '%';
+  });
+}
+
+/* ---- NAVBAR ---- */
+function initNavbar() {
+  const nav   = document.getElementById('navbar');
+  const links = document.querySelectorAll('.nav-link');
+  const hbg   = document.getElementById('hamburger');
+  const menu  = document.getElementById('nav-links');
 
   window.addEventListener('scroll', () => {
-    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = (window.scrollY / totalHeight) * 100;
-    bar.style.width = `${progress}%`;
-  });
-}
+    nav.classList.toggle('solid', window.scrollY > 30);
 
-/* 6. CARD MOUSE SPOTLIGHT TRACKING */
-function initCardSpotlightTracking() {
-  const cards = document.querySelectorAll('.glass-card');
-  cards.forEach((card) => {
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      card.style.setProperty('--mouse-x', `${x}px`);
-      card.style.setProperty('--mouse-y', `${y}px`);
+    // Active spy
+    let current = '';
+    document.querySelectorAll('section[id]').forEach(s => {
+      if (window.scrollY >= s.offsetTop - 140) current = s.id;
+    });
+    links.forEach(l => {
+      l.classList.toggle('active', l.dataset.section === current);
     });
   });
+
+  hbg?.addEventListener('click', () => menu.classList.toggle('open'));
+  links.forEach(l => l.addEventListener('click', () => menu.classList.remove('open')));
 }
 
-/* 7. DYNAMIC DATA PARTICLE CANVAS */
-function initParticleCanvas() {
-  const canvas = document.getElementById('particle-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-
-  let width = (canvas.width = window.innerWidth);
-  let height = (canvas.height = window.innerHeight);
-
-  window.addEventListener('resize', () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-  });
-
-  const particles = [];
-  const particleCount = Math.min(Math.floor(width / 16), 80);
-
-  let mouse = { x: null, y: null, radius: 170 };
-
-  window.addEventListener('mousemove', (e) => {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-  });
-
-  window.addEventListener('mouseleave', () => {
-    mouse.x = null;
-    mouse.y = null;
-  });
-
-  class Particle {
-    constructor() {
-      this.x = Math.random() * width;
-      this.y = Math.random() * height;
-      this.vx = (Math.random() - 0.5) * 0.9;
-      this.vy = (Math.random() - 0.5) * 0.9;
-      this.size = Math.random() * 2.5 + 1;
-      this.color = Math.random() > 0.5 ? '#00f2fe' : '#7928ca';
-    }
-
-    update() {
-      this.x += this.vx;
-      this.y += this.vy;
-
-      if (this.x < 0 || this.x > width) this.vx *= -1;
-      if (this.y < 0 || this.y > height) this.vy *= -1;
-
-      if (mouse.x !== null && mouse.y !== null) {
-        let dx = mouse.x - this.x;
-        let dy = mouse.y - this.y;
-        let dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < mouse.radius) {
-          let force = (mouse.radius - dist) / mouse.radius;
-          this.x -= (dx / dist) * force * 2.5;
-          this.y -= (dy / dist) * force * 2.5;
-        }
-      }
-    }
-
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fillStyle = this.color;
-      ctx.shadowBlur = 12;
-      ctx.shadowColor = this.color;
-      ctx.fill();
-    }
-  }
-
-  for (let i = 0; i < particleCount; i++) {
-    particles.push(new Particle());
-  }
-
-  function animate() {
-    ctx.clearRect(0, 0, width, height);
-
-    for (let a = 0; a < particles.length; a++) {
-      for (let b = a + 1; b < particles.length; b++) {
-        let dx = particles[a].x - particles[b].x;
-        let dy = particles[a].y - particles[b].y;
-        let dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < 140) {
-          let opacity = 1 - dist / 140;
-          ctx.beginPath();
-          ctx.moveTo(particles[a].x, particles[a].y);
-          ctx.lineTo(particles[b].x, particles[b].y);
-          ctx.strokeStyle = `rgba(0, 242, 254, ${opacity * 0.28})`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-        }
-      }
-    }
-
-    particles.forEach((p) => {
-      p.update();
-      p.draw();
-    });
-
-    requestAnimationFrame(animate);
-  }
-
-  animate();
-}
-
-/* 8. DYNAMIC TYPED TEXT EFFECT */
-function initTypedEffect() {
-  const typedSpan = document.getElementById('typed-text');
-  if (!typedSpan) return;
-
+/* ---- TYPED TEXT ---- */
+function initTyped() {
+  const el = document.getElementById('typed-text');
+  if (!el) return;
   const roles = [
     'Data Science Consultant Intern',
     'MSc Data Analytics Scholar',
-    'Machine Learning Pipeline Specialist',
-    'Predictive Analytics Specialist'
+    'ML Pipeline Specialist',
+    'Predictive Analytics Expert'
   ];
-
-  let roleIdx = 0;
-  let charIdx = 0;
-  let isDeleting = false;
-
-  function type() {
-    const currentRole = roles[roleIdx];
-
-    if (isDeleting) {
-      typedSpan.textContent = currentRole.substring(0, charIdx - 1);
-      charIdx--;
-    } else {
-      typedSpan.textContent = currentRole.substring(0, charIdx + 1);
-      charIdx++;
-    }
-
-    let typeSpeed = isDeleting ? 40 : 80;
-
-    if (!isDeleting && charIdx === currentRole.length) {
-      typeSpeed = 2200;
-      isDeleting = true;
-    } else if (isDeleting && charIdx === 0) {
-      isDeleting = false;
-      roleIdx = (roleIdx + 1) % roles.length;
-      typeSpeed = 400;
-    }
-
-    setTimeout(type, typeSpeed);
+  let ri = 0, ci = 0, deleting = false;
+  function tick() {
+    const r = roles[ri];
+    el.textContent = deleting ? r.slice(0, ci-1) : r.slice(0, ci+1);
+    deleting ? ci-- : ci++;
+    let delay = deleting ? 38 : 78;
+    if (!deleting && ci === r.length)    { delay = 2000; deleting = true; }
+    else if (deleting && ci === 0)       { deleting = false; ri = (ri+1) % roles.length; delay = 380; }
+    setTimeout(tick, delay);
   }
-
-  type();
+  tick();
 }
 
-/* 9. COUNTER ANIMATION */
+/* ---- COUNTERS ---- */
 function initCounters() {
   const counters = document.querySelectorAll('.counter');
-  let animated = false;
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting && !animated) {
-        animated = true;
-        counters.forEach((counter) => {
-          const target = +counter.getAttribute('data-target');
-          let count = 0;
-          const increment = Math.ceil(target / 40);
-
-          const updateCount = () => {
-            count += increment;
-            if (count >= target) {
-              counter.textContent = target;
-            } else {
-              counter.textContent = count;
-              setTimeout(updateCount, 40);
-            }
-          };
-          updateCount();
-        });
-      }
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      obs.unobserve(e.target);
+      const target = +e.target.dataset.target;
+      let cur = 0;
+      const step = Math.ceil(target / 45);
+      const run = () => {
+        cur = Math.min(cur + step, target);
+        e.target.textContent = cur;
+        if (cur < target) setTimeout(run, 38);
+      };
+      run();
     });
   }, { threshold: 0.5 });
-
-  const heroStats = document.querySelector('.hero-stats');
-  if (heroStats) observer.observe(heroStats);
+  counters.forEach(c => obs.observe(c));
 }
 
-/* 10. ANIMATED SKILL BARS */
+/* ---- REVEAL ON SCROLL ---- */
+function initRevealSections() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal-section').forEach(s => obs.observe(s));
+}
+
+/* ---- SKILL BARS ---- */
 function initSkillBars() {
-  const skillSection = document.getElementById('skills');
-  const skillBars = document.querySelectorAll('.skill-bar-fill');
-
-  if (!skillSection) return;
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        skillBars.forEach((bar) => {
-          const targetWidth = bar.getAttribute('data-width');
-          bar.style.width = targetWidth;
-        });
+  const bars = document.querySelectorAll('.skill-bar-fill');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        bars.forEach(b => b.style.width = b.dataset.w);
+        obs.disconnect();
       }
     });
   }, { threshold: 0.2 });
-
-  observer.observe(skillSection);
+  const section = document.getElementById('skills');
+  if (section) obs.observe(section);
 }
 
-/* 11. NAVBAR SCROLL & ACTIVE SPY */
-function initNavbarScroll() {
-  const navbar = document.getElementById('navbar');
-  const navLinks = document.querySelectorAll('.nav-link');
-  const mobileToggle = document.getElementById('mobile-toggle');
-  const navMenu = document.getElementById('nav-links');
-
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 40) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
-    }
-
-    let current = '';
-    const sections = document.querySelectorAll('section');
-
-    sections.forEach((section) => {
-      const sectionTop = section.offsetTop - 120;
-      if (window.scrollY >= sectionTop) {
-        current = section.getAttribute('id');
-      }
-    });
-
-    navLinks.forEach((link) => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === `#${current}`) {
-        link.classList.add('active');
-      }
-    });
-  });
-
-  if (mobileToggle) {
-    mobileToggle.addEventListener('click', () => {
-      navMenu.classList.toggle('active');
-    });
-  }
-
-  navLinks.forEach((link) => {
-    link.addEventListener('click', () => {
-      navMenu.classList.remove('active');
+/* ---- CARD SPOTLIGHT (mouse radial) ---- */
+function initCardSpotlight() {
+  document.querySelectorAll('.glass-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top)  + 'px');
     });
   });
 }
 
-/* 12. INTERACTIVE ANALYTICS LAB SWITCHING & SIMULATORS */
-function switchLabTab(tabName) {
-  playSciFiBlip(520, 0.06);
-  const tabs = document.querySelectorAll('.lab-tab');
-  const panels = document.querySelectorAll('.lab-panel');
-
-  tabs.forEach((tab) => tab.classList.remove('active'));
-  panels.forEach((panel) => panel.classList.remove('active'));
-
-  event.currentTarget.classList.add('active');
-  const activePanel = document.getElementById(`panel-${tabName}`);
-  if (activePanel) activePanel.classList.add('active');
+/* ---- LAB: TAB SWITCHING ---- */
+function switchTab(e, name) {
+  playBlip(520);
+  document.querySelectorAll('.lab-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.lab-panel').forEach(p => p.classList.remove('active'));
+  e.currentTarget.classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
 }
 
-function updateChurnSim() {
-  const spend = +document.getElementById('spend-slider').value;
-  const tenure = +document.getElementById('tenure-slider').value;
+/* ---- LAB: CHURN SIM ---- */
+function runChurnSim() {
+  const spend   = +document.getElementById('spend-slider').value;
+  const tenure  = +document.getElementById('tenure-slider').value;
   const tickets = +document.getElementById('tickets-slider').value;
 
-  document.getElementById('spend-val').textContent = `$${spend}`;
-  document.getElementById('tenure-val').textContent = `${tenure} mos`;
-  document.getElementById('tickets-val').textContent = tickets;
+  document.getElementById('sv-spend').textContent   = '$' + spend;
+  document.getElementById('sv-tenure').textContent  = tenure + ' months';
+  document.getElementById('sv-tickets').textContent = tickets;
 
-  let baseScore = 0.5;
-  baseScore -= (tenure / 60) * 0.4;
-  baseScore += (tickets / 10) * 0.5;
-  if (spend < 200) baseScore += 0.2;
-  else if (spend > 800) baseScore -= 0.15;
+  let score = 0.5;
+  score -= (tenure / 60) * 0.4;
+  score += (tickets / 10) * 0.5;
+  if (spend < 200) score += 0.2; else if (spend > 800) score -= 0.15;
+  const pct = Math.min(Math.max(score * 100, 3), 97).toFixed(1);
 
-  let probability = Math.min(Math.max((baseScore * 100).toFixed(1), 3.2), 97.8);
-  const scoreElem = document.getElementById('churn-score');
-  const statusElem = document.getElementById('churn-status');
+  document.getElementById('churn-score').innerHTML = pct + '<span>%</span>';
+  const bar = document.getElementById('churn-bar');
+  const st  = document.getElementById('churn-status');
+  bar.style.width = pct + '%';
 
-  scoreElem.textContent = `${probability}%`;
-
-  if (probability < 35) {
-    statusElem.innerHTML = `<i class="fas fa-check-circle"></i> Low Risk Customer (High Loyalty Target)`;
-    statusElem.style.color = 'var(--green)';
-  } else if (probability < 65) {
-    statusElem.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Moderate Risk (Retention Campaign Advised)`;
-    statusElem.style.color = 'var(--amber)';
+  if (pct < 35) {
+    bar.style.background = 'var(--green)'; st.dataset.level = 'low';
+    st.innerHTML = '<i class="fas fa-check-circle"></i> Low Risk — Retention Target';
+  } else if (pct < 65) {
+    bar.style.background = 'var(--amber)'; st.dataset.level = 'mid';
+    st.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Moderate Risk — Campaign Advised';
   } else {
-    statusElem.innerHTML = `<i class="fas fa-times-circle"></i> High Churn Risk (Immediate Intervention Required)`;
-    statusElem.style.color = 'var(--pink)';
+    bar.style.background = 'var(--accent3)'; st.dataset.level = 'high';
+    st.innerHTML = '<i class="fas fa-times-circle"></i> High Risk — Immediate Action Required';
   }
 }
 
-function updateHeartSim() {
-  const bp = +document.getElementById('bp-slider').value;
+/* ---- LAB: CARDIOVASCULAR SIM ---- */
+function runHeartSim() {
+  const bp   = +document.getElementById('bp-slider').value;
   const chol = +document.getElementById('chol-slider').value;
-  const hr = +document.getElementById('hr-slider').value;
+  const hr   = +document.getElementById('hr-slider').value;
 
-  document.getElementById('bp-val').textContent = bp;
-  document.getElementById('chol-val').textContent = chol;
-  document.getElementById('hr-val').textContent = hr;
+  document.getElementById('sv-bp').textContent   = bp + ' mmHg';
+  document.getElementById('sv-chol').textContent = chol + ' mg/dl';
+  document.getElementById('sv-hr').textContent   = hr + ' bpm';
 
-  let riskScore = 10;
-  if (bp > 140) riskScore += (bp - 140) * 0.4;
-  if (chol > 240) riskScore += (chol - 240) * 0.3;
-  if (hr < 110) riskScore += 15;
+  let risk = 10;
+  if (bp > 140)   risk += (bp - 140) * 0.4;
+  if (chol > 240) risk += (chol - 240) * 0.3;
+  if (hr < 110)   risk += 15;
+  const pct = Math.min(Math.max(risk, 5), 95).toFixed(1);
 
-  let riskPct = Math.min(Math.max(riskScore.toFixed(1), 5.0), 95.0);
-  const scoreElem = document.getElementById('heart-score');
-  const statusElem = document.getElementById('heart-status');
+  document.getElementById('heart-score').innerHTML = pct + '<span>%</span>';
+  const bar = document.getElementById('heart-bar');
+  const st  = document.getElementById('heart-status');
+  bar.style.width = pct + '%';
 
-  scoreElem.textContent = `${riskPct}%`;
-
-  if (riskPct < 30) {
-    statusElem.innerHTML = `<i class="fas fa-shield-alt"></i> Low Risk Biomarkers`;
-    statusElem.style.color = 'var(--green)';
-  } else if (riskPct < 60) {
-    statusElem.innerHTML = `<i class="fas fa-exclamation-circle"></i> Elevated Cardiovascular Risk Factor`;
-    statusElem.style.color = 'var(--amber)';
+  if (pct < 30) {
+    bar.style.background = 'var(--green)'; st.dataset.level = 'low';
+    st.innerHTML = '<i class="fas fa-shield-alt"></i> Normal Biomarker Profile';
+  } else if (pct < 60) {
+    bar.style.background = 'var(--amber)'; st.dataset.level = 'mid';
+    st.innerHTML = '<i class="fas fa-exclamation-circle"></i> Elevated Cardiovascular Risk';
   } else {
-    statusElem.innerHTML = `<i class="fas fa-heart-broken"></i> High Risk Indicator (Clinical Decision Support Alert)`;
-    statusElem.style.color = 'var(--pink)';
+    bar.style.background = 'var(--accent3)'; st.dataset.level = 'high';
+    st.innerHTML = '<i class="fas fa-heart-broken"></i> High Risk — Clinical Alert';
   }
 }
 
-/* 13. LIVE SQL SANDBOX ENGINE */
-const sqlQueries = {
+/* ---- LAB: SQL SANDBOX ---- */
+const SQL_QUERIES = {
   churn: {
-    code: `SELECT customer_id, monthly_spend, tenure_months, churn_probability FROM customer_telemetry WHERE churn_probability > 0.65 ORDER BY monthly_spend DESC LIMIT 5;`,
-    head: ['customer_id', 'monthly_spend', 'tenure_months', 'churn_probability'],
-    body: [
-      ['CUST_9402', '$1,240', '3 mos', '<span style="color: var(--pink); font-weight:700;">84.2%</span>'],
-      ['CUST_8819', '$980', '5 mos', '<span style="color: var(--pink); font-weight:700;">76.5%</span>'],
-      ['CUST_7210', '$850', '2 mos', '<span style="color: var(--pink); font-weight:700;">71.8%</span>']
+    sql: `SELECT customer_id, monthly_spend, tenure_months,\n       churn_probability\nFROM   customer_telemetry\nWHERE  churn_probability > 0.65\nORDER  BY monthly_spend DESC\nLIMIT  5;`,
+    head: ['customer_id','monthly_spend','tenure_months','churn_probability'],
+    rows: [
+      ['CUST_9402','$1,240','3 mos','<span style="color:var(--accent3);font-weight:700">84.2%</span>'],
+      ['CUST_8819','$980','5 mos','<span style="color:var(--accent3);font-weight:700">76.5%</span>'],
+      ['CUST_7210','$850','2 mos','<span style="color:var(--accent3);font-weight:700">71.8%</span>'],
     ],
-    info: '⚡ Executed in 0.03ms | 3 rows returned | Cache Status: HIT'
+    info: '⚡ Executed in 0.03ms · 3 rows returned · Cache: HIT'
   },
-  high_spend: {
-    code: `SELECT customer_id, rfm_segment, total_lifetime_val FROM rfm_analytics_clusters WHERE rfm_segment = 'VIP_Platinum' ORDER BY total_lifetime_val DESC LIMIT 3;`,
-    head: ['customer_id', 'rfm_segment', 'total_lifetime_val'],
-    body: [
-      ['CUST_1042', '<span style="color: var(--cyan); font-weight:700;">VIP_Platinum</span>', '$14,250'],
-      ['CUST_3081', '<span style="color: var(--cyan); font-weight:700;">VIP_Platinum</span>', '$11,900'],
-      ['CUST_5520', '<span style="color: var(--cyan); font-weight:700;">VIP_Platinum</span>', '$9,840']
+  rfm: {
+    sql: `SELECT customer_id, rfm_segment,\n       total_lifetime_value\nFROM   rfm_analytics\nWHERE  rfm_segment = 'VIP_Platinum'\nORDER  BY total_lifetime_value DESC\nLIMIT  3;`,
+    head: ['customer_id','rfm_segment','total_lifetime_value'],
+    rows: [
+      ['CUST_1042','<span style="color:var(--accent);font-weight:700">VIP_Platinum</span>','$14,250'],
+      ['CUST_3081','<span style="color:var(--accent);font-weight:700">VIP_Platinum</span>','$11,900'],
+      ['CUST_5520','<span style="color:var(--accent);font-weight:700">VIP_Platinum</span>','$9,840'],
     ],
-    info: '⚡ Executed in 0.02ms | 3 rows returned | Cache Status: HIT'
+    info: '⚡ Executed in 0.02ms · 3 rows returned · Cache: HIT'
   },
-  model_metrics: {
-    code: `SELECT algorithm_name, accuracy_pct, precision_pct, recall_pct FROM model_evaluation_logs ORDER BY accuracy_pct DESC;`,
-    head: ['algorithm_name', 'accuracy_pct', 'precision_pct', 'recall_pct'],
-    body: [
-      ['Random Forest Ensemble', '<span style="color: var(--green); font-weight:700;">90.2%</span>', '91.4%', '88.2%'],
-      ['Artificial Neural Network', '88.5%', '89.1%', '87.6%'],
-      ['Support Vector Machine', '85.7%', '86.4%', '84.0%']
+  models: {
+    sql: `SELECT algorithm_name, accuracy_pct,\n       precision_pct, recall_pct\nFROM   model_evaluation_log\nORDER  BY accuracy_pct DESC;`,
+    head: ['algorithm_name','accuracy_pct','precision_pct','recall_pct'],
+    rows: [
+      ['Random Forest Ensemble','<span style="color:var(--green);font-weight:700">90.2%</span>','91.4%','88.2%'],
+      ['Artificial Neural Network','88.5%','89.1%','87.6%'],
+      ['Support Vector Machine','85.7%','86.4%','84.0%'],
     ],
-    info: '⚡ Executed in 0.04ms | 3 rows returned | Cache Status: HIT'
+    info: '⚡ Executed in 0.04ms · 3 rows returned · Cache: HIT'
   }
 };
 
-function loadPresetSQLQuery() {
-  const sel = document.getElementById('sql-query-select').value;
-  const q = sqlQueries[sel];
-  document.getElementById('sql-query-display').textContent = q.code;
-  executeSQLQuery();
+function initSQLSandbox() {
+  const el = document.getElementById('sql-code');
+  if (el) el.textContent = SQL_QUERIES.churn.sql;
+  execSQL();
 }
 
-function executeSQLQuery() {
-  playSciFiBlip(780, 0.09);
-  const sel = document.getElementById('sql-query-select').value;
-  const q = sqlQueries[sel];
-
-  const head = document.getElementById('sql-table-head');
-  const body = document.getElementById('sql-table-body');
-  const info = document.getElementById('sql-status-info');
-
-  head.innerHTML = q.head.map(h => `<th>${h}</th>`).join('');
-  body.innerHTML = q.body.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('');
-  info.textContent = q.info;
+function loadSQL() {
+  const key = document.getElementById('sql-select').value;
+  const q = SQL_QUERIES[key];
+  document.getElementById('sql-code').textContent = q.sql;
 }
 
-/* 14. ML CONFUSION MATRIX CALCULATOR */
-function updateConfusionMatrix() {
-  const t = +document.getElementById('threshold-slider').value;
-  document.getElementById('threshold-val').textContent = t.toFixed(2);
+function execSQL() {
+  playBlip(780);
+  const key = document.getElementById('sql-select').value;
+  const q   = SQL_QUERIES[key];
 
-  // Dynamic confusion matrix cell calculations relative to threshold
+  document.getElementById('sql-head').innerHTML = '<tr>' + q.head.map(h => `<th>${h}</th>`).join('') + '</tr>';
+  document.getElementById('sql-footer').textContent = '⌛ Executing query...';
+
+  setTimeout(() => {
+    document.getElementById('sql-body').innerHTML = q.rows.map(r =>
+      '<tr>' + r.map(c => `<td>${c}</td>`).join('') + '</tr>'
+    ).join('');
+    document.getElementById('sql-footer').textContent = q.info;
+  }, 420);
+}
+
+/* ---- LAB: CONFUSION MATRIX ---- */
+function runMatrix() {
+  const t = +document.getElementById('thresh-slider').value;
+  document.getElementById('sv-thresh').textContent = t.toFixed(2);
+
   const tp = Math.round(500 * (1 - (t - 0.1) * 0.3));
-  const fp = Math.round(80 * (1 - (t - 0.1) * 0.7));
-  const fn = Math.round(30 + (t - 0.1) * 80);
+  const fp = Math.round(80  * (1 - (t - 0.1) * 0.7));
+  const fn = Math.round(30  + (t - 0.1) * 80);
   const tn = Math.round(900 + (t - 0.1) * 100);
 
-  const precision = ((tp / (tp + fp)) * 100).toFixed(1);
-  const recall = ((tp / (tp + fn)) * 100).toFixed(1);
-  const f1 = ((2 * precision * recall) / (+precision + +recall)).toFixed(1);
+  const prec = (tp / (tp + fp) * 100).toFixed(1);
+  const rec  = (tp / (tp + fn) * 100).toFixed(1);
+  const f1   = (2 * prec * rec / (+prec + +rec)).toFixed(1);
 
-  document.getElementById('cell-tp').textContent = tp;
-  document.getElementById('cell-fp').textContent = fp;
-  document.getElementById('cell-fn').textContent = fn;
-  document.getElementById('cell-tn').textContent = tn;
-
-  document.getElementById('mat-precision').textContent = `${precision}%`;
-  document.getElementById('mat-recall').textContent = `${recall}%`;
-  document.getElementById('mat-f1').textContent = `${f1}%`;
+  document.getElementById('cm-tp').textContent = tp;
+  document.getElementById('cm-fp').textContent = fp;
+  document.getElementById('cm-fn').textContent = fn;
+  document.getElementById('cm-tn').textContent = tn;
+  document.getElementById('mm-prec').textContent = prec + '%';
+  document.getElementById('mm-rec').textContent  = rec  + '%';
+  document.getElementById('mm-f1').textContent   = f1   + '%';
 }
 
-/* 15. ALGORITHM BENCHMARK CHART (CHART.JS) */
+/* ---- LAB: BENCHMARK CHART ---- */
 function initBenchmarkChart() {
-  const ctx = document.getElementById('benchmarkChart');
-  if (!ctx) return;
-
-  new Chart(ctx, {
+  const el = document.getElementById('benchmarkChart');
+  if (!el) return;
+  new Chart(el, {
     type: 'bar',
     data: {
-      labels: ['Random Forest Ensemble', 'Artificial Neural Network', 'Support Vector Machine', 'Decision Tree Classifier'],
-      datasets: [
-        {
-          label: 'Prediction Accuracy (%)',
-          data: [90.2, 88.5, 85.7, 81.4],
-          backgroundColor: [
-            'rgba(0, 242, 254, 0.8)',
-            'rgba(121, 40, 202, 0.8)',
-            'rgba(79, 172, 254, 0.8)',
-            'rgba(0, 255, 135, 0.8)'
-          ],
-          borderColor: [
-            '#00f2fe',
-            '#7928ca',
-            '#4facfe',
-            '#00ff87'
-          ],
-          borderWidth: 2,
-          borderRadius: 8
-        }
-      ]
+      labels: ['Random Forest', 'Neural Network', 'SVM', 'Decision Tree'],
+      datasets: [{
+        label: 'Accuracy (%)',
+        data: [90.2, 88.5, 85.7, 81.4],
+        backgroundColor: ['rgba(0,242,254,0.7)','rgba(121,40,202,0.7)','rgba(79,172,254,0.7)','rgba(0,255,135,0.7)'],
+        borderColor:     ['#00f2fe','#7928ca','#4facfe','#00ff87'],
+        borderWidth: 2, borderRadius: 8
+      }]
     },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          labels: { color: '#f8fafc', font: { family: 'Outfit' } }
-        }
-      },
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#f0f6ff', font: { family: 'Outfit' } } } },
       scales: {
-        y: {
-          beginAtZero: true,
-          max: 100,
-          ticks: { color: '#94a3b8' },
-          grid: { color: 'rgba(255, 255, 255, 0.05)' }
-        },
-        x: {
-          ticks: { color: '#94a3b8' },
-          grid: { color: 'rgba(255, 255, 255, 0.05)' }
-        }
+        y: { beginAtZero: true, max: 100, ticks: { color: '#8fa4c8' }, grid: { color: 'rgba(255,255,255,0.04)' } },
+        x: { ticks: { color: '#8fa4c8' }, grid: { color: 'rgba(255,255,255,0.04)' } }
       }
     }
   });
 }
 
-/* 16. 3D TILT EFFECT */
-function initTiltAndSpotlight() {
-  const cards = document.querySelectorAll('[data-tilt]');
+/* ---- MATRIX RAIN ---- */
+let matrixTimer = null;
+function initMatrixRain() {
+  const c   = document.getElementById('matrix-canvas');
+  const ctx = c.getContext('2d');
+  c.width = innerWidth; c.height = innerHeight;
+  const cols = Math.floor(c.width / 14);
+  const drops = Array(cols).fill(1);
 
-  cards.forEach((card) => {
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-
-      const rotateX = ((y - centerY) / centerY) * -8;
-      const rotateY = ((x - centerX) / centerX) * 8;
-
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
-    });
-
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)`;
-    });
-  });
+  window.matrixFrame = () => {
+    ctx.fillStyle = 'rgba(4,8,16,0.07)';
+    ctx.fillRect(0, 0, c.width, c.height);
+    ctx.fillStyle = '#00ff87'; ctx.font = '13px monospace';
+    for (let i = 0; i < drops.length; i++) {
+      ctx.fillText(Math.random() > 0.5 ? '1' : '0', i * 14, drops[i] * 14);
+      if (drops[i] * 14 > c.height && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    }
+  };
 }
 
-/* 17. PROJECT MODALS */
-function openProjectModal(projectKey) {
-  playSciFiBlip(680, 0.08);
-  const overlay = document.getElementById('project-modal');
-  const content = document.getElementById('modal-content');
-
-  if (projectKey === 'churn') {
-    content.innerHTML = `
-      <div style="font-family: var(--font-mono); color: var(--cyan); font-size: 0.85rem; margin-bottom: 8px;">CASE STUDY: MAY 2024 – JUN 2024</div>
-      <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 16px;">Smart Targeting & Churn Prevention System</h2>
-      <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 20px;">
-        Designed and engineered an end-to-end customer churn analytics system utilizing Python, Flask, Random Forest, Artificial Neural Networks (ANN), and MySQL database integrations.
-      </p>
-
-      <h4 style="color: var(--cyan); margin-bottom: 10px;">Key Technical Innovations</h4>
-      <ul style="list-style: square; padding-left: 20px; color: var(--text-muted); line-height: 1.8; margin-bottom: 20px;">
-        <li>Attained <strong>90% model prediction accuracy</strong> using an ensemble voting classifier combining Random Forest and ANN architectures.</li>
-        <li>Engineered RFM (Recency, Frequency, Monetary) feature extraction pipelines inside MySQL to segment high-value customer clusters.</li>
-        <li>Built an executive dashboard interface with automated retention campaign triggers.</li>
-      </ul>
-
-      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-        <span class="tag">Python</span>
-        <span class="tag">Flask</span>
-        <span class="tag">Random Forest</span>
-        <span class="tag">ANN</span>
-        <span class="tag">MySQL</span>
-      </div>
-    `;
-  } else if (projectKey === 'heart') {
-    content.innerHTML = `
-      <div style="font-family: var(--font-mono); color: var(--purple); font-size: 0.85rem; margin-bottom: 8px;">BIOSTATISTICS CASE STUDY: AUG 2024 – OCT 2024</div>
-      <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 16px;">Heart Disease Early Detection System</h2>
-      <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 20px;">
-        Engineered a clinical decision support risk assessment platform using Python machine learning models (SVM & Random Forest) with visual biostatistics diagnostics.
-      </p>
-
-      <h4 style="color: var(--purple); margin-bottom: 10px;">Key Technical Innovations</h4>
-      <ul style="list-style: square; padding-left: 20px; color: var(--text-muted); line-height: 1.8; margin-bottom: 20px;">
-        <li>Interpretable risk scoring system designed specifically for clinical decision support.</li>
-        <li>Comprehensive biostatistics feature correlations computed with Matplotlib and Seaborn heatmaps.</li>
-        <li>Strict adherence to healthcare Ethical AI standards, model fairness, and false-negative minimization.</li>
-      </ul>
-
-      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-        <span class="tag">Python</span>
-        <span class="tag">Random Forest</span>
-        <span class="tag">SVM</span>
-        <span class="tag">Matplotlib</span>
-        <span class="tag">Seaborn</span>
-      </div>
-    `;
-  } else if (projectKey === 'satyalens') {
-    content.innerHTML = `
-      <div style="font-family: var(--font-mono); color: var(--cyan); font-size: 0.85rem; margin-bottom: 8px;">GITHUB REPOSITORY: SatyaLens</div>
-      <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 16px;">SatyaLens — Truth Verification Engine</h2>
-      <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 20px;">
-        SatyaLens is a specialized multimodal truth verification system designed in Python. It analyzes media content and data signals to detect deepfake manipulations, signal anomalies, and automated misinformation patterns.
-      </p>
-
-      <h4 style="color: var(--cyan); margin-bottom: 10px;">Key Technical Capabilities</h4>
-      <ul style="list-style: square; padding-left: 20px; color: var(--text-muted); line-height: 1.8; margin-bottom: 20px;">
-        <li>Multimodal signal processing combining computer vision features and spectral audio decomposition.</li>
-        <li>Automated anomaly scoring engine giving confidence indices for real vs. synthesized media.</li>
-        <li>Extensible Python pipeline architecture ready for API integration.</li>
-      </ul>
-
-      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px;">
-        <span class="tag">Python</span>
-        <span class="tag">Deep Learning</span>
-        <span class="tag">Computer Vision</span>
-        <span class="tag">Signal Processing</span>
-      </div>
-      <a href="https://github.com/Narendra6305/SatyaLens" target="_blank" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.88rem;">
-        <i class="fab fa-github"></i> View GitHub Repository
-      </a>
-    `;
-  } else if (projectKey === 'employee') {
-    content.innerHTML = `
-      <div style="font-family: var(--font-mono); color: var(--green); font-size: 0.85rem; margin-bottom: 8px;">GITHUB REPOSITORY: Employee-Performance-Prediction</div>
-      <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 16px;">Employee Performance & Attrition Analysis</h2>
-      <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 20px;">
-        Machine Learning project analyzing organizational workforce data to forecast individual performance ratings and pinpoint critical turnover drivers.
-      </p>
-
-      <h4 style="color: var(--green); margin-bottom: 10px;">Key Analytics Insights</h4>
-      <ul style="list-style: square; padding-left: 20px; color: var(--text-muted); line-height: 1.8; margin-bottom: 20px;">
-        <li>Comprehensive Exploratory Data Analysis (EDA) on employee demographics, work-life balance ratios, and department workloads.</li>
-        <li>Supervised classification models evaluating feature importance ranking for retention strategy optimization.</li>
-        <li>Actionable HR recommendations designed to improve workforce satisfaction.</li>
-      </ul>
-
-      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px;">
-        <span class="tag">Jupyter Notebook</span>
-        <span class="tag">Python</span>
-        <span class="tag">Scikit-Learn</span>
-        <span class="tag">Pandas</span>
-      </div>
-      <a href="https://github.com/Narendra6305/Employee-Performance-Prediction" target="_blank" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.88rem;">
-        <i class="fab fa-github"></i> View GitHub Repository
-      </a>
-    `;
-  } else if (projectKey === 'texas') {
-    content.innerHTML = `
-      <div style="font-family: var(--font-mono); color: var(--amber); font-size: 0.85rem; margin-bottom: 8px;">GITHUB REPOSITORY: Texas-Salary-Prediction</div>
-      <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 16px;">Texas Public Employee Salary Forecast</h2>
-      <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 20px;">
-        Data regression modeling project focused on predicting government employee salaries in Texas based on agency codes, job titles, experience level, and gender metrics.
-      </p>
-
-      <h4 style="color: var(--amber); margin-bottom: 10px;">Model Workflow</h4>
-      <ul style="list-style: square; padding-left: 20px; color: var(--text-muted); line-height: 1.8; margin-bottom: 20px;">
-        <li>Preprocessing & categorical encoding of state agency payroll records.</li>
-        <li>Evaluation of multiple regression algorithms (Linear, Decision Trees, Gradient Boosting) for minimum RMSE error.</li>
-        <li>Feature sensitivity analysis highlighting tenure vs. department impact on annual pay.</li>
-      </ul>
-
-      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px;">
-        <span class="tag">Python</span>
-        <span class="tag">Pandas</span>
-        <span class="tag">Regression Analysis</span>
-        <span class="tag">Data Mining</span>
-      </div>
-      <a href="https://github.com/Narendra6305/Texas-Salary-Prediction" target="_blank" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.88rem;">
-        <i class="fab fa-github"></i> View GitHub Repository
-      </a>
-    `;
-  } else if (projectKey === 'medintel') {
-    content.innerHTML = `
-      <div style="font-family: var(--font-mono); color: var(--pink); font-size: 0.85rem; margin-bottom: 8px;">GITHUB REPOSITORY: Medintel-OS</div>
-      <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 16px;">Medintel-OS — Clinical Intelligence Dashboard</h2>
-      <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 20px;">
-        A modern web interface designed for medical telemetry monitoring, clinical analytics, and interactive patient metric reporting.
-      </p>
-
-      <h4 style="color: var(--pink); margin-bottom: 10px;">Core Features</h4>
-      <ul style="list-style: square; padding-left: 20px; color: var(--text-muted); line-height: 1.8; margin-bottom: 20px;">
-        <li>Dynamic patient health record aggregation dashboard.</li>
-        <li>Real-time visual diagnostic charts powered by JavaScript.</li>
-        <li>Modular design tailored for healthcare telemetry streams.</li>
-      </ul>
-
-      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px;">
-        <span class="tag">JavaScript</span>
-        <span class="tag">Healthcare UI</span>
-        <span class="tag">Chart.js</span>
-        <span class="tag">HTML5/CSS3</span>
-      </div>
-      <a href="https://github.com/Narendra6305/Medintel-OS" target="_blank" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.88rem;">
-        <i class="fab fa-github"></i> View GitHub Repository
-      </a>
-    `;
-  } else if (projectKey === 'admis') {
-    content.innerHTML = `
-      <div style="font-family: var(--font-mono); color: var(--cyan); font-size: 0.85rem; margin-bottom: 8px;">GITHUB REPOSITORY: ADMIS</div>
-      <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 16px;">ADMIS — Adaptive Data Intelligence System</h2>
-      <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 20px;">
-        Enterprise data management and intelligence architecture written in TypeScript for structured query processing, data transformation, and system telemetry.
-      </p>
-
-      <h4 style="color: var(--cyan); margin-bottom: 10px;">Technical Highlights</h4>
-      <ul style="list-style: square; padding-left: 20px; color: var(--text-muted); line-height: 1.8; margin-bottom: 20px;">
-        <li>TypeScript type-safe data schema validation and transformation pipelines.</li>
-        <li>Performant query optimization algorithms for analytical data views.</li>
-        <li>Clean modular code structure ready for enterprise integration.</li>
-      </ul>
-
-      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px;">
-        <span class="tag">TypeScript</span>
-        <span class="tag">Node.js</span>
-        <span class="tag">Data Engineering</span>
-        <span class="tag">SQL</span>
-      </div>
-      <a href="https://github.com/Narendra6305/ADMIS" target="_blank" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.88rem;">
-        <i class="fab fa-github"></i> View GitHub Repository
-      </a>
-    `;
-  } else if (projectKey === 'aegis') {
-    content.innerHTML = `
-      <div style="font-family: var(--font-mono); color: var(--purple); font-size: 0.85rem; margin-bottom: 8px;">GITHUB REPOSITORY: Aegis-Lite</div>
-      <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 16px;">Aegis-Lite — Anomaly & Threat Security System</h2>
-      <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 20px;">
-        Python security analytics suite providing automated system log parsing, anomaly detection algorithms, and event risk classification.
-      </p>
-
-      <h4 style="color: var(--purple); margin-bottom: 10px;">Technical Features</h4>
-      <ul style="list-style: square; padding-left: 20px; color: var(--text-muted); line-height: 1.8; margin-bottom: 20px;">
-        <li>Lightweight log parser for security telemetric datasets.</li>
-        <li>Machine Learning anomaly detection models categorizing risk threat levels.</li>
-        <li>Real-time threshold alert notifications.</li>
-      </ul>
-
-      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px;">
-        <span class="tag">Python</span>
-        <span class="tag">Security Analytics</span>
-        <span class="tag">Anomaly Detection</span>
-      </div>
-      <a href="https://github.com/Narendra6305/Aegis-Lite" target="_blank" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.88rem;">
-        <i class="fab fa-github"></i> View GitHub Repository
-      </a>
-    `;
-  }
-
-  overlay.classList.add('active');
-}
-
-function closeProjectModal() {
-  document.getElementById('project-modal').classList.remove('active');
-}
-
-/* 18. DEVELOPER CLI TERMINAL ENGINE */
-function toggleCLIModal() {
-  playSciFiBlip(500, 0.08);
-  const modal = document.getElementById('cli-modal');
-  modal.classList.toggle('active');
-  if (modal.classList.contains('active')) {
-    setTimeout(() => document.getElementById('cli-input').focus(), 100);
+function toggleMatrix() {
+  const c = document.getElementById('matrix-canvas');
+  if (c.style.display === 'block') {
+    c.style.display = 'none'; clearInterval(matrixTimer); matrixTimer = null;
+    printCLI('<span style="color:var(--green)">Matrix rain disabled.</span>');
+  } else {
+    c.style.display = 'block';
+    matrixTimer = setInterval(window.matrixFrame, 33);
+    printCLI('<span style="color:var(--green)">Matrix rain activated! Type "matrix" again to disable.</span>');
   }
 }
 
-window.addEventListener('keydown', (e) => {
-  if (e.ctrlKey && e.key === 'k') {
-    e.preventDefault();
-    toggleCLIModal();
+/* ---- PROJECT MODAL ---- */
+const MODAL_DATA = {
+  churn: {
+    color: 'var(--accent)', label: 'FEATURED CASE STUDY · MAY–JUN 2024',
+    title: 'Smart Targeting & Churn Prevention System',
+    body: `<p>End-to-end customer churn analytics system using Python, Flask, Random Forest, ANN ensemble, and MySQL. Achieved <strong>90% prediction accuracy</strong> with RFM segmentation and automated retention campaign triggers on AWS.</p>`,
+    tags: ['Python','Flask','Random Forest','ANN','MySQL','AWS']
+  },
+  heart: {
+    color: 'var(--accent2)', label: 'CLINICAL AI · AUG–OCT 2024',
+    title: 'Heart Disease Early Detection System',
+    body: `<p>Clinical decision support risk assessment platform using SVM & Random Forest. Comprehensive biostatistics feature correlation analysis with Matplotlib and Seaborn. Ethical AI aligned with strict false-negative minimization.</p>`,
+    tags: ['Python','SVM','Random Forest','Matplotlib','Seaborn']
+  },
+  satyalens: {
+    color: 'var(--accent)', label: 'GITHUB · SatyaLens',
+    title: 'SatyaLens — Truth Verification Engine',
+    body: `<p>Multimodal deepfake detection and media integrity verification system. Combines computer vision features and spectral audio decomposition with automated anomaly scoring for real vs. synthesized media.</p>`,
+    link: 'https://github.com/Narendra6305/SatyaLens',
+    tags: ['Python','Deep Learning','Computer Vision','Signal Processing']
+  },
+  employee: {
+    color: 'var(--green)', label: 'GITHUB · Employee-Performance-Prediction',
+    title: 'Employee Performance & Attrition Analysis',
+    body: `<p>Machine Learning pipeline on HR data to forecast individual performance ratings and identify attrition risk. EDA, feature importance ranking, and actionable HR recommendations for workforce retention.</p>`,
+    link: 'https://github.com/Narendra6305/Employee-Performance-Prediction',
+    tags: ['Jupyter','Python','Scikit-Learn','Pandas','EDA']
+  },
+  texas: {
+    color: 'var(--amber)', label: 'GITHUB · Texas-Salary-Prediction',
+    title: 'Texas Public Employee Salary Forecast',
+    body: `<p>Predictive regression model on Texas government payroll data. Gradient Boosting with feature sensitivity analysis — tenure vs. department impact on annual compensation.</p>`,
+    link: 'https://github.com/Narendra6305/Texas-Salary-Prediction',
+    tags: ['Python','Pandas','Regression','Gradient Boosting','Data Mining']
+  },
+  medintel: {
+    color: 'var(--accent3)', label: 'GITHUB · Medintel-OS',
+    title: 'Medintel-OS — Clinical Intelligence Dashboard',
+    body: `<p>Medical telemetry monitoring web application with dynamic patient health record aggregation, real-time Chart.js diagnostic charts, and modular healthcare telemetry stream design.</p>`,
+    link: 'https://github.com/Narendra6305/Medintel-OS',
+    tags: ['JavaScript','Chart.js','REST API','Healthcare UI','HTML5/CSS3']
+  },
+  admis: {
+    color: 'var(--accent)', label: 'GITHUB · ADMIS',
+    title: 'ADMIS — Adaptive Data Intelligence System',
+    body: `<p>Enterprise TypeScript data management architecture for structured query processing, type-safe schema validation, data transformation pipelines, and system telemetry analytics.</p>`,
+    link: 'https://github.com/Narendra6305/ADMIS',
+    tags: ['TypeScript','Node.js','SQL','Data Engineering']
+  },
+  aegis: {
+    color: 'var(--accent2)', label: 'GITHUB · Aegis-Lite',
+    title: 'Aegis-Lite — Anomaly & Threat Security System',
+    body: `<p>Python security analytics suite for automated system log parsing, ML-based anomaly detection algorithms, risk event classification, and real-time threshold alert notifications.</p>`,
+    link: 'https://github.com/Narendra6305/Aegis-Lite',
+    tags: ['Python','Security Analytics','Anomaly Detection','ML']
+  }
+};
+
+function openModal(key) {
+  playBlip(680);
+  const d   = MODAL_DATA[key];
+  const bd  = document.getElementById('modal-body');
+  const backdrop = document.getElementById('modal-backdrop');
+  if (!d || !bd) return;
+  bd.innerHTML = `
+    <div style="font-family:var(--font-mono);font-size:0.78rem;color:${d.color};margin-bottom:10px;">${d.label}</div>
+    <h2 style="font-family:var(--font-hd);font-size:1.7rem;font-weight:700;margin-bottom:16px;">${d.title}</h2>
+    <div style="color:var(--text-mid);line-height:1.75;margin-bottom:20px;">${d.body}</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:${d.link?'20px':'0'}">
+      ${d.tags.map(t => `<span class="chip">${t}</span>`).join('')}
+    </div>
+    ${d.link ? `<a href="${d.link}" target="_blank" class="btn-primary" style="margin-top:16px;display:inline-flex;align-items:center;gap:8px;padding:10px 22px;font-size:0.88rem;"><i class="fab fa-github"></i> View on GitHub</a>` : ''}
+  `;
+  backdrop.classList.add('open');
+}
+function closeModal() { document.getElementById('modal-backdrop').classList.remove('open'); }
+
+/* ---- CLI TERMINAL ---- */
+function toggleCLI() {
+  playBlip(500);
+  document.getElementById('cli-overlay').classList.toggle('open');
+  setTimeout(() => document.getElementById('cli-input')?.focus(), 80);
+}
+window.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.key === 'k') { e.preventDefault(); toggleCLI(); }
+  if (e.key === 'Escape') {
+    document.getElementById('cli-overlay')?.classList.remove('open');
+    document.getElementById('modal-backdrop')?.classList.remove('open');
   }
 });
 
-function handleCLISubmit(e) {
+function printCLI(html) {
+  const body = document.getElementById('cli-body');
+  const div = document.createElement('div');
+  div.style.marginBottom = '6px';
+  div.innerHTML = html;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+
+function handleCLI(e) {
   if (e.key !== 'Enter') return;
   const input = document.getElementById('cli-input');
-  const output = document.getElementById('cli-output');
-  const cmd = input.value.trim().toLowerCase();
-
-  const line = document.createElement('div');
-  line.innerHTML = `<span style="color: var(--cyan);">narendra@analytics:~$</span> ${input.value}`;
-  output.appendChild(line);
-
-  const response = document.createElement('div');
-  response.style.marginBottom = '10px';
-
-  if (cmd === 'help') {
-    response.innerHTML = `
-      Available CLI Commands:<br>
-      - <span style="color: var(--cyan);">skills</span>: View technical stack & proficiency percentages<br>
-      - <span style="color: var(--cyan);">projects</span>: List featured Machine Learning & Data Engineering projects<br>
-      - <span style="color: var(--cyan);">whoami</span>: Display candidate summary & education details<br>
-      - <span style="color: var(--cyan);">matrix</span>: Toggle digital rain Matrix Mode overlay<br>
-      - <span style="color: var(--cyan);">contact</span>: Display email, phone, and LinkedIn info<br>
-      - <span style="color: var(--cyan);">clear</span>: Clear terminal screen
-    `;
-  } else if (cmd === 'skills') {
-    response.innerHTML = `
-      TECHNICAL STACK MATRIX:<br>
-      - Python (Scikit-Learn, Pandas, NumPy): [████████████████████] 92%<br>
-      - SQL (MySQL, Advanced Querying):     [███████████████████ ] 90%<br>
-      - Power BI & Executive Dashboards:  [██████████████████  ] 88%<br>
-      - Tableau & Data Visualization:    [█████████████████   ] 85%<br>
-      - AWS Cloud Infrastructure:          [████████████████    ] 82%
-    `;
-  } else if (cmd === 'projects') {
-    response.innerHTML = `
-      FEATURED PROJECTS:<br>
-      1. Smart Targeting & Churn Prevention System (90% Acc)<br>
-      2. Heart Disease Early Detection System (Ethical AI)<br>
-      3. SatyaLens — Truth Verification Engine<br>
-      4. Employee Performance & Attrition Analysis<br>
-      5. Texas Public Employee Salary Forecast<br>
-      6. Medintel-OS & ADMIS Systems
-    `;
-  } else if (cmd === 'whoami') {
-    response.innerHTML = `
-      Candidate: KURUGODU SAI NARENDRA<br>
-      Degree: MSc in Data Analytics | CHRIST (Deemed to be University), Bengaluru<br>
-      GPA: 3.47 / 4.0 | Certified Data Scientist Distinction (Grade A)
-    `;
-  } else if (cmd === 'matrix') {
-    toggleMatrixRain();
-    response.innerHTML = `<span style="color: var(--green);">[SYSTEM] Matrix Rain Mode Toggled!</span>`;
-  } else if (cmd === 'contact') {
-    response.innerHTML = `
-      Email: kurugodusai.narendra@arts.christuniversity.in<br>
-      Phone: +91 6305525857 | LinkedIn: linkedin.com/in/kurugodusainarendra
-    `;
-  } else if (cmd === 'clear') {
-    output.innerHTML = '';
-    input.value = '';
-    return;
-  } else if (cmd !== '') {
-    response.innerHTML = `<span style="color: var(--pink);">Command not found: '${cmd}'. Type 'help' for options.</span>`;
-  }
-
-  output.appendChild(response);
+  const cmd   = input.value.trim().toLowerCase();
+  printCLI(`<span style="color:var(--accent)">narendra@analytics:~$</span> ${input.value}`);
   input.value = '';
-  document.getElementById('cli-body').scrollTop = document.getElementById('cli-body').scrollHeight;
+
+  const responses = {
+    help: `
+      <span style="color:var(--accent)">Available commands:</span><br>
+      &nbsp;• <b>skills</b> — list technical proficiencies<br>
+      &nbsp;• <b>projects</b> — list featured projects<br>
+      &nbsp;• <b>whoami</b> — candidate profile<br>
+      &nbsp;• <b>contact</b> — contact details<br>
+      &nbsp;• <b>matrix</b> — toggle matrix rain overlay<br>
+      &nbsp;• <b>clear</b> — clear terminal
+    `,
+    skills: `
+      Python (Scikit-Learn, Pandas)  ████████████ 92%<br>
+      SQL / MySQL                    ███████████  90%<br>
+      Power BI / DAX                 ██████████   88%<br>
+      Machine Learning Ensemble      ██████████   90%<br>
+      AWS Cloud Infrastructure       █████████    82%
+    `,
+    projects: `
+      1. Smart Targeting & Churn Prevention (90% Acc)<br>
+      2. Heart Disease Early Detection (Clinical AI)<br>
+      3. SatyaLens — Truth Verification Engine<br>
+      4. Employee Performance & Attrition ML<br>
+      5. Texas Public Salary Forecast<br>
+      6. Medintel-OS · ADMIS · Aegis-Lite
+    `,
+    whoami: `
+      Name: KURUGODU SAI NARENDRA<br>
+      Degree: MSc Data Analytics | CHRIST (Deemed to be University)<br>
+      GPA: 3.47 / 4.0 | CDS Certification: Grade A Distinction
+    `,
+    contact: `
+      Email: kurugodusai.narendra@arts.christuniversity.in<br>
+      Phone: +91 6305525857<br>
+      LinkedIn: linkedin.com/in/kurugodusainarendra
+    `,
+    matrix: null
+  };
+
+  if (cmd === 'matrix')     { toggleMatrix(); }
+  else if (cmd === 'clear') { document.getElementById('cli-body').innerHTML = ''; }
+  else if (responses[cmd])  { printCLI(responses[cmd]); }
+  else if (cmd !== '')      { printCLI(`<span style="color:var(--accent3)">Command not found: '${cmd}'. Type 'help'.</span>`); }
 }
 
-/* 19. DIGITAL RAIN MATRIX MODE OVERLAY */
-let matrixInterval = null;
-function initMatrixRain() {
-  const canvas = document.getElementById('matrix-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  const chars = '010101010101010101010101010101010101010101';
-  const fontSize = 14;
-  const columns = Math.floor(canvas.width / fontSize);
-  const drops = Array(columns).fill(1);
-
-  function drawMatrix() {
-    ctx.fillStyle = 'rgba(7, 10, 18, 0.08)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = '#00ff87';
-    ctx.font = `${fontSize}px monospace`;
-
-    for (let i = 0; i < drops.length; i++) {
-      const text = chars.charAt(Math.floor(Math.random() * chars.length));
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-        drops[i] = 0;
-      }
-      drops[i]++;
-    }
-  }
-
-  window.matrixDraw = drawMatrix;
-}
-
-function toggleMatrixRain() {
-  const canvas = document.getElementById('matrix-canvas');
-  if (!canvas) return;
-
-  if (canvas.style.display === 'block') {
-    canvas.style.display = 'none';
-    clearInterval(matrixInterval);
-    matrixInterval = null;
-  } else {
-    canvas.style.display = 'block';
-    if (!matrixInterval) {
-      matrixInterval = setInterval(window.matrixDraw, 33);
-    }
-  }
-}
-
-/* 20. AUDIO VISUALIZER PULSE WIDGET */
-function toggleAudioPulse() {
-  playSciFiBlip(550, 0.1);
-  const widget = document.getElementById('audio-widget');
-  const text = document.getElementById('audio-status-text');
-  widget.classList.toggle('active');
-
-  if (widget.classList.contains('active')) {
-    text.textContent = 'Audio Active';
-    text.style.color = 'var(--cyan)';
-  } else {
-    text.textContent = 'Ambient Pulse';
-    text.style.color = 'var(--text-main)';
-  }
-}
-
-/* 21. CLICK STARDUST / CONFETTI EXPLOSION ENGINE */
-function initGlobalButtonParticles() {
-  window.addEventListener('click', (e) => {
-    if (e.target.closest('button, .btn, .lab-tab, .glass-card')) {
-      playSciFiBlip(700, 0.05);
-      triggerStardustBurst(e.clientX, e.clientY);
-    }
-  });
-}
-
-function triggerStardustBurst(x, y) {
-  const count = 16;
-  for (let i = 0; i < count; i++) {
-    const p = document.createElement('div');
-    p.style.position = 'fixed';
-    p.style.left = `${x}px`;
-    p.style.top = `${y}px`;
-    p.style.width = '6px';
-    p.style.height = '6px';
-    p.style.borderRadius = '50%';
-    p.style.background = Math.random() > 0.5 ? 'var(--cyan)' : 'var(--pink)';
-    p.style.boxShadow = `0 0 12px ${p.style.background}`;
-    p.style.pointerEvents = 'none';
-    p.style.zIndex = '99999';
-
-    document.body.appendChild(p);
-
-    const angle = Math.random() * Math.PI * 2;
-    const speed = Math.random() * 65 + 25;
-    const vx = Math.cos(angle) * speed;
-    const vy = Math.sin(angle) * speed;
-
-    p.animate([
-      { transform: 'translate(0, 0) scale(1)', opacity: 1 },
-      { transform: `translate(${vx}px, ${vy}px) scale(0)`, opacity: 0 }
-    ], {
-      duration: 650,
-      easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)'
-    }).onfinish = () => p.remove();
-  }
-}
-
-/* 22. CONTACT FORM SUBMISSION FEEDBACK */
-function handleFormSubmit(e) {
+/* ---- CONTACT FORM ---- */
+function submitForm(e) {
   e.preventDefault();
+  playBlip(880, 0.15);
   const name = document.getElementById('sender-name').value;
-  playSciFiBlip(880, 0.15);
-  triggerStardustBurst(window.innerWidth / 2, window.innerHeight / 2);
-  alert(`Thank you ${name}! Your message has been sent successfully. I will get back to you shortly.`);
+  starBurst(innerWidth / 2, innerHeight / 2);
+  setTimeout(() => alert(`Thank you, ${name}! Your message was sent. I'll be in touch soon.`), 50);
   document.getElementById('contact-form').reset();
+}
+
+/* ---- STARDUST BURST ---- */
+document.addEventListener('click', e => {
+  if (e.target.closest('button,.btn-primary,.btn-ghost,.lab-tab,.proj-cta')) {
+    starBurst(e.clientX, e.clientY);
+    playBlip(700, 0.04);
+  }
+});
+
+function starBurst(x, y) {
+  for (let i = 0; i < 14; i++) {
+    const p  = document.createElement('div');
+    Object.assign(p.style, {
+      position:'fixed', left:x+'px', top:y+'px',
+      width:'5px', height:'5px', borderRadius:'50%',
+      background: i % 2 === 0 ? 'var(--accent)' : 'var(--accent3)',
+      boxShadow: `0 0 8px currentColor`,
+      pointerEvents:'none', zIndex:'99999'
+    });
+    document.body.appendChild(p);
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 25 + Math.random() * 55;
+    p.animate([
+      {transform:'translate(0,0) scale(1)', opacity:1},
+      {transform:`translate(${Math.cos(angle)*speed}px,${Math.sin(angle)*speed}px) scale(0)`, opacity:0}
+    ], { duration: 600, easing:'cubic-bezier(0.1,0.8,0.3,1)' }).onfinish = () => p.remove();
+  }
 }
