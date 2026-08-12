@@ -35,6 +35,9 @@
   <!-- Top Scroll Progress Glow Beam -->
   <div id="scroll-progress"></div>
 
+  <!-- Perspective Cyber Grid Backdrop -->
+  <div class="perspective-grid-bg"></div>
+
   <!-- Custom Neon Dual-Ring Cursor -->
   <div id="cursor-dot"></div>
   <div id="cursor-outline"></div>
@@ -65,6 +68,12 @@
       <li><a href="#contact" class="nav-link">Contact</a></li>
     </ul>
     <div style="display: flex; align-items: center; gap: 12px;">
+      <div class="theme-matrix-bar">
+        <div class="theme-chip theme-cyan" title="Cyan Neon" onclick="setTheme('cyan')"></div>
+        <div class="theme-chip theme-violet" title="Deep Violet" onclick="setTheme('violet')"></div>
+        <div class="theme-chip theme-emerald" title="Matrix Emerald" onclick="setTheme('emerald')"></div>
+        <div class="theme-chip theme-synthwave" title="Synthwave Pink" onclick="setTheme('synthwave')"></div>
+      </div>
       <a href="https://linkedin.com/in/kurugodusainarendra" target="_blank" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.85rem;" id="linkedin-nav-btn">
         <i class="fab fa-linkedin"></i> Connect
       </a>
@@ -125,10 +134,10 @@
         </div>
 
         <div class="hero-visual">
-          <div class="avatar-card" id="avatar-card">
-            <div class="avatar-frame">
-              <div class="avatar-initials">KN</div>
-              <div class="avatar-tag">&lt;Data Analytics Specialist /&gt;</div>
+          <div class="hologram-wrapper">
+            <canvas id="hologram-canvas"></canvas>
+            <div class="hologram-overlay-card">
+              <i class="fas fa-microchip"></i> &lt;3D Hologram Data Core /&gt;
             </div>
             
             <div class="floating-badge badge-1">
@@ -524,8 +533,14 @@
           <button class="lab-tab" onclick="switchLabTab('heart-sim')">
             <i class="fas fa-stethoscope"></i> Cardiovascular Risk Assessor
           </button>
+          <button class="lab-tab" onclick="switchLabTab('sql')">
+            <i class="fas fa-database"></i> Live SQL Sandbox
+          </button>
+          <button class="lab-tab" onclick="switchLabTab('confusion')">
+            <i class="fas fa-th-large"></i> ML Confusion Matrix
+          </button>
           <button class="lab-tab" onclick="switchLabTab('benchmark')">
-            <i class="fas fa-chart-bar"></i> Algorithm Performance Benchmark
+            <i class="fas fa-chart-bar"></i> Algorithm Benchmarks
           </button>
         </div>
 
@@ -589,6 +604,95 @@
             <div class="score-display gradient-text-accent" id="heart-score">18.2%</div>
             <div id="heart-status" style="font-size: 0.95rem; margin-top: 10px; color: var(--green); font-weight: 600;">
               <i class="fas fa-shield-alt"></i> Normal Biostatistics Profile
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Interactive Live SQL Sandbox -->
+        <div class="lab-panel" id="panel-sql">
+          <div class="sql-editor-container">
+            <div class="sql-editor-header">
+              <h4 style="color: var(--cyan);"><i class="fas fa-terminal"></i> Live SQL Query Engine</h4>
+              <div style="display: flex; gap: 10px; align-items: center;">
+                <select class="sql-select-dropdown" id="sql-query-select" onchange="loadPresetSQLQuery()">
+                  <option value="churn">Query: High Churn Risk Customers</option>
+                  <option value="high_spend">Query: Top Spenders & RFM Clusters</option>
+                  <option value="model_metrics">Query: Model Performance Log</option>
+                </select>
+                <button class="btn btn-primary" style="padding: 8px 16px; font-size: 0.82rem;" onclick="executeSQLQuery()">
+                  <i class="fas fa-play"></i> Execute SQL
+                </button>
+              </div>
+            </div>
+
+            <div class="sql-code-box" id="sql-code-box">
+              <code id="sql-query-display">SELECT customer_id, monthly_spend, tenure_months, churn_probability FROM customer_telemetry WHERE churn_probability &gt; 0.65 ORDER BY monthly_spend DESC LIMIT 5;</code>
+            </div>
+
+            <div style="overflow-x: auto;">
+              <table class="sql-results-table" id="sql-results-table">
+                <thead>
+                  <tr id="sql-table-head">
+                    <th>customer_id</th><th>monthly_spend</th><th>tenure_months</th><th>churn_probability</th>
+                  </tr>
+                </thead>
+                <tbody id="sql-table-body">
+                  <tr><td>CUST_9402</td><td>$1,240</td><td>3 mos</td><td style="color: var(--pink); font-weight: 700;">84.2%</td></tr>
+                  <tr><td>CUST_8819</td><td>$980</td><td>5 mos</td><td style="color: var(--pink); font-weight: 700;">76.5%</td></tr>
+                  <tr><td>CUST_7210</td><td>$850</td><td>2 mos</td><td style="color: var(--pink); font-weight: 700;">71.8%</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--green);" id="sql-status-info">
+              ⚡ Executed in 0.03ms | 3 rows returned | Cache Status: HIT
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4: ML Confusion Matrix Diagnostics -->
+        <div class="lab-panel" id="panel-confusion">
+          <div class="calculator-controls">
+            <h4 style="color: var(--green); margin-bottom: 12px;">Model Threshold Tuner</h4>
+            <div class="control-group">
+              <label>Decision Threshold: <span id="threshold-val">0.50</span></label>
+              <input type="range" id="threshold-slider" min="0.10" max="0.90" step="0.05" value="0.50" oninput="updateConfusionMatrix()">
+            </div>
+            
+            <div class="metrics-summary-grid">
+              <div class="metric-stat-box">
+                <div class="metric-stat-label">Precision</div>
+                <div class="metric-stat-val" id="mat-precision">91.4%</div>
+              </div>
+              <div class="metric-stat-box">
+                <div class="metric-stat-label">Recall</div>
+                <div class="metric-stat-val" id="mat-recall">88.2%</div>
+              </div>
+              <div class="metric-stat-box">
+                <div class="metric-stat-label">F1-Score</div>
+                <div class="metric-stat-val" id="mat-f1">89.8%</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="confusion-matrix-container">
+            <div style="font-size: 0.85rem; color: var(--cyan); font-family: var(--font-mono); margin-bottom: 4px;">2x2 CONFUSION MATRIX</div>
+            <div class="confusion-grid">
+              <div class="matrix-cell">
+                <div class="matrix-cell-title">True Positive</div>
+                <div class="matrix-cell-value" id="cell-tp">428</div>
+              </div>
+              <div class="matrix-cell">
+                <div class="matrix-cell-title">False Positive</div>
+                <div class="matrix-cell-value" style="color: var(--pink);" id="cell-fp">40</div>
+              </div>
+              <div class="matrix-cell">
+                <div class="matrix-cell-title">False Negative</div>
+                <div class="matrix-cell-value" style="color: var(--amber);" id="cell-fn">57</div>
+              </div>
+              <div class="matrix-cell">
+                <div class="matrix-cell-title">True Negative</div>
+                <div class="matrix-cell-value" style="color: var(--green);" id="cell-tn">975</div>
+              </div>
             </div>
           </div>
         </div>

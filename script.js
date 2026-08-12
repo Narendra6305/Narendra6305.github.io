@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------
- *  ADVANCED PORTFOLIO INTERACTIVITY & ANIMATION ENGINE
+ *  ADVANCED DATA ANALYTICS COMMAND CENTER ENGINE
  *  Candidate: Kurugodu Sai Narendra (MSc Data Analytics)
  * ------------------------------------------------------------- */
 
@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCustomCursor();
   initScrollProgress();
   initParticleCanvas();
+  initHologramCore();
   initTypedEffect();
   initCounters();
   initSkillBars();
@@ -18,7 +19,145 @@ document.addEventListener('DOMContentLoaded', () => {
   initGlobalButtonParticles();
 });
 
-/* 1. CUSTOM NEON DUAL-RING CURSOR PHYSICS */
+/* 1. THEME MATRIX SWITCHER */
+function setTheme(themeName) {
+  document.documentElement.setAttribute('data-theme', themeName);
+  playSciFiBlip(440, 0.08);
+}
+
+/* 2. WEB AUDIO API SCI-FI SOUND FX SYNTHESIZER */
+let audioCtx = null;
+function getAudioContext() {
+  if (!audioCtx) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (AudioContext) audioCtx = new AudioContext();
+  }
+  return audioCtx;
+}
+
+function playSciFiBlip(freq = 600, duration = 0.08, type = 'sine') {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    if (ctx.state === 'suspended') ctx.resume();
+
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(freq * 1.5, ctx.currentTime + duration);
+
+    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + duration);
+  } catch (err) {
+    // Silent fail if audio disabled
+  }
+}
+
+/* 3. 3D HOLOGRAM DATA CORE ENGINE */
+function initHologramCore() {
+  const canvas = document.getElementById('hologram-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  let width = (canvas.width = 360);
+  let height = (canvas.height = 360);
+
+  const radius = 100;
+  const nodeCount = 60;
+  const nodes = [];
+
+  for (let i = 0; i < nodeCount; i++) {
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(Math.random() * 2 - 1);
+    nodes.push({
+      x: radius * Math.sin(phi) * Math.cos(theta),
+      y: radius * Math.sin(phi) * Math.sin(theta),
+      z: radius * Math.cos(phi),
+      baseX: 0, baseY: 0, baseZ: 0
+    });
+  }
+
+  let angleX = 0.005;
+  let angleY = 0.008;
+
+  let mouseX = 0;
+  let mouseY = 0;
+
+  window.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX - window.innerWidth / 2) * 0.0001;
+    mouseY = (e.clientY - window.innerHeight / 2) * 0.0001;
+  });
+
+  function renderHologram() {
+    ctx.clearRect(0, 0, width, height);
+
+    const rotX = angleX + mouseY;
+    const rotY = angleY + mouseX;
+
+    const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+    const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+
+    const projected = [];
+
+    nodes.forEach((n) => {
+      // Rotate 3D point
+      let y = n.y * cosX - n.z * sinX;
+      let z = n.y * sinX + n.z * cosX;
+      let x = n.x * cosY + z * sinY;
+      z = -n.x * sinY + z * cosY;
+
+      n.x = x; n.y = y; n.z = z;
+
+      const scale = 250 / (250 + z);
+      const projX = width / 2 + x * scale;
+      const projY = height / 2 + y * scale;
+
+      projected.push({ x: projX, y: projY, z: z, scale: scale });
+    });
+
+    // Draw connecting 3D core lines
+    for (let i = 0; i < projected.length; i++) {
+      for (let j = i + 1; j < projected.length; j++) {
+        const dx = projected[i].x - projected[j].x;
+        const dy = projected[i].y - projected[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < 55) {
+          ctx.beginPath();
+          ctx.moveTo(projected[i].x, projected[i].y);
+          ctx.lineTo(projected[j].x, projected[j].y);
+          ctx.strokeStyle = `rgba(0, 242, 254, ${(1 - dist / 55) * 0.4})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw glowing 3D nodes
+    projected.forEach((p) => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 2.5 * p.scale, 0, Math.PI * 2);
+      ctx.fillStyle = p.z > 0 ? '#00f2fe' : '#7928ca';
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = '#00f2fe';
+      ctx.fill();
+    });
+
+    requestAnimationFrame(renderHologram);
+  }
+
+  renderHologram();
+}
+
+/* 4. CUSTOM NEON DUAL-RING CURSOR PHYSICS */
 function initCustomCursor() {
   const dot = document.getElementById('cursor-dot');
   const outline = document.getElementById('cursor-outline');
@@ -43,7 +182,6 @@ function initCustomCursor() {
   }
   animateCursor();
 
-  // Hover magnetic grow effect over interactive elements
   const hoverables = document.querySelectorAll('a, button, .glass-card, input, select, textarea, .lab-tab');
   hoverables.forEach((elem) => {
     elem.addEventListener('mouseenter', () => outline.classList.add('hovered'));
@@ -51,7 +189,7 @@ function initCustomCursor() {
   });
 }
 
-/* 2. TOP SCROLL PROGRESS BAR */
+/* 5. TOP SCROLL PROGRESS BAR */
 function initScrollProgress() {
   const bar = document.getElementById('scroll-progress');
   if (!bar) return;
@@ -63,7 +201,7 @@ function initScrollProgress() {
   });
 }
 
-/* 3. CARD MOUSE SPOTLIGHT TRACKING */
+/* 6. CARD MOUSE SPOTLIGHT TRACKING */
 function initCardSpotlightTracking() {
   const cards = document.querySelectorAll('.glass-card');
   cards.forEach((card) => {
@@ -77,7 +215,7 @@ function initCardSpotlightTracking() {
   });
 }
 
-/* 4. DYNAMIC DATA PARTICLE CANVAS */
+/* 7. DYNAMIC DATA PARTICLE CANVAS */
 function initParticleCanvas() {
   const canvas = document.getElementById('particle-canvas');
   if (!canvas) return;
@@ -181,7 +319,7 @@ function initParticleCanvas() {
   animate();
 }
 
-/* 5. DYNAMIC TYPED TEXT EFFECT */
+/* 8. DYNAMIC TYPED TEXT EFFECT */
 function initTypedEffect() {
   const typedSpan = document.getElementById('typed-text');
   if (!typedSpan) return;
@@ -225,7 +363,7 @@ function initTypedEffect() {
   type();
 }
 
-/* 6. COUNTER ANIMATION */
+/* 9. COUNTER ANIMATION */
 function initCounters() {
   const counters = document.querySelectorAll('.counter');
   let animated = false;
@@ -258,7 +396,7 @@ function initCounters() {
   if (heroStats) observer.observe(heroStats);
 }
 
-/* 7. ANIMATED SKILL BARS */
+/* 10. ANIMATED SKILL BARS */
 function initSkillBars() {
   const skillSection = document.getElementById('skills');
   const skillBars = document.querySelectorAll('.skill-bar-fill');
@@ -279,7 +417,7 @@ function initSkillBars() {
   observer.observe(skillSection);
 }
 
-/* 8. NAVBAR SCROLL & ACTIVE SPY */
+/* 11. NAVBAR SCROLL & ACTIVE SPY */
 function initNavbarScroll() {
   const navbar = document.getElementById('navbar');
   const navLinks = document.querySelectorAll('.nav-link');
@@ -324,8 +462,9 @@ function initNavbarScroll() {
   });
 }
 
-/* 9. INTERACTIVE ANALYTICS LAB TAB SWITCHING & SIMULATORS */
+/* 12. INTERACTIVE ANALYTICS LAB SWITCHING & SIMULATORS */
 function switchLabTab(tabName) {
+  playSciFiBlip(520, 0.06);
   const tabs = document.querySelectorAll('.lab-tab');
   const panels = document.querySelectorAll('.lab-panel');
 
@@ -402,7 +541,87 @@ function updateHeartSim() {
   }
 }
 
-/* 10. ALGORITHM BENCHMARK CHART (CHART.JS) */
+/* 13. LIVE SQL SANDBOX ENGINE */
+const sqlQueries = {
+  churn: {
+    code: `SELECT customer_id, monthly_spend, tenure_months, churn_probability FROM customer_telemetry WHERE churn_probability > 0.65 ORDER BY monthly_spend DESC LIMIT 5;`,
+    head: ['customer_id', 'monthly_spend', 'tenure_months', 'churn_probability'],
+    body: [
+      ['CUST_9402', '$1,240', '3 mos', '<span style="color: var(--pink); font-weight:700;">84.2%</span>'],
+      ['CUST_8819', '$980', '5 mos', '<span style="color: var(--pink); font-weight:700;">76.5%</span>'],
+      ['CUST_7210', '$850', '2 mos', '<span style="color: var(--pink); font-weight:700;">71.8%</span>']
+    ],
+    info: '⚡ Executed in 0.03ms | 3 rows returned | Cache Status: HIT'
+  },
+  high_spend: {
+    code: `SELECT customer_id, rfm_segment, total_lifetime_val FROM rfm_analytics_clusters WHERE rfm_segment = 'VIP_Platinum' ORDER BY total_lifetime_val DESC LIMIT 3;`,
+    head: ['customer_id', 'rfm_segment', 'total_lifetime_val'],
+    body: [
+      ['CUST_1042', '<span style="color: var(--cyan); font-weight:700;">VIP_Platinum</span>', '$14,250'],
+      ['CUST_3081', '<span style="color: var(--cyan); font-weight:700;">VIP_Platinum</span>', '$11,900'],
+      ['CUST_5520', '<span style="color: var(--cyan); font-weight:700;">VIP_Platinum</span>', '$9,840']
+    ],
+    info: '⚡ Executed in 0.02ms | 3 rows returned | Cache Status: HIT'
+  },
+  model_metrics: {
+    code: `SELECT algorithm_name, accuracy_pct, precision_pct, recall_pct FROM model_evaluation_logs ORDER BY accuracy_pct DESC;`,
+    head: ['algorithm_name', 'accuracy_pct', 'precision_pct', 'recall_pct'],
+    body: [
+      ['Random Forest Ensemble', '<span style="color: var(--green); font-weight:700;">90.2%</span>', '91.4%', '88.2%'],
+      ['Artificial Neural Network', '88.5%', '89.1%', '87.6%'],
+      ['Support Vector Machine', '85.7%', '86.4%', '84.0%']
+    ],
+    info: '⚡ Executed in 0.04ms | 3 rows returned | Cache Status: HIT'
+  }
+};
+
+function loadPresetSQLQuery() {
+  const sel = document.getElementById('sql-query-select').value;
+  const q = sqlQueries[sel];
+  document.getElementById('sql-query-display').textContent = q.code;
+  executeSQLQuery();
+}
+
+function executeSQLQuery() {
+  playSciFiBlip(780, 0.09);
+  const sel = document.getElementById('sql-query-select').value;
+  const q = sqlQueries[sel];
+
+  const head = document.getElementById('sql-table-head');
+  const body = document.getElementById('sql-table-body');
+  const info = document.getElementById('sql-status-info');
+
+  head.innerHTML = q.head.map(h => `<th>${h}</th>`).join('');
+  body.innerHTML = q.body.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('');
+  info.textContent = q.info;
+}
+
+/* 14. ML CONFUSION MATRIX CALCULATOR */
+function updateConfusionMatrix() {
+  const t = +document.getElementById('threshold-slider').value;
+  document.getElementById('threshold-val').textContent = t.toFixed(2);
+
+  // Dynamic confusion matrix cell calculations relative to threshold
+  const tp = Math.round(500 * (1 - (t - 0.1) * 0.3));
+  const fp = Math.round(80 * (1 - (t - 0.1) * 0.7));
+  const fn = Math.round(30 + (t - 0.1) * 80);
+  const tn = Math.round(900 + (t - 0.1) * 100);
+
+  const precision = ((tp / (tp + fp)) * 100).toFixed(1);
+  const recall = ((tp / (tp + fn)) * 100).toFixed(1);
+  const f1 = ((2 * precision * recall) / (+precision + +recall)).toFixed(1);
+
+  document.getElementById('cell-tp').textContent = tp;
+  document.getElementById('cell-fp').textContent = fp;
+  document.getElementById('cell-fn').textContent = fn;
+  document.getElementById('cell-tn').textContent = tn;
+
+  document.getElementById('mat-precision').textContent = `${precision}%`;
+  document.getElementById('mat-recall').textContent = `${recall}%`;
+  document.getElementById('mat-f1').textContent = `${f1}%`;
+}
+
+/* 15. ALGORITHM BENCHMARK CHART (CHART.JS) */
 function initBenchmarkChart() {
   const ctx = document.getElementById('benchmarkChart');
   if (!ctx) return;
@@ -456,7 +675,7 @@ function initBenchmarkChart() {
   });
 }
 
-/* 11. 3D GYROSCOPE TILT EFFECT FOR CARDS */
+/* 16. 3D TILT EFFECT */
 function initTiltAndSpotlight() {
   const cards = document.querySelectorAll('[data-tilt]');
 
@@ -481,8 +700,9 @@ function initTiltAndSpotlight() {
   });
 }
 
-/* 12. PROJECT MODALS */
+/* 17. PROJECT MODALS */
 function openProjectModal(projectKey) {
+  playSciFiBlip(680, 0.08);
   const overlay = document.getElementById('project-modal');
   const content = document.getElementById('modal-content');
 
@@ -690,8 +910,9 @@ function closeProjectModal() {
   document.getElementById('project-modal').classList.remove('active');
 }
 
-/* 13. DEVELOPER CLI TERMINAL ENGINE */
+/* 18. DEVELOPER CLI TERMINAL ENGINE */
 function toggleCLIModal() {
+  playSciFiBlip(500, 0.08);
   const modal = document.getElementById('cli-modal');
   modal.classList.toggle('active');
   if (modal.classList.contains('active')) {
@@ -699,7 +920,6 @@ function toggleCLIModal() {
   }
 }
 
-// Global keyboard shortcut Ctrl + K
 window.addEventListener('keydown', (e) => {
   if (e.ctrlKey && e.key === 'k') {
     e.preventDefault();
@@ -776,7 +996,7 @@ function handleCLISubmit(e) {
   document.getElementById('cli-body').scrollTop = document.getElementById('cli-body').scrollHeight;
 }
 
-/* 14. DIGITAL RAIN MATRIX MODE OVERLAY */
+/* 19. DIGITAL RAIN MATRIX MODE OVERLAY */
 let matrixInterval = null;
 function initMatrixRain() {
   const canvas = document.getElementById('matrix-canvas');
@@ -828,8 +1048,9 @@ function toggleMatrixRain() {
   }
 }
 
-/* 15. AUDIO VISUALIZER PULSE WIDGET */
+/* 20. AUDIO VISUALIZER PULSE WIDGET */
 function toggleAudioPulse() {
+  playSciFiBlip(550, 0.1);
   const widget = document.getElementById('audio-widget');
   const text = document.getElementById('audio-status-text');
   widget.classList.toggle('active');
@@ -843,18 +1064,18 @@ function toggleAudioPulse() {
   }
 }
 
-/* 16. CLICK STARDUST / CONFETTI EXPLOSION ENGINE */
+/* 21. CLICK STARDUST / CONFETTI EXPLOSION ENGINE */
 function initGlobalButtonParticles() {
   window.addEventListener('click', (e) => {
-    // Spawn particle burst at click position
     if (e.target.closest('button, .btn, .lab-tab, .glass-card')) {
+      playSciFiBlip(700, 0.05);
       triggerStardustBurst(e.clientX, e.clientY);
     }
   });
 }
 
 function triggerStardustBurst(x, y) {
-  const count = 14;
+  const count = 16;
   for (let i = 0; i < count; i++) {
     const p = document.createElement('div');
     p.style.position = 'fixed';
@@ -863,15 +1084,15 @@ function triggerStardustBurst(x, y) {
     p.style.width = '6px';
     p.style.height = '6px';
     p.style.borderRadius = '50%';
-    p.style.background = Math.random() > 0.5 ? '#00f2fe' : '#ff0080';
-    p.style.boxShadow = `0 0 10px ${p.style.background}`;
+    p.style.background = Math.random() > 0.5 ? 'var(--cyan)' : 'var(--pink)';
+    p.style.boxShadow = `0 0 12px ${p.style.background}`;
     p.style.pointerEvents = 'none';
     p.style.zIndex = '99999';
 
     document.body.appendChild(p);
 
     const angle = Math.random() * Math.PI * 2;
-    const speed = Math.random() * 60 + 20;
+    const speed = Math.random() * 65 + 25;
     const vx = Math.cos(angle) * speed;
     const vy = Math.sin(angle) * speed;
 
@@ -879,16 +1100,17 @@ function triggerStardustBurst(x, y) {
       { transform: 'translate(0, 0) scale(1)', opacity: 1 },
       { transform: `translate(${vx}px, ${vy}px) scale(0)`, opacity: 0 }
     ], {
-      duration: 600,
+      duration: 650,
       easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)'
     }).onfinish = () => p.remove();
   }
 }
 
-/* 17. CONTACT FORM SUBMISSION FEEDBACK WITH STARDUST BURST */
+/* 22. CONTACT FORM SUBMISSION FEEDBACK */
 function handleFormSubmit(e) {
   e.preventDefault();
   const name = document.getElementById('sender-name').value;
+  playSciFiBlip(880, 0.15);
   triggerStardustBurst(window.innerWidth / 2, window.innerHeight / 2);
   alert(`Thank you ${name}! Your message has been sent successfully. I will get back to you shortly.`);
   document.getElementById('contact-form').reset();
