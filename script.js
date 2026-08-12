@@ -57,6 +57,7 @@ function initAll() {
   initMatrixRain();
   initBenchmarkChart();
   initSQLSandbox();
+  initSkillsRadarChart();
   setupTheme();
   initCyberRPG();
 }
@@ -1295,5 +1296,61 @@ function closeLaughTaleModal() {
   playBlip(400);
   const modal = document.getElementById('laughtale-modal');
   if (modal) modal.classList.remove('open');
+}
+
+/* ---- PROJECT CATEGORY FILTER ---- */
+function filterProjects(e, category) {
+  playBlip(540);
+  document.querySelectorAll('.proj-filter-btn').forEach(btn => btn.classList.remove('active'));
+  if (e && e.currentTarget) e.currentTarget.classList.add('active');
+
+  const cards = document.querySelectorAll('.proj-card-item');
+  cards.forEach(card => {
+    const catAttr = card.dataset.category || '';
+    if (category === 'all' || catAttr.includes(category)) {
+      card.classList.remove('hidden-proj');
+    } else {
+      card.classList.add('hidden-proj');
+    }
+  });
+}
+
+/* ---- SKILLS RADAR CHART ---- */
+function initSkillsRadarChart() {
+  const el = document.getElementById('skillsRadarChart');
+  if (!el) return;
+  new Chart(el, {
+    type: 'radar',
+    data: {
+      labels: ['ML & AI', 'Advanced SQL', 'Power BI', 'AWS Cloud', 'Statistics & EDA', 'Data Engineering'],
+      datasets: [{
+        label: 'Captain Sai Narendra Mastery (%)',
+        data: [92, 90, 88, 82, 91, 87],
+        backgroundColor: 'rgba(0, 242, 254, 0.22)',
+        borderColor: '#00f2fe',
+        pointBackgroundColor: '#ff0033',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: '#ff0033',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        r: {
+          angleLines: { color: 'rgba(255, 255, 255, 0.12)' },
+          grid: { color: 'rgba(255, 255, 255, 0.08)' },
+          pointLabels: { color: '#f0f6ff', font: { family: 'Outfit', size: 12, weight: 'bold' } },
+          ticks: { color: '#8fa4c8', backdropColor: 'transparent' },
+          min: 50, max: 100
+        }
+      },
+      plugins: {
+        legend: { labels: { color: '#f0f6ff', font: { family: 'Outfit' } } }
+      }
+    }
+  });
 }
 

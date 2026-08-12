@@ -316,80 +316,121 @@
       </div>
       <h2 class="section-title">Projects &amp; <span class="gradient-text">Repositories</span></h2>
 
+      <!-- PROJECT FILTER TABS -->
+      <div class="project-filters">
+        <button class="proj-filter-btn active" onclick="filterProjects(event, 'all')">🏴‍☠️ All Treasures</button>
+        <button class="proj-filter-btn" onclick="filterProjects(event, 'ml')">🤖 Machine Learning &amp; AI</button>
+        <button class="proj-filter-btn" onclick="filterProjects(event, 'sql')">📊 Analytics &amp; SQL</button>
+        <button class="proj-filter-btn" onclick="filterProjects(event, 'vision')">🛡️ Vision &amp; Security</button>
+        <button class="proj-filter-btn" onclick="filterProjects(event, 'web')">🌐 Web &amp; Telemetry</button>
+      </div>
+
       <div class="projects-bento">
 
         <!-- HERO PROJECT: Churn -->
-        <div class="glass-card project-hero glow-hover" onclick="openModal('churn')">
-          <div class="project-glow-tag">⭐ Featured Case Study</div>
+        <div class="glass-card project-hero glow-hover proj-card-item" data-category="ml sql" onclick="openModal('churn')">
+          <div class="project-top-meta">
+            <span class="project-glow-tag">⭐ Featured Case Study</span>
+            <span class="proj-bounty-badge">฿ 90M BOUNTY</span>
+          </div>
           <div class="project-top-row">
             <div class="proj-icon-lg"><i class="fas fa-bullseye"></i></div>
             <div class="project-acc-badge">90% Acc.</div>
           </div>
           <h3 class="project-title">Smart Targeting &amp; Churn Prevention System</h3>
           <p class="project-desc">End-to-end ML pipeline using Random Forest + ANN ensemble. RFM segmentation in MySQL. Flask API served on AWS with automated retention triggers.</p>
+          <div class="proj-impact-pill">⚡ 90% Accuracy · 20% Churn Reduction</div>
           <div class="chip-row"><span class="chip">Python</span><span class="chip">Flask</span><span class="chip">ANN</span><span class="chip">MySQL</span><span class="chip">AWS</span></div>
           <div class="project-footer-row"><span class="proj-cta">View Case Study <i class="fas fa-arrow-right"></i></span></div>
         </div>
 
         <!-- Heart Disease -->
-        <div class="glass-card glow-hover" onclick="openModal('heart')">
+        <div class="glass-card glow-hover proj-card-item" data-category="ml vision" onclick="openModal('heart')">
+          <div class="project-top-meta">
+            <span class="proj-bounty-badge">฿ 85M BOUNTY</span>
+          </div>
           <div class="proj-icon-sm"><i class="fas fa-heartbeat"></i></div>
           <h3 class="project-title">Heart Disease Early Detection</h3>
           <p class="project-desc">Clinical decision support risk assessment with SVM & Random Forest. Ethical AI aligned with false-negative minimization.</p>
+          <div class="proj-impact-pill">🩺 Clinical Decision Support AI</div>
           <div class="chip-row"><span class="chip">Python</span><span class="chip">SVM</span><span class="chip">Seaborn</span></div>
           <div class="project-footer-row"><span class="proj-cta">Details <i class="fas fa-arrow-right"></i></span><a href="https://github.com/Narendra6305/Heart-Disease-Prediction" target="_blank" onclick="event.stopPropagation()" class="proj-gh"><i class="fab fa-github"></i></a></div>
         </div>
 
         <!-- SatyaLens -->
-        <div class="glass-card glow-hover" onclick="openModal('satyalens')">
+        <div class="glass-card glow-hover proj-card-item" data-category="ml vision" onclick="openModal('satyalens')">
+          <div class="project-top-meta">
+            <span class="proj-bounty-badge">฿ 88M BOUNTY</span>
+          </div>
           <div class="proj-icon-sm"><i class="fas fa-eye"></i></div>
           <h3 class="project-title">SatyaLens — Truth Verification</h3>
           <p class="project-desc">Multimodal deepfake detection & media integrity verification engine using Computer Vision and signal analysis.</p>
+          <div class="proj-impact-pill">👁️ Deepfake & Media Defense</div>
           <div class="chip-row"><span class="chip">Python</span><span class="chip">Deep Learning</span><span class="chip">CV</span></div>
           <div class="project-footer-row"><span class="proj-cta">Details <i class="fas fa-arrow-right"></i></span><a href="https://github.com/Narendra6305/SatyaLens" target="_blank" onclick="event.stopPropagation()" class="proj-gh"><i class="fab fa-github"></i></a></div>
         </div>
 
         <!-- Employee Performance -->
-        <div class="glass-card glow-hover" onclick="openModal('employee')">
+        <div class="glass-card glow-hover proj-card-item" data-category="ml sql" onclick="openModal('employee')">
+          <div class="project-top-meta">
+            <span class="proj-bounty-badge">฿ 80M BOUNTY</span>
+          </div>
           <div class="proj-icon-sm"><i class="fas fa-users-cog"></i></div>
           <h3 class="project-title">Employee Performance Prediction</h3>
           <p class="project-desc">Workforce analytics using Scikit-Learn to predict attrition risk and performance ratings with EDA feature engineering.</p>
+          <div class="proj-impact-pill">👥 HR Attrition Forecasting</div>
           <div class="chip-row"><span class="chip">Jupyter</span><span class="chip">Scikit-Learn</span><span class="chip">Pandas</span></div>
           <div class="project-footer-row"><span class="proj-cta">Details <i class="fas fa-arrow-right"></i></span><a href="https://github.com/Narendra6305/Employee-Performance-Prediction" target="_blank" onclick="event.stopPropagation()" class="proj-gh"><i class="fab fa-github"></i></a></div>
         </div>
 
         <!-- Texas Salary -->
-        <div class="glass-card glow-hover" onclick="openModal('texas')">
+        <div class="glass-card glow-hover proj-card-item" data-category="sql ml" onclick="openModal('texas')">
+          <div class="project-top-meta">
+            <span class="proj-bounty-badge">฿ 78M BOUNTY</span>
+          </div>
           <div class="proj-icon-sm"><i class="fas fa-dollar-sign"></i></div>
           <h3 class="project-title">Texas Public Salary Forecast</h3>
           <p class="project-desc">Predictive regression model on government payroll data. Gradient Boosting with feature sensitivity analysis.</p>
+          <div class="proj-impact-pill">📈 Payroll Gradient Boosting</div>
           <div class="chip-row"><span class="chip">Python</span><span class="chip">Regression</span><span class="chip">Data Mining</span></div>
           <div class="project-footer-row"><span class="proj-cta">Details <i class="fas fa-arrow-right"></i></span><a href="https://github.com/Narendra6305/Texas-Salary-Prediction" target="_blank" onclick="event.stopPropagation()" class="proj-gh"><i class="fab fa-github"></i></a></div>
         </div>
 
         <!-- Medintel-OS -->
-        <div class="glass-card glow-hover" onclick="openModal('medintel')">
+        <div class="glass-card glow-hover proj-card-item" data-category="web" onclick="openModal('medintel')">
+          <div class="project-top-meta">
+            <span class="proj-bounty-badge">฿ 82M BOUNTY</span>
+          </div>
           <div class="proj-icon-sm"><i class="fas fa-hospital-user"></i></div>
           <h3 class="project-title">Medintel-OS Clinical Dashboard</h3>
           <p class="project-desc">Medical telemetry monitoring web application with real-time diagnostic charts and patient data analytics workflows.</p>
+          <div class="proj-impact-pill">🏥 Real-Time Telemetry UI</div>
           <div class="chip-row"><span class="chip">JavaScript</span><span class="chip">Chart.js</span><span class="chip">REST API</span></div>
           <div class="project-footer-row"><span class="proj-cta">Details <i class="fas fa-arrow-right"></i></span><a href="https://github.com/Narendra6305/Medintel-OS" target="_blank" onclick="event.stopPropagation()" class="proj-gh"><i class="fab fa-github"></i></a></div>
         </div>
 
         <!-- ADMIS -->
-        <div class="glass-card glow-hover" onclick="openModal('admis')">
+        <div class="glass-card glow-hover proj-card-item" data-category="sql web" onclick="openModal('admis')">
+          <div class="project-top-meta">
+            <span class="proj-bounty-badge">฿ 84M BOUNTY</span>
+          </div>
           <div class="proj-icon-sm"><i class="fas fa-database"></i></div>
           <h3 class="project-title">ADMIS — Adaptive Data System</h3>
           <p class="project-desc">Enterprise TypeScript data intelligence architecture for structured query processing and system telemetry analytics.</p>
+          <div class="proj-impact-pill">⚡ Type-Safe Data Engine</div>
           <div class="chip-row"><span class="chip">TypeScript</span><span class="chip">Node.js</span><span class="chip">SQL</span></div>
           <div class="project-footer-row"><span class="proj-cta">Details <i class="fas fa-arrow-right"></i></span><a href="https://github.com/Narendra6305/ADMIS" target="_blank" onclick="event.stopPropagation()" class="proj-gh"><i class="fab fa-github"></i></a></div>
         </div>
 
         <!-- Aegis-Lite -->
-        <div class="glass-card glow-hover" onclick="openModal('aegis')">
+        <div class="glass-card glow-hover proj-card-item" data-category="vision ml" onclick="openModal('aegis')">
+          <div class="project-top-meta">
+            <span class="proj-bounty-badge">฿ 86M BOUNTY</span>
+          </div>
           <div class="proj-icon-sm"><i class="fas fa-shield-alt"></i></div>
           <h3 class="project-title">Aegis-Lite Security Analytics</h3>
           <p class="project-desc">Python anomaly detection suite for security log parsing, threat classification, and real-time risk threshold alerts.</p>
+          <div class="proj-impact-pill">🛡️ Anomaly Alert System</div>
           <div class="chip-row"><span class="chip">Python</span><span class="chip">Anomaly Detection</span><span class="chip">Security</span></div>
           <div class="project-footer-row"><span class="proj-cta">Details <i class="fas fa-arrow-right"></i></span><a href="https://github.com/Narendra6305/Aegis-Lite" target="_blank" onclick="event.stopPropagation()" class="proj-gh"><i class="fab fa-github"></i></a></div>
         </div>
@@ -766,49 +807,59 @@
   <!-- ==================== SKILLS ==================== -->
   <section id="skills" class="section-pad reveal-section">
     <div class="container">
-      <div class="section-badge"><i class="fas fa-code"></i> Tech Stack</div>
-      <h2 class="section-title">Skills &amp; <span class="gradient-text">Expertise</span></h2>
+      <div class="section-badge"><i class="fas fa-khanda"></i> ⚔️ LOG POSE ISLAND V · HAKI &amp; SKILL TREE</div>
+      <h2 class="section-title">Haki Mastery &amp; <span class="gradient-text">Skill Tree</span></h2>
 
-      <div class="skills-layout">
-        <div class="glass-card glow-hover">
-          <h4 class="skills-cat-title"><i class="fas fa-brain"></i> Machine Learning & AI</h4>
-          <div class="skill-list">
-            <div class="skill-row"><span>Python (Scikit-Learn, Pandas)</span><span class="skill-pct">92%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="92%"></div></div>
-            <div class="skill-row"><span>Random Forest & Ensemble Models</span><span class="skill-pct">90%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="90%"></div></div>
-            <div class="skill-row"><span>ANN / Neural Networks</span><span class="skill-pct">85%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="85%"></div></div>
-            <div class="skill-row"><span>SVM & Regression Models</span><span class="skill-pct">88%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="88%"></div></div>
+      <div class="skills-wrapper">
+        <!-- RADAR CHART BOX -->
+        <div class="glass-card skills-radar-card glow-hover" style="margin-bottom:24px;">
+          <h4 class="skills-cat-title"><i class="fas fa-compass"></i> Haki Mastery Hexagon Radar</h4>
+          <div style="height: 300px; position: relative;">
+            <canvas id="skillsRadarChart"></canvas>
           </div>
         </div>
 
-        <div class="glass-card glow-hover">
-          <h4 class="skills-cat-title"><i class="fas fa-database"></i> Data Engineering & SQL</h4>
-          <div class="skill-list">
-            <div class="skill-row"><span>SQL / MySQL (Advanced Queries)</span><span class="skill-pct">90%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="90%"></div></div>
-            <div class="skill-row"><span>ETL Pipelines & Data Cleaning</span><span class="skill-pct">87%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="87%"></div></div>
-            <div class="skill-row"><span>AWS Cloud Infrastructure</span><span class="skill-pct">82%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="82%"></div></div>
-            <div class="skill-row"><span>Statistical Analysis & EDA</span><span class="skill-pct">91%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="91%"></div></div>
+        <div class="skills-layout">
+          <div class="glass-card glow-hover">
+            <h4 class="skills-cat-title"><i class="fas fa-khanda" style="color:#ff0033"></i> ⚔️ Conqueror's Haki (Machine Learning &amp; AI)</h4>
+            <div class="skill-list">
+              <div class="skill-row"><span>Python (Scikit-Learn, Pandas)</span><span class="skill-pct">92%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="92%"></div></div>
+              <div class="skill-row"><span>Random Forest &amp; Ensemble Models</span><span class="skill-pct">90%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="90%"></div></div>
+              <div class="skill-row"><span>ANN / Neural Networks</span><span class="skill-pct">85%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="85%"></div></div>
+              <div class="skill-row"><span>SVM &amp; Regression Models</span><span class="skill-pct">88%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="88%"></div></div>
+            </div>
           </div>
-        </div>
 
-        <div class="glass-card glow-hover">
-          <h4 class="skills-cat-title"><i class="fas fa-chart-pie"></i> Visualization & BI</h4>
-          <div class="skill-list">
-            <div class="skill-row"><span>Power BI (DAX, Reports)</span><span class="skill-pct">88%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="88%"></div></div>
-            <div class="skill-row"><span>Tableau Desktop</span><span class="skill-pct">85%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="85%"></div></div>
-            <div class="skill-row"><span>Matplotlib & Seaborn</span><span class="skill-pct">89%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="89%"></div></div>
-            <div class="skill-row"><span>Excel & Advanced Analytics</span><span class="skill-pct">86%</span></div>
-            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="86%"></div></div>
+          <div class="glass-card glow-hover">
+            <h4 class="skills-cat-title"><i class="fas fa-shield-alt" style="color:#00f2fe"></i> 🛡️ Armament Haki (Data Engineering &amp; SQL)</h4>
+            <div class="skill-list">
+              <div class="skill-row"><span>SQL / MySQL (Advanced Joins &amp; Windowing)</span><span class="skill-pct">90%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="90%"></div></div>
+              <div class="skill-row"><span>ETL Pipelines &amp; Data Cleaning</span><span class="skill-pct">87%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="87%"></div></div>
+              <div class="skill-row"><span>AWS Cloud Infrastructure</span><span class="skill-pct">82%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="82%"></div></div>
+              <div class="skill-row"><span>Statistical Analysis &amp; EDA</span><span class="skill-pct">91%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="91%"></div></div>
+            </div>
+          </div>
+
+          <div class="glass-card glow-hover">
+            <h4 class="skills-cat-title"><i class="fas fa-eye" style="color:#ffd700"></i> 👁️ Observation Haki (Visualization &amp; BI)</h4>
+            <div class="skill-list">
+              <div class="skill-row"><span>Power BI (DAX, Reports)</span><span class="skill-pct">88%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="88%"></div></div>
+              <div class="skill-row"><span>Tableau Desktop</span><span class="skill-pct">85%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="85%"></div></div>
+              <div class="skill-row"><span>Matplotlib &amp; Seaborn</span><span class="skill-pct">89%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="89%"></div></div>
+              <div class="skill-row"><span>Executive Telemetry Dashboards</span><span class="skill-pct">86%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="86%"></div></div>
+            </div>
           </div>
         </div>
       </div>
