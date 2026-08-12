@@ -1452,6 +1452,11 @@ function completeQuest(questId) {
   renderQuestsList();
 }
 
+function toggleNavMenu() {
+  const menu = document.getElementById('nav-links');
+  if (menu) menu.classList.remove('open');
+}
+
 function updateHUDUI() {
   const lvlEl = document.getElementById('player-lvl');
   const titleEl = document.getElementById('player-title');
@@ -1459,6 +1464,10 @@ function updateHUDUI() {
   const xpText = document.getElementById('xp-text');
   const questCount = document.getElementById('quest-count');
   
+  const mLvlEl = document.getElementById('m-player-lvl');
+  const mTitleEl = document.getElementById('m-player-title');
+  const mQuestCount = document.getElementById('m-quest-count');
+
   const qStatScore = document.getElementById('q-stat-score');
   const qStatLvl = document.getElementById('q-stat-lvl');
   const qStatCompleted = document.getElementById('q-stat-completed');
@@ -1478,6 +1487,10 @@ function updateHUDUI() {
   if (barFill) barFill.style.width = `${pct}%`;
   if (xpText) xpText.textContent = `฿${RPG_STATE.score}M / ฿${nextReq}M`;
   if (questCount) questCount.textContent = `${RPG_STATE.completedQuests.length}/${CYBER_QUESTS.length}`;
+
+  if (mLvlEl) mLvlEl.textContent = `LVL 0${RPG_STATE.level}`;
+  if (mTitleEl) mTitleEl.textContent = currentRank.title;
+  if (mQuestCount) mQuestCount.textContent = `${RPG_STATE.completedQuests.length}/${CYBER_QUESTS.length}`;
 
   if (qStatScore) qStatScore.textContent = `฿${RPG_STATE.score}M`;
   if (qStatLvl) qStatLvl.textContent = RPG_STATE.level;
