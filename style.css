@@ -40,6 +40,16 @@
   --bounce: cubic-bezier(0.34,1.56,0.64,1);
   --glow: 0 0 40px rgba(0,242,254,0.25);
   --glow-strong: 0 0 60px rgba(0,242,254,0.45);
+
+  /* ---- SPACING & LAYOUT SYSTEM TOKENS ---- */
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 20px;
+  --space-lg: 32px;
+  --space-xl: 56px;
+  --space-section: clamp(48px, 7vw, 96px);
+  --container-px: clamp(16px, 4.5vw, 28px);
+  --card-padding: clamp(18px, 4.5vw, 32px);
 }
 
 [data-theme="violet"] { --accent:#c084fc; --accent2:#7e22ce; --border-hi:rgba(192,132,252,0.35); }
@@ -353,31 +363,37 @@ body{
   background:rgba(0,242,254,0.1);border:1px solid var(--border-hi);
   color:var(--accent);font-weight:600;font-size:0.85rem;
   text-decoration:none;transition:all 0.25s;
+  min-height:44px;
 }
 .btn-connect:hover{background:var(--accent);color:#040810;box-shadow:var(--glow);}
 
-.hamburger{display:none;background:transparent;border:none;color:var(--text);font-size:1.4rem;cursor:pointer;}
+.hamburger{
+  display:none;background:transparent;border:none;color:var(--text);font-size:1.4rem;cursor:pointer;
+  min-height:44px;min-width:44px;align-items:center;justify-content:center;
+}
 
 /* ---- SHARED BUTTON STYLES ---- */
 .btn-primary {
-  display:inline-flex;align-items:center;gap:8px;
-  padding:13px 26px;border-radius:99px;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 26px;border-radius:99px;
   background:var(--grad-main);color:#040810;
   font-family:var(--font);font-weight:700;font-size:0.95rem;
   border:none;cursor:pointer;text-decoration:none;
   transition:transform 0.25s var(--bounce),box-shadow 0.25s;
   box-shadow:0 4px 28px rgba(0,242,254,0.35);
+  min-height:44px;
 }
 .btn-primary:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 8px 40px rgba(0,242,254,0.55);}
 .w-full{width:100%;justify-content:center;}
 
 .btn-ghost {
-  display:inline-flex;align-items:center;gap:8px;
-  padding:13px 22px;border-radius:99px;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 22px;border-radius:99px;
   background:rgba(255,255,255,0.04);
   border:1px solid var(--border);color:var(--text);
   font-family:var(--font);font-weight:600;font-size:0.9rem;
   text-decoration:none;transition:all 0.25s;cursor:pointer;
+  min-height:44px;
 }
 .btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,242,254,0.07);transform:translateY(-2px);}
 
@@ -386,8 +402,10 @@ body{
   background:var(--surface);
   border:1px solid var(--border);
   border-radius:var(--r-lg);
-  padding:28px;
+  padding:var(--card-padding);
   position:relative;overflow:hidden;
+  overflow-wrap:break-word;
+  word-break:break-word;
   transition:border-color 0.3s,box-shadow 0.3s,transform 0.3s var(--ease);
   will-change:transform;
   contain:layout style;
@@ -401,23 +419,31 @@ body{
 .glow-hover:hover{border-color:var(--border-hi);box-shadow:var(--glow);transform:translateY(-5px);}
 
 /* ---- SECTION COMMON ---- */
-.section-pad { padding:110px 0; }
+.section-pad { padding:var(--space-section) 0; }
 .alt-bg { background:rgba(7,13,26,0.5); }
-.container { width:90%;max-width:1220px;margin:0 auto;padding:0 16px; }
+.container {
+  width:100% !important;
+  max-width:min(1280px, calc(100% - (var(--container-px) * 2))) !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  padding-left:var(--container-px) !important;
+  padding-right:var(--container-px) !important;
+  box-sizing:border-box !important;
+}
 
 .section-badge {
   display:inline-flex;align-items:center;gap:8px;
   padding:6px 18px;border-radius:99px;
   background:rgba(0,242,254,0.07);border:1px solid var(--border-hi);
-  font-family:var(--font-mono);font-size:0.8rem;color:var(--accent);
-  text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;
+  font-family:var(--font-mono);font-size:clamp(0.72rem, 1vw, 0.82rem);color:var(--accent);
+  text-transform:uppercase;letter-spacing:0.08em;margin-bottom:var(--space-xs);
   box-shadow:0 0 20px rgba(0,242,254,0.15);
 }
 .section-title {
-  font-family:var(--font-hd);font-size:2.7rem;font-weight:700;
-  line-height:1.15;margin-bottom:48px;
+  font-family:var(--font-hd);font-size:clamp(1.75rem, 4vw, 2.7rem);font-weight:700;
+  line-height:1.18;margin-bottom:var(--space-lg);
 }
-.section-sub { color:var(--text-mid);font-size:1.05rem;margin-top:-36px;margin-bottom:48px; }
+.section-sub { color:var(--text-mid);font-size:clamp(0.92rem, 1.5vw, 1.08rem);margin-top:-20px;margin-bottom:var(--space-lg); }
 
 .chip {
   font-family:var(--font-mono);font-size:0.77rem;
