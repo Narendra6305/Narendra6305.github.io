@@ -1114,6 +1114,7 @@ function updateHUDUI() {
   const qStatScore = document.getElementById('q-stat-score');
   const qStatLvl = document.getElementById('q-stat-lvl');
   const qStatCompleted = document.getElementById('q-stat-completed');
+  const bountyVal = document.getElementById('wanted-bounty-val');
 
   const rankIdx = Math.min(RPG_STATE.level - 1, PLAYER_RANKS.length - 1);
   const currentRank = PLAYER_RANKS[rankIdx];
@@ -1133,6 +1134,11 @@ function updateHUDUI() {
   if (qStatScore) qStatScore.textContent = `฿${RPG_STATE.score}M`;
   if (qStatLvl) qStatLvl.textContent = RPG_STATE.level;
   if (qStatCompleted) qStatCompleted.textContent = `${RPG_STATE.completedQuests.length} / ${CYBER_QUESTS.length}`;
+
+  if (bountyVal) {
+    const totalBounty = 5564800000 + RPG_STATE.score * 1000000;
+    bountyVal.textContent = totalBounty.toLocaleString();
+  }
 
   unlockSecretThemes(RPG_STATE.level);
 }
@@ -1154,7 +1160,7 @@ function renderQuestsList() {
             <div class="quest-desc">${q.desc}</div>
           </div>
         </div>
-        <div class="quest-reward">${isDone ? 'COMPLETED ✓' : '+' + q.xp + ' XP'}</div>
+        <div class="quest-reward">${isDone ? 'COMPLETED ✓' : '+ ฿' + q.xp + 'M'}</div>
       </div>
     `;
   }).join('');
@@ -1167,7 +1173,7 @@ function showXPToast(amount, msg) {
   const toast = document.createElement('div');
   toast.className = 'xp-toast';
   toast.innerHTML = `
-    ${amount > 0 ? `<span class="xp-toast-val">+${amount} XP</span>` : ''}
+    ${amount > 0 ? `<span class="xp-toast-val">+ ฿${amount}M</span>` : ''}
     <span>${msg}</span>
   `;
 
@@ -1215,10 +1221,79 @@ function focusAnomaly() {
   playZapSound();
   starBurst(innerWidth / 2, innerHeight - 60);
   RPG_STATE.anomaliesCaptured++;
-  addXP(50, 'Data Anomaly Captured!');
+  addXP(50, 'Devil Fruit Captured!');
 
   if (RPG_STATE.anomaliesCaptured >= 3) {
     completeQuest('quest_anomaly');
   }
+}
+
+/* ---- CONQUEROR'S HAKI BURST ---- */
+function triggerHakiBurst(e) {
+  playHakiSound();
+  starBurst(e ? e.clientX : innerWidth / 2, e ? e.clientY : innerHeight / 2);
+  
+  document.body.animate([
+    { transform: 'translate(0, 0)' },
+    { transform: 'translate(-6px, 4px)' },
+    { transform: 'translate(6px, -4px)' },
+    { transform: 'translate(-4px, -2px)' },
+    { transform: 'translate(4px, 2px)' },
+    { transform: 'translate(0, 0)' }
+  ], { duration: 400, easing: 'ease-in-out' });
+
+  showXPToast(0, '💥 CONQUEROR\'S HAKI UNLEASHED!');
+}
+
+function playHakiSound() {
+  if (_sfxMuted) return;
+  try {
+    const ac = getAC();
+    if (ac.state === 'suspended') ac.resume();
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.type = 'sawtooth';
+    o.frequency.setValueAtTime(150, ac.currentTime);
+    o.frequency.exponentialRampToValueAtTime(40, ac.currentTime + 0.5);
+    g.gain.setValueAtTime(0.25, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.5);
+    o.connect(g); g.connect(ac.destination);
+    o.start(); o.stop(ac.currentTime + 0.5);
+  } catch(e) {}
+}
+
+/* ---- ROAD PONEGLYPH DECRYPTOR & LAUGH TALE ---- */
+let decryptedPoneglyphs = [];
+
+function decryptedPoneglyph(id) {
+  if (decryptedPoneglyphs.includes(id)) return;
+  decryptedPoneglyphs.push(id);
+  
+  const el = document.getElementById(`poneglyph-${id}`);
+  if (el) {
+    el.classList.add('decrypted');
+    el.querySelector('.pg-txt').textContent = `ROAD PONEGLYPH ${id} / IV [DECRYPTED ✓]`;
+  }
+
+  playQuestSound();
+  addXP(100, `Road Poneglyph #${id} Decrypted!`);
+
+  if (decryptedPoneglyphs.length === 4) {
+    setTimeout(() => {
+      openLaughTaleModal();
+    }, 600);
+  }
+}
+
+function openLaughTaleModal() {
+  playHakiSound();
+  addXP(1000, '🎉 DISCOVERED LAUGH TALE! + ฿1,000M BOUNTY!');
+  const modal = document.getElementById('laughtale-modal');
+  if (modal) modal.classList.add('open');
+}
+
+function closeLaughTaleModal() {
+  playBlip(400);
+  const modal = document.getElementById('laughtale-modal');
+  if (modal) modal.classList.remove('open');
 }
 

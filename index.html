@@ -179,9 +179,27 @@
       </div>
 
       <div class="hero-right">
+        <!-- ONE PIECE WANTED POSTER CARD -->
+        <div class="wanted-poster-card" onclick="triggerHakiBurst(event)" title="Click to trigger Conqueror's Haki!">
+          <div class="wanted-stamp">MARINE</div>
+          <div class="wanted-header">WANTED</div>
+          <div class="wanted-sub">DEAD OR ALIVE</div>
+          <div class="wanted-avatar-frame">
+            <div class="wanted-avatar-text">☠️ SAI NARENDRA</div>
+            <div class="haki-aura-ring"></div>
+          </div>
+          <div class="wanted-name">CAPTAIN NARENDRA</div>
+          <div class="wanted-bounty">
+            <span class="bounty-symbol">฿</span>
+            <span class="bounty-amount" id="wanted-bounty-val">5,564,800,000</span>
+            <span class="bounty-dash">-</span>
+          </div>
+          <div class="wanted-footer">MARINE DATA HEADQUARTERS</div>
+        </div>
+
         <div class="neural-orb-wrapper">
           <canvas id="orb-canvas"></canvas>
-          <div class="orb-label"><i class="fas fa-brain"></i> Neural Data Core</div>
+          <div class="orb-label"><i class="fas fa-compass"></i> Grand Line Log Pose Core</div>
           <div class="orb-ring ring-1"></div>
           <div class="orb-ring ring-2"></div>
           <div class="orb-ring ring-3"></div>
@@ -198,7 +216,13 @@
   <!-- ==================== ABOUT ==================== -->
   <section id="about" class="section-pad reveal-section">
     <div class="container">
-      <div class="section-badge"><i class="fas fa-user-astronaut"></i> Who I Am</div>
+      <div class="section-badge"><i class="fas fa-compass"></i> 🌊 LOG POSE ISLAND I · PONEGLYPH ARCHIVES</div>
+      
+      <!-- ROAD PONEGLYPH #1 -->
+      <div class="poneglyph-stone" id="poneglyph-1" onclick="decryptedPoneglyph(1)" title="Decrypt Road Poneglyph #1">
+        <span class="pg-glyph">📜</span>
+        <span class="pg-txt">ROAD PONEGLYPH I / IV [CLICK TO DECRYPT]</span>
+      </div>
       <h2 class="section-title">Bridging Data &amp; <span class="gradient-text">Strategic Decisions</span></h2>
 
       <div class="about-grid">
@@ -247,7 +271,7 @@
   <!-- ==================== EXPERIENCE ==================== -->
   <section id="experience" class="section-pad reveal-section alt-bg">
     <div class="container">
-      <div class="section-badge"><i class="fas fa-history"></i> Career Journey</div>
+      <div class="section-badge"><i class="fas fa-ship"></i> ⛵ LOG POSE ISLAND II · THOUSAND SUNNY VOYAGES</div>
       <h2 class="section-title">Professional <span class="gradient-text">Timeline</span></h2>
 
       <div class="timeline">
@@ -283,7 +307,13 @@
   <!-- ==================== PROJECTS ==================== -->
   <section id="projects" class="section-pad reveal-section">
     <div class="container">
-      <div class="section-badge"><i class="fas fa-layer-group"></i> Featured Work</div>
+      <div class="section-badge"><i class="fas fa-skull-crossbones"></i> 🏴‍☠️ LOG POSE ISLAND III · ALL BLUE TREASURES</div>
+      
+      <!-- ROAD PONEGLYPH #2 -->
+      <div class="poneglyph-stone" id="poneglyph-2" onclick="decryptedPoneglyph(2)" title="Decrypt Road Poneglyph #2">
+        <span class="pg-glyph">📜</span>
+        <span class="pg-txt">ROAD PONEGLYPH II / IV [CLICK TO DECRYPT]</span>
+      </div>
       <h2 class="section-title">Projects &amp; <span class="gradient-text">Repositories</span></h2>
 
       <div class="projects-bento">
@@ -371,8 +401,239 @@
   <!-- ==================== ANALYTICS LAB ==================== -->
   <section id="lab" class="section-pad reveal-section alt-bg">
     <div class="container">
-      <div class="section-badge"><i class="fas fa-vial"></i> Interactive Sandbox</div>
+      <div class="section-badge"><i class="fas fa-flask"></i> 🔬 LOG POSE ISLAND IV · VEGAPUNK ANALYTICS LAB</div>
+      
+      <!-- ROAD PONEGLYPH #3 -->
+      <div class="poneglyph-stone" id="poneglyph-3" onclick="decryptedPoneglyph(3)" title="Decrypt Road Poneglyph #3">
+        <span class="pg-glyph">📜</span>
+        <span class="pg-txt">ROAD PONEGLYPH III / IV [CLICK TO DECRYPT]</span>
+      </div>
       <h2 class="section-title">Live <span class="gradient-text">Analytics Lab</span></h2>
+
+      <div class="lab-shell">
+        <div class="lab-tabs">
+          <button class="lab-tab active" onclick="switchTab(event,'churn')"><i class="fas fa-sliders-h"></i> Churn Sim</button>
+          <button class="lab-tab" onclick="switchTab(event,'heart')"><i class="fas fa-heartbeat"></i> Cardio Risk</button>
+          <button class="lab-tab" onclick="switchTab(event,'sql')"><i class="fas fa-database"></i> SQL Sandbox</button>
+          <button class="lab-tab" onclick="switchTab(event,'matrix')"><i class="fas fa-th"></i> Confusion Matrix</button>
+          <button class="lab-tab" onclick="switchTab(event,'bench')"><i class="fas fa-chart-bar"></i> Benchmarks</button>
+        </div>
+
+        <!-- CHURN SIM -->
+        <div class="lab-panel active" id="panel-churn">
+          <div class="lab-controls">
+            <h4 class="panel-title"><i class="fas fa-sliders-h"></i> Customer Churn Simulator</h4>
+            <div class="control-row">
+              <label>Monthly Spend: <b id="sv-spend">$450</b></label>
+              <input type="range" id="spend-slider" min="50" max="1500" value="450" oninput="runChurnSim()">
+            </div>
+            <div class="control-row">
+              <label>Tenure: <b id="sv-tenure">14 months</b></label>
+              <input type="range" id="tenure-slider" min="1" max="60" value="14" oninput="runChurnSim()">
+            </div>
+            <div class="control-row">
+              <label>Support Tickets: <b id="sv-tickets">2</b></label>
+              <input type="range" id="tickets-slider" min="0" max="10" value="2" oninput="runChurnSim()">
+            </div>
+          </div>
+          <div class="lab-result">
+            <div class="result-label">Churn Probability</div>
+            <div class="result-score" id="churn-score">24.5<span>%</span></div>
+            <div class="result-status" id="churn-status" data-level="low">
+              <i class="fas fa-check-circle"></i> Low Risk — Retention Target
+            </div>
+            <div class="result-bar-bg"><div class="result-bar" id="churn-bar" style="width:24.5%;background:var(--green)"></div></div>
+          </div>
+        </div>
+
+        <!-- CARDIO RISK -->
+        <div class="lab-panel" id="panel-heart">
+          <div class="lab-controls">
+            <h4 class="panel-title"><i class="fas fa-heartbeat"></i> Cardiovascular Risk Assessor</h4>
+            <div class="control-row">
+              <label>Blood Pressure: <b id="sv-bp">128 mmHg</b></label>
+              <input type="range" id="bp-slider" min="90" max="200" value="128" oninput="runHeartSim()">
+            </div>
+            <div class="control-row">
+              <label>Cholesterol: <b id="sv-chol">210 mg/dl</b></label>
+              <input type="range" id="chol-slider" min="120" max="400" value="210" oninput="runHeartSim()">
+            </div>
+            <div class="control-row">
+              <label>Max Heart Rate: <b id="sv-hr">152 bpm</b></label>
+              <input type="range" id="hr-slider" min="80" max="210" value="152" oninput="runHeartSim()">
+            </div>
+          </div>
+          <div class="lab-result">
+            <div class="result-label">Cardiovascular Risk</div>
+            <div class="result-score" id="heart-score">18.2<span>%</span></div>
+            <div class="result-status" id="heart-status" data-level="low">
+              <i class="fas fa-shield-alt"></i> Normal Biomarker Profile
+            </div>
+            <div class="result-bar-bg"><div class="result-bar" id="heart-bar" style="width:18.2%;background:var(--green)"></div></div>
+          </div>
+        </div>
+
+        <!-- SQL SANDBOX -->
+        <div class="lab-panel" id="panel-sql">
+          <div class="sql-panel-inner">
+            <div class="sql-top-bar">
+              <h4 class="panel-title"><i class="fas fa-terminal"></i> Live SQL Query Engine</h4>
+              <div class="sql-controls">
+                <select class="sql-select" id="sql-select" onchange="loadSQL()">
+                  <option value="churn">High Churn Risk Customers</option>
+                  <option value="rfm">Top Spenders — RFM Clusters</option>
+                  <option value="models">Model Performance Registry</option>
+                </select>
+                <button class="btn-execute" onclick="execSQL()"><i class="fas fa-play"></i> Execute</button>
+              </div>
+            </div>
+            <div class="sql-code-block" id="sql-code"></div>
+            <div class="sql-table-wrap">
+              <table class="sql-table">
+                <thead id="sql-head"></thead>
+                <tbody id="sql-body"></tbody>
+              </table>
+            </div>
+            <div class="sql-footer" id="sql-footer">⚡ Ready to execute query...</div>
+          </div>
+        </div>
+
+        <!-- CONFUSION MATRIX -->
+        <div class="lab-panel" id="panel-matrix">
+          <div class="lab-controls">
+            <h4 class="panel-title"><i class="fas fa-th"></i> ML Confusion Matrix</h4>
+            <div class="control-row">
+              <label>Decision Threshold: <b id="sv-thresh">0.50</b></label>
+              <input type="range" id="thresh-slider" min="0.10" max="0.90" step="0.05" value="0.50" oninput="runMatrix()">
+            </div>
+            <div class="matrix-metrics">
+              <div class="mm-box"><div class="mm-val" id="mm-prec">91.4%</div><div class="mm-lbl">Precision</div></div>
+              <div class="mm-box"><div class="mm-val" id="mm-rec">88.2%</div><div class="mm-lbl">Recall</div></div>
+              <div class="mm-box"><div class="mm-val" id="mm-f1">89.8%</div><div class="mm-lbl">F1-Score</div></div>
+            </div>
+          </div>
+          <div class="cm-grid">
+            <div class="cm-label-row"><span></span><span class="cm-axis-lbl">Predicted +</span><span class="cm-axis-lbl">Predicted −</span></div>
+            <div class="cm-data-row">
+              <span class="cm-row-lbl">Actual +</span>
+              <div class="cm-cell cm-tp"><div class="cm-abbr">TP</div><div class="cm-val" id="cm-tp">428</div></div>
+              <div class="cm-cell cm-fn"><div class="cm-abbr">FN</div><div class="cm-val" id="cm-fn">57</div></div>
+            </div>
+            <div class="cm-data-row">
+              <span class="cm-row-lbl">Actual −</span>
+              <div class="cm-cell cm-fp"><div class="cm-abbr">FP</div><div class="cm-val" id="cm-fp">40</div></div>
+              <div class="cm-cell cm-tn"><div class="cm-abbr">TN</div><div class="cm-val" id="cm-tn">975</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BENCHMARKS -->
+        <div class="lab-panel" id="panel-bench">
+          <div style="grid-column: span 2; height: 340px;">
+            <h4 class="panel-title" style="margin-bottom:16px;"><i class="fas fa-chart-bar"></i> Algorithm Performance Benchmark</h4>
+            <canvas id="benchmarkChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SKILLS ==================== -->
+  <section id="skills" class="section-pad reveal-section">
+    <div class="container">
+      <div class="section-badge"><i class="fas fa-khanda"></i> ⚔️ LOG POSE ISLAND V · HAKI &amp; SKILL TREE</div>
+      <h2 class="section-title">Skills &amp; <span class="gradient-text">Expertise</span></h2>
+
+      <div class="skills-layout">
+        <div class="glass-card glow-hover">
+          <h4 class="skills-cat-title"><i class="fas fa-brain"></i> Machine Learning & AI</h4>
+          <div class="skill-list">
+            <div class="skill-row"><span>Python (Scikit-Learn, Pandas)</span><span class="skill-pct">92%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="92%"></div></div>
+            <div class="skill-row"><span>Random Forest & Ensemble Models</span><span class="skill-pct">90%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="90%"></div></div>
+            <div class="skill-row"><span>ANN / Neural Networks</span><span class="skill-pct">85%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="85%"></div></div>
+            <div class="skill-row"><span>SVM & Regression Models</span><span class="skill-pct">88%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="88%"></div></div>
+          </div>
+        </div>
+
+        <div class="glass-card glow-hover">
+          <h4 class="skills-cat-title"><i class="fas fa-database"></i> Data Engineering & SQL</h4>
+          <div class="skill-list">
+            <div class="skill-row"><span>SQL / MySQL (Advanced Queries)</span><span class="skill-pct">90%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="90%"></div></div>
+            <div class="skill-row"><span>ETL Pipelines & Data Cleaning</span><span class="skill-pct">87%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="87%"></div></div>
+            <div class="skill-row"><span>AWS Cloud Infrastructure</span><span class="skill-pct">82%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="82%"></div></div>
+            <div class="skill-row"><span>Statistical Analysis & EDA</span><span class="skill-pct">91%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="91%"></div></div>
+          </div>
+        </div>
+
+        <div class="glass-card glow-hover">
+          <h4 class="skills-cat-title"><i class="fas fa-chart-pie"></i> Visualization & BI</h4>
+          <div class="skill-list">
+            <div class="skill-row"><span>Power BI (DAX, Reports)</span><span class="skill-pct">88%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="88%"></div></div>
+            <div class="skill-row"><span>Tableau Desktop</span><span class="skill-pct">85%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="85%"></div></div>
+            <div class="skill-row"><span>Matplotlib & Seaborn</span><span class="skill-pct">89%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="89%"></div></div>
+            <div class="skill-row"><span>Excel & Advanced Analytics</span><span class="skill-pct">86%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="86%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== EDUCATION ==================== -->
+  <section id="education" class="section-pad reveal-section alt-bg">
+    <div class="container">
+      <div class="section-badge"><i class="fas fa-university"></i> Education</div>
+      <h2 class="section-title">Academic <span class="gradient-text">Foundation</span></h2>
+      <div class="edu-grid">
+        <div class="glass-card glow-hover edu-card">
+          <div class="edu-icon"><i class="fas fa-graduation-cap"></i></div>
+          <div class="edu-body">
+            <div class="edu-degree">Master of Science in Data Analytics</div>
+            <div class="edu-school">CHRIST (Deemed to be University), Bengaluru</div>
+            <div class="edu-year">2025 – 2027</div>
+            <div class="edu-cgpa-row">
+              <span class="cgpa-badge">CGPA: 3.47 / 4.0</span>
+            </div>
+          </div>
+        </div>
+        <div class="glass-card glow-hover edu-card">
+          <div class="edu-icon"><i class="fas fa-laptop-code"></i></div>
+          <div class="edu-body">
+            <div class="edu-degree">Bachelor of Computer Applications (BCA)</div>
+            <div class="edu-school">RJS College, Bengaluru</div>
+            <div class="edu-year">2021 – 2024</div>
+            <div class="edu-cgpa-row">
+              <span class="cgpa-badge">CGPA: 8.7 / 10.0</span>
+              <span class="cgpa-badge">Class X: 9.7 / 10.0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CONTACT ==================== -->
+  <section id="contact" class="section-pad reveal-section">
+    <div class="container">
+      <div class="section-badge"><i class="fas fa-phone-alt"></i> 🐌 LOG POSE ISLAND VI · DEN DEN MUSHI TRANSPONDER</div>
+      
+      <!-- ROAD PONEGLYPH #4 -->
+      <div class="poneglyph-stone" id="poneglyph-4" onclick="decryptedPoneglyph(4)" title="Decrypt Road Poneglyph #4">
+        <span class="pg-glyph">📜</span>
+        <span class="pg-txt">ROAD PONEGLYPH IV / IV [CLICK TO DECRYPT]</span>
+      </div>
+      <h2 class="section-title">Contact <span class="gradient-text">Information</span></h2>
 
       <div class="lab-shell">
         <div class="lab-tabs">
@@ -685,6 +946,24 @@
       <div class="cli-input-row">
         <span class="cli-prompt">narendra@analytics:~$</span>
         <input class="cli-input" id="cli-input" autocomplete="off" onkeydown="handleCLI(event)" placeholder="Type a command...">
+      </div>
+    </div>
+  </div>
+
+  <!-- LAUGH TALE (THE ONE PIECE IS REAL!) CELEBRATION MODAL -->
+  <div class="modal-backdrop" id="laughtale-modal" onclick="closeLaughTaleModal()">
+    <div class="modal-box laughtale-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeLaughTaleModal()"><i class="fas fa-times"></i></button>
+      <div class="laughtale-content" style="text-align:center;padding:20px;">
+        <div class="poneglyph-symbol" style="font-size:3rem;margin-bottom:12px;">📜</div>
+        <h1 class="laughtale-title gradient-text" style="font-family:var(--font-hd);font-size:2rem;font-weight:700;">THE ONE PIECE IS REAL!</h1>
+        <p class="laughtale-sub" style="color:var(--text-mid);margin:10px 0;">You decrypted all 4 Road Poneglyphs and navigated to <strong>Laugh Tale</strong>!</p>
+        <div class="laughtale-bounty-bonus" style="font-family:var(--font-mono);font-size:1.4rem;font-weight:700;color:var(--accent);margin:16px 0;">+ ฿ 1,000,000,000 BOUNTY BONUS!</div>
+        <p class="laughtale-desc" style="color:var(--text);font-size:0.92rem;line-height:1.7;margin-bottom:24px;">
+          Captain Kurugodu Sai Narendra hereby crowns you a <strong>PIRATE KING OF DATA SCIENCE</strong>! 
+          The true treasure was the precision ML insights &amp; data architecture engineered along the journey!
+        </p>
+        <button class="btn-primary" onclick="closeLaughTaleModal()"><i class="fas fa-crown"></i> Claim Pirate King Rank</button>
       </div>
     </div>
   </div>
