@@ -784,14 +784,14 @@
   </div>
 
   <!-- CLI TERMINAL -->
-  <div class="cli-overlay" id="cli-overlay">
+  <div class="cli-overlay" id="cli-overlay" onclick="if(event.target===this) toggleCLI()">
     <div class="cli-window">
       <div class="cli-title-bar">
-        <span class="cli-dot cd-red" onclick="toggleCLI()"></span>
+        <span class="cli-dot cd-red" onclick="toggleCLI()" title="Close Terminal"></span>
         <span class="cli-dot cd-yellow"></span>
         <span class="cli-dot cd-green"></span>
         <span class="cli-title-txt"><i class="fas fa-terminal"></i> narendra@analytics ~</span>
-        <span style="margin-left:auto;font-size:0.75rem;color:var(--text-dim)">Ctrl+K to toggle</span>
+        <button class="cli-close-btn" onclick="toggleCLI()" style="margin-left:auto;background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:0.9rem;" title="Close Terminal"><i class="fas fa-times"></i></button>
       </div>
       <div class="cli-body" id="cli-body">
         <div style="color:var(--accent);margin-bottom:8px;">Welcome to the Data Analytics Command Center. Type <span style="color:#fff">help</span> to see commands.</div>
