@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kurugodu Sai Narendra | Data Analytics & Data Science Portfolio</title>
+  <meta name="description" content="Portfolio of Kurugodu Sai Narendra - MSc in Data Analytics student, ML Consultant, and Data Specialist featuring interactive analytics, machine learning models, and cloud deployments.">
+  <meta name="keywords" content="Kurugodu Sai Narendra, Data Analytics, Data Science, Machine Learning, Python, SQL, Power BI, AWS, Churn Prediction, CHRIST University">
+  <meta name="author" content="Kurugodu Sai Narendra">
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Kurugodu Sai Narendra | Data Analytics & ML Specialist">
+  <meta property="og:description" content="MSc Data Analytics Scholar & Data Science Consultant Intern. Machine Learning, AWS, Statistical Modeling, and Business Intelligence.">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Ambient Glow Effects -->
+  <div class="ambient-glow-1"></div>
+  <div class="ambient-glow-2"></div>
+
+  <!-- Dynamic Particle Canvas -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- 1. NAVIGATION BAR -->
+  <nav class="navbar" id="navbar">
+    <a href="#home" class="nav-logo">
+      <span class="dot"></span> KN<span class="gradient-text">.analytics</span>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#home" class="nav-link active">Home</a></li>
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#experience" class="nav-link">Experience</a></li>
+      <li><a href="#projects" class="nav-link">Projects</a></li>
+      <li><a href="#lab" class="nav-link">Analytics Lab</a></li>
+      <li><a href="#skills" class="nav-link">Skills</a></li>
+      <li><a href="#education" class="nav-link">Education</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+    </ul>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <a href="https://linkedin.com/in/kurugodusainarendra" target="_blank" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.85rem;" id="linkedin-nav-btn">
+        <i class="fab fa-linkedin"></i> Connect
+      </a>
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- 2. HERO SECTION -->
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="status-dot"></span> Available for Data Analyst & Science Roles
+          </div>
+          <h1 class="hero-title">
+            Hi, I'm <span class="gradient-text">Sai Narendra</span>
+          </h1>
+          
+          <div class="typed-text-container">
+            <span class="typed-prefix">&gt; </span>
+            <span id="typed-text"></span>
+            <span class="typed-cursor">|</span>
+          </div>
+
+          <p class="hero-description">
+            Master of Science in Data Analytics scholar at CHRIST (Deemed to be University), Bengaluru. Experienced in building machine learning models, database querying, AWS cloud deployment, and creating executive dashboards that drive measurable impact.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#projects" class="btn btn-primary">
+              <i class="fas fa-rocket"></i> Explore Work
+            </a>
+            <a href="#lab" class="btn btn-secondary">
+              <i class="fas fa-flask"></i> Interactive Lab
+            </a>
+            <a href="https://github.com/Narendra6305" target="_blank" class="btn btn-secondary" id="github-hero-btn">
+              <i class="fab fa-github"></i> GitHub
+            </a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat-card">
+              <div class="stat-number"><span class="counter" data-target="80">0</span>%+</div>
+              <div class="stat-label">Model Accuracy</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number"><span class="counter" data-target="15">0</span>+</div>
+              <div class="stat-label">ML Pipelines Built</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number"><span class="counter" data-target="20">0</span>%</div>
+              <div class="stat-label">Delivery Speedup</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="avatar-card" id="avatar-card">
+            <div class="avatar-frame">
+              <div class="avatar-initials">KN</div>
+              <div class="avatar-tag">&lt;Data Analytics Specialist /&gt;</div>
+            </div>
+            
+            <div class="floating-badge badge-1">
+              <i class="fas fa-brain" style="color: var(--cyan);"></i>
+              <div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Specialization</div>
+                <div>Machine Learning & Analytics</div>
+              </div>
+            </div>
+
+            <div class="floating-badge badge-2">
+              <i class="fas fa-award" style="color: var(--amber);"></i>
+              <div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Grade A Distinction</div>
+                <div>CDS Project Award</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. ABOUT SECTION -->
+  <section class="section-padding" id="about" style="background: rgba(11, 15, 25, 0.4);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fas fa-user"></i> Professional Profile</span>
+        <h2 class="section-title">Bridging Data & Strategic Decisions</h2>
+        <p class="section-subtitle">A passion for statistical rigor, clean code, and predictive analytics.</p>
+      </div>
+
+      <div class="glass-card" style="max-width: 1000px; margin: 0 auto;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px;">
+          <div>
+            <h3 style="font-size: 1.4rem; color: var(--cyan); margin-bottom: 16px;">
+              <i class="fas fa-graduation-cap"></i> MSc Data Analytics Scholar
+            </h3>
+            <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.7; margin-bottom: 16px;">
+              Currently pursuing my MSc in Data Analytics (Batch 2025–27) at <strong>CHRIST (Deemed to be University), Bengaluru</strong> maintaining a strong <strong>CGPA of 3.47 / 4.0</strong>. My academic foundation combines mathematical statistics, machine learning algorithm design, and data governance.
+            </p>
+            <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.7;">
+              Previously completed Bachelor of Computer Applications (BCA) at RJS College, Bengaluru with a <strong>CGPA of 8.7 / 10.0</strong>.
+            </p>
+          </div>
+
+          <div>
+            <h3 style="font-size: 1.4rem; color: var(--purple); margin-bottom: 16px;">
+              <i class="fas fa-chart-pie"></i> Industry Experience & Leadership
+            </h3>
+            <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.7; margin-bottom: 16px;">
+              As a Data Science Consultant Intern at <strong>Rubixe AI Solutions</strong>, I worked on designing, optimizing, and deploying 15+ machine learning models on AWS cloud infrastructure achieving over 80% accuracy.
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;">
+              <span class="tag"><i class="fas fa-check-circle" style="color: var(--green);"></i> AWS Cloud Deployment</span>
+              <span class="tag"><i class="fas fa-check-circle" style="color: var(--green);"></i> Hypothesis Testing</span>
+              <span class="tag"><i class="fas fa-check-circle" style="color: var(--green);"></i> Executive Dashboards</span>
+              <span class="tag"><i class="fas fa-check-circle" style="color: var(--green);"></i> Cross-Functional Collaboration</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. WORK EXPERIENCE & LEADERSHIP SECTION -->
+  <section class="section-padding" id="experience">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fas fa-briefcase"></i> Track Record</span>
+        <h2 class="section-title">Experience & Leadership</h2>
+        <p class="section-subtitle">Real-world impact across consulting, machine learning deployment, and community workshops.</p>
+      </div>
+
+      <div class="timeline">
+        <!-- Item 1: Rubixe AI Solutions Consultant Intern -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <div>
+                <h3 class="role-title">Data Science Consultant Intern</h3>
+                <div class="company-name"><i class="fas fa-building"></i> Rubixe AI Solutions, Bengaluru</div>
+              </div>
+              <span class="timeline-date"><i class="far fa-calendar-alt"></i> Apr 2024 – Oct 2024</span>
+            </div>
+            <ul class="timeline-bullets">
+              <li>Built and optimized <strong>15+ machine learning models</strong> achieving <strong>80%+ accuracy</strong>, significantly accelerating client decision-making workflows.</li>
+              <li>Deployed scalable machine learning pipelines on <strong>AWS Cloud Infrastructure</strong> to support production-level, automated data pipelines.</li>
+              <li>Streamlined data workflows and engineered novel feature techniques adopted organization-wide, effectively reducing data preprocessing time.</li>
+              <li>Awarded the <strong>Project Delivery Honor</strong> for leading technical solutions to completion.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Item 3: CAA Core Committee Member -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <div>
+                <h3 class="role-title">Core Committee Member</h3>
+                <div class="company-name"><i class="fas fa-laptop-code"></i> Computer Applications Association, RJS College</div>
+              </div>
+              <span class="timeline-date"><i class="far fa-calendar-alt"></i> Jun 2022 – Apr 2024</span>
+            </div>
+            <ul class="timeline-bullets">
+              <li>Led a <strong>5-member student core team</strong> organizing weekly coding and data visualization workshops.</li>
+              <li>Boosted active member participation across the department through hands-on Python and SQL bootcamps.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. PROJECTS SHOWCASE -->
+  <section class="section-padding" id="projects" style="background: rgba(11, 15, 25, 0.4);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fas fa-project-diagram"></i> Portfolio Highlights</span>
+        <h2 class="section-title">Featured Projects</h2>
+        <p class="section-subtitle">Machine learning algorithms, ensemble modeling, healthcare biostatistics, and database optimization.</p>
+      </div>
+
+      <div class="projects-grid">
+        <!-- Project 1: Smart Targeting & Churn Prevention System -->
+        <div class="glass-card project-card" data-tilt>
+          <div>
+            <div class="project-header">
+              <div class="project-icon"><i class="fas fa-users-slash"></i></div>
+              <span class="project-date">May 2024 – Jun 2024</span>
+            </div>
+            <h3 class="project-title">Smart Targeting & Churn Prevention System</h3>
+            <p class="project-desc">
+              Developed an ensemble churn model with customer segmentation to analyze financial metrics and predict purchasing behavior. Attained 90% prediction accuracy for targeted marketing campaigns.
+            </p>
+            <div class="project-tags">
+              <span class="tag">Python</span>
+              <span class="tag">Flask</span>
+              <span class="tag">Random Forest</span>
+              <span class="tag">ANN</span>
+              <span class="tag">MySQL</span>
+            </div>
+          </div>
+          <div class="project-footer">
+            <span class="metric-badge"><i class="fas fa-chart-line"></i> 90% Model Accuracy</span>
+            <div style="display: flex; gap: 8px;">
+              <a href="https://github.com/Narendra6305/portugese-bank" target="_blank" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">
+                <i class="fab fa-github"></i> GitHub
+              </a>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openProjectModal('churn')">
+                Details <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2: Heart Disease Early Detection System -->
+        <div class="glass-card project-card" data-tilt>
+          <div>
+            <div class="project-header">
+              <div class="project-icon"><i class="fas fa-heartbeat"></i></div>
+              <span class="project-date">Aug 2024 – Oct 2024</span>
+            </div>
+            <h3 class="project-title">Heart Disease Early Detection System</h3>
+            <p class="project-desc">
+              Engineered a risk assessment system to interpret biostatistics and predict cardiovascular risk prior to clinical symptom appearance with interpretable predictions designed for clinical decision support.
+            </p>
+            <div class="project-tags">
+              <span class="tag">Python</span>
+              <span class="tag">Random Forest</span>
+              <span class="tag">SVM</span>
+              <span class="tag">Matplotlib</span>
+              <span class="tag">Seaborn</span>
+            </div>
+          </div>
+          <div class="project-footer">
+            <span class="metric-badge"><i class="fas fa-shield-alt"></i> Ethical AI Aligned</span>
+            <div style="display: flex; gap: 8px;">
+              <a href="https://github.com/Narendra6305/Heart-Disease-Prediction" target="_blank" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">
+                <i class="fab fa-github"></i> GitHub
+              </a>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openProjectModal('heart')">
+                Details <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3: SatyaLens -->
+        <div class="glass-card project-card" data-tilt>
+          <div>
+            <div class="project-header">
+              <div class="project-icon"><i class="fas fa-eye"></i></div>
+              <span class="project-date">GitHub Repository</span>
+            </div>
+            <h3 class="project-title">SatyaLens — Truth Verification Engine</h3>
+            <p class="project-desc">
+              Multimodal analytical lens and verification framework engineered in Python for deepfake signal detection, media integrity verification, and data stream validation.
+            </p>
+            <div class="project-tags">
+              <span class="tag">Python</span>
+              <span class="tag">Deep Learning</span>
+              <span class="tag">Computer Vision</span>
+              <span class="tag">Multimodal AI</span>
+            </div>
+          </div>
+          <div class="project-footer">
+            <span class="metric-badge"><i class="fas fa-lock"></i> Verification Engine</span>
+            <div style="display: flex; gap: 8px;">
+              <a href="https://github.com/Narendra6305/SatyaLens" target="_blank" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">
+                <i class="fab fa-github"></i> Repository
+              </a>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openProjectModal('satyalens')">
+                Details <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 4: Employee Performance Prediction -->
+        <div class="glass-card project-card" data-tilt>
+          <div>
+            <div class="project-header">
+              <div class="project-icon"><i class="fas fa-user-chart"></i></div>
+              <span class="project-date">GitHub Repository</span>
+            </div>
+            <h3 class="project-title">Employee Performance & Attrition Analysis</h3>
+            <p class="project-desc">
+              End-to-end Machine Learning pipeline utilizing HR data features to predict employee performance ratings, evaluate workplace factors, and identify attrition risks.
+            </p>
+            <div class="project-tags">
+              <span class="tag">Jupyter</span>
+              <span class="tag">Python</span>
+              <span class="tag">Scikit-Learn</span>
+              <span class="tag">EDA</span>
+            </div>
+          </div>
+          <div class="project-footer">
+            <span class="metric-badge"><i class="fas fa-briefcase"></i> People Analytics</span>
+            <div style="display: flex; gap: 8px;">
+              <a href="https://github.com/Narendra6305/Employee-Performance-Prediction" target="_blank" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">
+                <i class="fab fa-github"></i> Repository
+              </a>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openProjectModal('employee')">
+                Details <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 5: Texas Public Salary Prediction -->
+        <div class="glass-card project-card" data-tilt>
+          <div>
+            <div class="project-header">
+              <div class="project-icon"><i class="fas fa-dollar-sign"></i></div>
+              <span class="project-date">GitHub Repository</span>
+            </div>
+            <h3 class="project-title">Texas Public Employee Salary Forecast</h3>
+            <p class="project-desc">
+              Predictive regression analysis model built to estimate state employee compensation based on agency, job metrics, tenure, and historical state payroll data.
+            </p>
+            <div class="project-tags">
+              <span class="tag">Python</span>
+              <span class="tag">Pandas</span>
+              <span class="tag">Regression</span>
+              <span class="tag">Feature Engineering</span>
+            </div>
+          </div>
+          <div class="project-footer">
+            <span class="metric-badge"><i class="fas fa-calculator"></i> Predictive Regression</span>
+            <div style="display: flex; gap: 8px;">
+              <a href="https://github.com/Narendra6305/Texas-Salary-Prediction" target="_blank" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">
+                <i class="fab fa-github"></i> Repository
+              </a>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openProjectModal('texas')">
+                Details <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 6: Medintel-OS -->
+        <div class="glass-card project-card" data-tilt>
+          <div>
+            <div class="project-header">
+              <div class="project-icon"><i class="fas fa-hospital-user"></i></div>
+              <span class="project-date">GitHub Repository</span>
+            </div>
+            <h3 class="project-title">Medintel-OS — Clinical Intelligence Dashboard</h3>
+            <p class="project-desc">
+              Medical intelligence web application designed for interactive patient data visualization, automated diagnostic metrics, and healthcare analytics workflows.
+            </p>
+            <div class="project-tags">
+              <span class="tag">JavaScript</span>
+              <span class="tag">Healthcare UI</span>
+              <span class="tag">Chart.js</span>
+              <span class="tag">REST API</span>
+            </div>
+          </div>
+          <div class="project-footer">
+            <span class="metric-badge"><i class="fas fa-clinic-medical"></i> Health Tech</span>
+            <div style="display: flex; gap: 8px;">
+              <a href="https://github.com/Narendra6305/Medintel-OS" target="_blank" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">
+                <i class="fab fa-github"></i> Repository
+              </a>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openProjectModal('medintel')">
+                Details <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 7: ADMIS -->
+        <div class="glass-card project-card" data-tilt>
+          <div>
+            <div class="project-header">
+              <div class="project-icon"><i class="fas fa-database"></i></div>
+              <span class="project-date">GitHub Repository</span>
+            </div>
+            <h3 class="project-title">ADMIS — Adaptive Data Intelligence System</h3>
+            <p class="project-desc">
+              Enterprise management data intelligence architecture written in TypeScript for streaming analytical queries, dynamic data transformation, and reporting.
+            </p>
+            <div class="project-tags">
+              <span class="tag">TypeScript</span>
+              <span class="tag">Node.js</span>
+              <span class="tag">Data Engineering</span>
+              <span class="tag">SQL</span>
+            </div>
+          </div>
+          <div class="project-footer">
+            <span class="metric-badge"><i class="fas fa-network-wired"></i> Data Engineering</span>
+            <div style="display: flex; gap: 8px;">
+              <a href="https://github.com/Narendra6305/ADMIS" target="_blank" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">
+                <i class="fab fa-github"></i> Repository
+              </a>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openProjectModal('admis')">
+                Details <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 8: Aegis-Lite -->
+        <div class="glass-card project-card" data-tilt>
+          <div>
+            <div class="project-header">
+              <div class="project-icon"><i class="fas fa-user-shield"></i></div>
+              <span class="project-date">GitHub Repository</span>
+            </div>
+            <h3 class="project-title">Aegis-Lite — Anomaly & Threat Security System</h3>
+            <p class="project-desc">
+              Python security analytics toolkit implementing intelligent anomaly detection, log parsing, and automated risk scoring for cyber telemetry data.
+            </p>
+            <div class="project-tags">
+              <span class="tag">Python</span>
+              <span class="tag">Security Analytics</span>
+              <span class="tag">Anomaly Detection</span>
+            </div>
+          </div>
+          <div class="project-footer">
+            <span class="metric-badge"><i class="fas fa-shield-alt"></i> Cyber Analytics</span>
+            <div style="display: flex; gap: 8px;">
+              <a href="https://github.com/Narendra6305/Aegis-Lite" target="_blank" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">
+                <i class="fab fa-github"></i> Repository
+              </a>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openProjectModal('aegis')">
+                Details <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. INTERACTIVE ANALYTICS LAB -->
+  <section class="section-padding" id="lab">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fas fa-vial"></i> Interactive Sandbox</span>
+        <h2 class="section-title">Interactive Data Analytics Lab</h2>
+        <p class="section-subtitle">Test live machine learning score models and inspect model benchmark analytics.</p>
+      </div>
+
+      <div class="lab-container">
+        <div class="lab-tabs">
+          <button class="lab-tab active" onclick="switchLabTab('churn-sim')">
+            <i class="fas fa-sliders-h"></i> Customer Churn Simulator
+          </button>
+          <button class="lab-tab" onclick="switchLabTab('heart-sim')">
+            <i class="fas fa-stethoscope"></i> Cardiovascular Risk Assessor
+          </button>
+          <button class="lab-tab" onclick="switchLabTab('benchmark')">
+            <i class="fas fa-chart-bar"></i> Algorithm Performance Benchmark
+          </button>
+        </div>
+
+        <!-- Tab 1: Churn Simulator -->
+        <div class="lab-panel active" id="panel-churn-sim">
+          <div class="calculator-controls">
+            <h4 style="color: var(--cyan); margin-bottom: 12px;">Customer Behavior Metrics</h4>
+            
+            <div class="control-group">
+              <label>Monthly Spend ($): <span id="spend-val">$450</span></label>
+              <input type="range" id="spend-slider" min="50" max="1500" value="450" oninput="updateChurnSim()">
+            </div>
+
+            <div class="control-group">
+              <label>Tenure (Months): <span id="tenure-val">14 mos</span></label>
+              <input type="range" id="tenure-slider" min="1" max="60" value="14" oninput="updateChurnSim()">
+            </div>
+
+            <div class="control-group">
+              <label>Support Tickets Opened: <span id="tickets-val">2</span></label>
+              <input type="range" id="tickets-slider" min="0" max="10" value="2" oninput="updateChurnSim()">
+            </div>
+          </div>
+
+          <div class="prediction-result">
+            <div style="font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">
+              Predicted Churn Probability
+            </div>
+            <div class="score-display gradient-text" id="churn-score">24.5%</div>
+            <div id="churn-status" style="font-size: 0.95rem; margin-top: 10px; color: var(--green); font-weight: 600;">
+              <i class="fas fa-check-circle"></i> Low Risk Customer (Retention Target)
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Heart Disease Risk Assessor -->
+        <div class="lab-panel" id="panel-heart-sim">
+          <div class="calculator-controls">
+            <h4 style="color: var(--purple); margin-bottom: 12px;">Biostatistical Metrics</h4>
+            
+            <div class="control-group">
+              <label>Resting Blood Pressure (mm Hg): <span id="bp-val">128</span></label>
+              <input type="range" id="bp-slider" min="90" max="200" value="128" oninput="updateHeartSim()">
+            </div>
+
+            <div class="control-group">
+              <label>Serum Cholesterol (mg/dl): <span id="chol-val">210</span></label>
+              <input type="range" id="chol-slider" min="120" max="400" value="210" oninput="updateHeartSim()">
+            </div>
+
+            <div class="control-group">
+              <label>Max Heart Rate (bpm): <span id="hr-val">152</span></label>
+              <input type="range" id="hr-slider" min="80" max="210" value="152" oninput="updateHeartSim()">
+            </div>
+          </div>
+
+          <div class="prediction-result">
+            <div style="font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">
+              Predicted Cardiovascular Risk Score
+            </div>
+            <div class="score-display gradient-text-accent" id="heart-score">18.2%</div>
+            <div id="heart-status" style="font-size: 0.95rem; margin-top: 10px; color: var(--green); font-weight: 600;">
+              <i class="fas fa-shield-alt"></i> Normal Biostatistics Profile
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Algorithm Benchmark Chart -->
+        <div class="lab-panel" id="panel-benchmark">
+          <div style="grid-column: span 2;">
+            <h4 style="color: var(--cyan); margin-bottom: 16px; text-align: center;">Machine Learning Algorithm Performance Comparison</h4>
+            <div class="chart-wrapper">
+              <canvas id="benchmarkChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. SKILLS & CERTIFICATIONS -->
+  <section class="section-padding" id="skills" style="background: rgba(11, 15, 25, 0.4);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fas fa-tools"></i> Core Capabilities</span>
+        <h2 class="section-title">Technical & Domain Skills</h2>
+        <p class="section-subtitle">Statistical modeling, query languages, ML frameworks, cloud computing, and storytelling.</p>
+      </div>
+
+      <div class="skills-grid">
+        <!-- Technical Skills -->
+        <div class="glass-card">
+          <div class="skill-category-title"><i class="fas fa-code"></i> Technical Stack</div>
+          <div class="skill-items">
+            <div class="skill-item">
+              <div class="skill-info"><span class="skill-name">Python (Scikit-learn, Pandas, NumPy)</span><span class="skill-pct">92%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="92%"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-info"><span class="skill-name">SQL (MySQL, Complex Querying)</span><span class="skill-pct">90%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="90%"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-info"><span class="skill-name">Power BI & Executive Dashboards</span><span class="skill-pct">88%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="88%"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-info"><span class="skill-name">Tableau & Data Visualization</span><span class="skill-pct">85%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="85%"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-info"><span class="skill-name">Matplotlib & Seaborn</span><span class="skill-pct">90%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="90%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Domain Skills -->
+        <div class="glass-card">
+          <div class="skill-category-title"><i class="fas fa-microchip"></i> Domain & Analytics</div>
+          <div class="skill-items">
+            <div class="skill-item">
+              <div class="skill-info"><span class="skill-name">Machine Learning Pipelines</span><span class="skill-pct">88%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="88%"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-info"><span class="skill-name">AWS Cloud Infrastructure</span><span class="skill-pct">82%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="82%"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-info"><span class="skill-name">Statistical Modelling & Inference</span><span class="skill-pct">90%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="90%"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-info"><span class="skill-name">Hypothesis Testing & A/B Analysis</span><span class="skill-pct">86%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="86%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Soft Skills & Languages -->
+        <div class="glass-card">
+          <div class="skill-category-title"><i class="fas fa-comments"></i> Leadership & Languages</div>
+          <div class="skill-items">
+            <div class="skill-item">
+              <div class="skill-info"><span class="skill-name">Team Management & Agile Lead</span><span class="skill-pct">92%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="92%"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-info"><span class="skill-name">Data Storytelling & Presentations</span><span class="skill-pct">90%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="90%"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-info"><span class="skill-name">Cross-functional Collaboration</span><span class="skill-pct">95%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" data-width="95%"></div></div>
+            </div>
+            
+            <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-glass);">
+              <div style="font-size: 0.9rem; font-weight: 600; color: var(--cyan); margin-bottom: 8px;">Languages Spoken</div>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                <span class="tag">English — Proficient</span>
+                <span class="tag">Hindi — Fluent</span>
+                <span class="tag">Kannada — Fluent</span>
+                <span class="tag">Telugu — Native</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Certifications -->
+      <div class="cert-grid">
+        <div class="glass-card cert-card">
+          <div class="cert-icon"><i class="fas fa-certificate"></i></div>
+          <div>
+            <h4 class="cert-title">Certified Data Scientist (CDS)</h4>
+            <div class="cert-issuer">DataMites / IABAC / NASSCOM — Jul 2024</div>
+            <div class="cgpa-pill" style="margin-top: 8px;"><i class="fas fa-star"></i> Received Grade "A" Project Distinction</div>
+          </div>
+        </div>
+
+        <div class="glass-card cert-card">
+          <div class="cert-icon"><i class="fas fa-chart-line"></i></div>
+          <div>
+            <h4 class="cert-title">Data Visualization Specialist</h4>
+            <div class="cert-issuer">Tata Forage Virtual Experience Program — Jan 2024</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">Executive readiness dashboard creation & insight delivery.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. EDUCATION & ACHIEVEMENTS -->
+  <section class="section-padding" id="education">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fas fa-university"></i> Academic Journey</span>
+        <h2 class="section-title">Education & Achievements</h2>
+        <p class="section-subtitle">Academic excellence and distinction awards.</p>
+      </div>
+
+      <div class="edu-grid">
+        <!-- CHRIST University -->
+        <div class="glass-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+            <div style="width: 44px; height: 44px; background: rgba(0, 242, 254, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--cyan);">
+              <i class="fas fa-university"></i>
+            </div>
+            <span class="timeline-date">Jun 2025 – May 2027</span>
+          </div>
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 4px;">Master of Science in Data Analytics (MScDA)</h3>
+          <div style="color: var(--cyan); font-weight: 600; margin-bottom: 8px;">CHRIST (Deemed to be University), Bengaluru</div>
+          <div class="cgpa-pill"><i class="fas fa-award"></i> CGPA: 3.47 / 4.0</div>
+        </div>
+
+        <!-- RJS College -->
+        <div class="glass-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+            <div style="width: 44px; height: 44px; background: rgba(121, 40, 202, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--purple);">
+              <i class="fas fa-laptop"></i>
+            </div>
+            <span class="timeline-date">Jun 2021 – Apr 2024</span>
+          </div>
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 4px;">Bachelor of Computer Applications (BCA)</h3>
+          <div style="color: var(--purple); font-weight: 600; margin-bottom: 8px;">RJS College | Bangalore University</div>
+          <div class="cgpa-pill"><i class="fas fa-award"></i> CGPA: 8.7 / 10.0</div>
+        </div>
+
+        <!-- Schooling -->
+        <div class="glass-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+            <div style="width: 44px; height: 44px; background: rgba(0, 255, 135, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--green);">
+              <i class="fas fa-school"></i>
+            </div>
+            <span class="timeline-date">Apr 2018 – Apr 2020</span>
+          </div>
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 4px;">Class XII & Class X Boarding</h3>
+          <div style="color: var(--green); font-weight: 600; margin-bottom: 8px;">Akshara Sree College, Adoni</div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <div class="cgpa-pill">Class XII: 9.17 / 10.0</div>
+            <div class="cgpa-pill">Class X: 9.7 / 10.0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. CONTACT & FREE GITHUB PAGES HOSTING GUIDE -->
+  <section class="section-padding" id="contact" style="background: rgba(11, 15, 25, 0.4);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fas fa-envelope"></i> Get In Touch</span>
+        <h2 class="section-title">Contact & Hosting Information</h2>
+        <p class="section-subtitle">Let's connect for data opportunities or host this portfolio for free on GitHub Pages.</p>
+      </div>
+
+      <div class="contact-wrapper">
+        <!-- Contact Form / Direct Info -->
+        <div class="glass-card">
+          <h3 style="font-size: 1.4rem; color: var(--cyan); margin-bottom: 16px;"><i class="fas fa-paper-plane"></i> Send a Direct Message</h3>
+          
+          <form id="contact-form" onsubmit="handleFormSubmit(event)">
+            <div style="margin-bottom: 16px;">
+              <input type="text" id="sender-name" placeholder="Your Name" required style="width: 100%; padding: 12px 16px; background: rgba(7, 10, 18, 0.6); border: 1px solid var(--border-glass); border-radius: var(--radius-sm); color: var(--text-main); font-family: var(--font-sans);">
+            </div>
+            <div style="margin-bottom: 16px;">
+              <input type="email" id="sender-email" placeholder="Your Email" required style="width: 100%; padding: 12px 16px; background: rgba(7, 10, 18, 0.6); border: 1px solid var(--border-glass); border-radius: var(--radius-sm); color: var(--text-main); font-family: var(--font-sans);">
+            </div>
+            <div style="margin-bottom: 20px;">
+              <textarea id="sender-msg" rows="4" placeholder="Your Message" required style="width: 100%; padding: 12px 16px; background: rgba(7, 10, 18, 0.6); border: 1px solid var(--border-glass); border-radius: var(--radius-sm); color: var(--text-main); font-family: var(--font-sans); resize: none;"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+              <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+          </form>
+
+          <div class="contact-info-list">
+            <div class="contact-item">
+              <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+              <div class="contact-detail">
+                <p>Email</p>
+                <a href="mailto:kurugodusai.narendra@arts.christuniversity.in">kurugodusai.narendra@arts.christuniversity.in</a>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon"><i class="fas fa-phone"></i></div>
+              <div class="contact-detail">
+                <p>Phone</p>
+                <a href="tel:+916305525857">+91 6305525857</a>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon"><i class="fab fa-linkedin"></i></div>
+              <div class="contact-detail">
+                <p>LinkedIn</p>
+                <a href="https://linkedin.com/in/kurugodusainarendra" target="_blank">linkedin.com/in/kurugodusainarendra</a>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+              <div class="contact-detail">
+                <p>Location</p>
+                <span>Bengaluru, Karnataka, India</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step-by-Step GitHub Free Hosting Guide -->
+        <div class="glass-card guide-box">
+          <h3 style="font-size: 1.3rem; color: var(--cyan); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <i class="fab fa-github"></i> Free Hosting on GitHub Pages
+          </h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+            Follow these simple steps to host this website live for free under your username <strong>Narendra6305</strong>:
+          </p>
+
+          <div class="guide-step">
+            <div class="step-num">1</div>
+            <div>
+              <strong style="color: var(--text-main); font-size: 0.95rem;">Create a GitHub Repository</strong>
+              <div style="font-size: 0.85rem; color: var(--text-muted);">Go to github.com and create a new public repository named:</div>
+              <span class="code-snippet">Narendra6305.github.io</span>
+            </div>
+          </div>
+
+          <div class="guide-step">
+            <div class="step-num">2</div>
+            <div>
+              <strong style="color: var(--text-main); font-size: 0.95rem;">Push Portfolio Files</strong>
+              <div style="font-size: 0.85rem; color: var(--text-muted);">Push `index.html`, `style.css`, and `script.js` to the repository using Git:</div>
+              <span class="code-snippet">git init<br>git add .<br>git commit -m "Initial portfolio release"<br>git remote add origin https://github.com/Narendra6305/Narendra6305.github.io.git<br>git push -u origin main</span>
+            </div>
+          </div>
+
+          <div class="guide-step">
+            <div class="step-num">3</div>
+            <div>
+              <strong style="color: var(--text-main); font-size: 0.95rem;">Enable GitHub Pages</strong>
+              <div style="font-size: 0.85rem; color: var(--text-muted);">In your repository, go to <strong>Settings</strong> &gt; <strong>Pages</strong>, set Branch to <strong>main / root</strong>, and click Save.</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 20px; padding: 12px; background: rgba(0, 255, 135, 0.08); border: 1px solid var(--green); border-radius: var(--radius-sm); text-align: center; color: var(--green); font-size: 0.88rem; font-weight: 600;">
+            🚀 Your site will instantly go live at: https://narendra6305.github.io
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Kurugodu Sai Narendra. Built with HTML5, CSS3, & JavaScript. Designed for high performance.</p>
+    </div>
+  </footer>
+
+  <!-- MODAL FOR PROJECT DETAILS -->
+  <div class="modal-overlay" id="project-modal">
+    <div class="modal-container">
+      <button class="modal-close" onclick="closeProjectModal()">&times;</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Custom JavaScript Logic -->
+  <script src="script.js"></script>
+</body>
+</html>
