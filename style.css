@@ -143,28 +143,64 @@ body{
   transition:width 0.1s linear;
 }
 
-/* ---- CUSTOM CURSOR ---- */
+/* ---- TONY TONY CHOPPER CUSTOM CURSOR ---- */
 #cursor-dot {
-  position:fixed;width:7px;height:7px;
-  background:var(--accent);border-radius:50%;
-  pointer-events:none;z-index:8999;
-  box-shadow:0 0 12px var(--accent);
-  transform:translate(-50%,-50%);
-  transition:transform 0.05s;
+  position: fixed;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+  z-index: 8999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.05s ease, font-size 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  user-select: none;
+  filter: drop-shadow(0 0 10px #ff69b4);
 }
+
+.chopper-hat {
+  display: inline-block;
+  animation: chopperFloat 2s ease-in-out infinite alternate;
+}
+
+@keyframes chopperFloat {
+  0% { transform: scale(1) rotate(0deg); }
+  100% { transform: scale(1.18) rotate(12deg); }
+}
+
 #cursor-ring {
-  position:fixed;width:34px;height:34px;
-  border:1.5px solid rgba(0,242,254,0.5);
-  border-radius:50%;
-  pointer-events:none;z-index:8998;
-  transform:translate(-50%,-50%);
-  transition:width 0.25s,height 0.25s,border-color 0.25s;
-  backdrop-filter:blur(1px);
+  position: fixed;
+  width: 38px;
+  height: 38px;
+  border: 2px dashed rgba(255, 105, 180, 0.85);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 8998;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s var(--bounce), height 0.25s var(--bounce), border-color 0.25s, background 0.25s;
+  box-shadow: 0 0 16px rgba(255, 105, 180, 0.4), inset 0 0 10px rgba(255, 105, 180, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.chopper-aura-cross {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 900;
+  color: #ff69b4;
+  opacity: 0.8;
+}
+
 #cursor-ring.hover {
-  width:52px;height:52px;
-  border-color:var(--accent3);
-  box-shadow:0 0 20px var(--accent3);
+  width: 56px;
+  height: 56px;
+  border-style: solid;
+  border-color: #ff1493;
+  background: rgba(255, 20, 147, 0.15);
+  box-shadow: 0 0 30px #ff1493, inset 0 0 15px rgba(255, 20, 147, 0.4);
 }
 @media(max-width:992px){#cursor-dot,#cursor-ring{display:none;}}
 
