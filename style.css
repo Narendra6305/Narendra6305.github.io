@@ -584,8 +584,6 @@ body{
 }
 .project-hero {
   grid-column:span 3;
-  display:grid;grid-template-columns:1fr auto;
-  gap:var(--grid-gap);align-items:start;
 }
 .project-glow-tag {
   grid-column:span 2;
@@ -606,7 +604,7 @@ body{
 }
 .project-title { font-family:var(--font-hd);font-size:1.15rem;font-weight:700;margin-bottom:10px; }
 .project-desc { font-size:0.92rem;color:var(--text-mid);line-height:1.6; }
-.project-footer-row{display:flex;align-items:center;justify-content:space-between;margin-top:18px;padding-top:14px;border-top:1px solid var(--border);}
+.project-footer-row{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:14px;border-top:1px solid var(--border);}
 .proj-cta{font-size:0.88rem;font-weight:600;color:var(--accent);cursor:pointer;transition:gap 0.2s;}
 .proj-cta:hover{text-decoration:underline;}
 .proj-gh {
@@ -1395,6 +1393,8 @@ footer{
 }
 
 .proj-card-item {
+  display: flex;
+  flex-direction: column;
   transition: all 0.4s var(--ease);
 }
 .proj-card-item.hidden-proj {
@@ -1565,8 +1565,6 @@ footer{
   gap: var(--grid-gap);
 }
 .project-hero {
-  display: flex;
-  flex-direction: column;
 }
 .lab-panel.active {
   display: flex;
@@ -1766,7 +1764,7 @@ footer{
   /* Grids → 2-column */
   .about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
   .projects-bento { display: grid; grid-template-columns: repeat(2, 1fr); }
-  .project-hero { grid-column: span 2; display: grid; grid-template-columns: 1fr auto; }
+  .project-hero { grid-column: span 2; }
   .skills-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
   .edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
   .contact-grid { display: grid; grid-template-columns: 1fr 1fr; }
